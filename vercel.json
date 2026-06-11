@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "api",
+  "routes": [
+    {
+      "src": "/api/webhook",
+      "dest": "/api/webhook.js"
+    },
+    {
+      "src": "/api/dashboard/(.*)",
+      "dest": "/api/dashboard/$1.js"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/dashboard/index.html"
+    },
+    {
+      "src": "/dashboard/(.*)",
+      "dest": "/dashboard/$1.html"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

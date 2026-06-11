@@ -1,0 +1,30 @@
+{
+  "name": "chatbot-campamento-onawa",
+  "version": "1.0.0",
+  "description": "Chatbot de WhatsApp para Campamento Onawa",
+  "main": "api/webhook.js",
+  "scripts": {
+    "dev": "nodemon api/webhook.js",
+    "build": "prisma generate",
+    "start": "node api/webhook.js",
+    "postinstall": "prisma generate"
+  },
+  "keywords": [
+    "whatsapp",
+    "chatbot",
+    "campamento"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^5.22.0",
+    "vercel": "^54.12.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  }
+}

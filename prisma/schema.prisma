@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id             String   @id @default(cuid())
+  phone          String   @unique
+  name           String?
+  firstContactAt DateTime @default(now())
+  lastMessageAt  DateTime @updatedAt
+  status         String   @default("active")
+  isEscalated    Boolean  @default(false)
+  isInterested   Boolean  @default(false)
+  messages       Message[]
+  escalations    Escalation[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("onawa_contacts")
+  @@index([phone])
+  @@index([lastMessageAt])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  contactId   String
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  direction   String
+  content     String
+  messageType String   @default("text")
+  timestamp   DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@map("onawa_messages")
+  @@index([contactId])
+  @@index([timestamp])
+}
+
+model Escalation {
+  id              String   @id @default(cuid())
+  contactId       String
+  contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  reason          String
+  escalatedAt     DateTime @default(now())
+  advisorNotified Boolean  @default(false)
+  advisorPhone    String?
+  createdAt       DateTime @default(now())
+
+  @@map("onawa_escalations")
+  @@index([contactId])
+}
+
+model DashboardUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("onawa_dashboard_users")
+}
