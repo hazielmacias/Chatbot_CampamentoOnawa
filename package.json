@@ -2,6 +2,7 @@
   "name": "chatbot-campamento-onawa",
   "version": "1.0.0",
   "description": "Chatbot de WhatsApp para Campamento Onawa",
+  "type": "module",
   "main": "api/webhook.js",
   "scripts": {
     "dev": "nodemon api/webhook.js",
