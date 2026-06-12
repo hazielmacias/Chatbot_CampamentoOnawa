@@ -712,6 +712,28 @@
       to { transform: rotate(360deg); }
     }
 
+    .wa-back-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s ease;
+      color: #666;
+      margin-right: 8px;
+    }
+
+    .wa-back-btn:hover {
+      background: #e0e0e0;
+    }
+
+    @media(max-width: 1024px) {
+      .wa-back-btn {
+        display: block;
+      }
+    }
+
     /* Menu Toggle */
     .menu-toggle {
       display: none;
@@ -812,7 +834,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <img src="/assets/logo.png" alt="Campamento Onawa">
           <div>
             <div class="sidebar-logo-text">Onawa</div>
             <div class="sidebar-logo-subtitle">Conversaciones</div>
@@ -954,6 +976,12 @@
         <!-- Right Panel - Chat Area -->
         <div class="wa-right-panel" id="rightPanel">
           <div class="wa-right-header">
+            <button class="wa-back-btn" onclick="closeMobileChat()" style="display:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+            </button>
             <div class="wa-right-header-left">
               <div class="wa-chat-avatar" id="chatAvatar" style="width: 40px; height: 40px; margin-right: 0; font-size: 14px;">+</div>
               <div class="wa-right-header-info">
@@ -1008,6 +1036,16 @@
       document.getElementById('sidebar').classList.toggle('open');
     }
 
+    function closeMobileChat() {
+      document.getElementById('rightPanel').classList.remove('active');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     async function loadContacts() {
       try {
         const response = await fetch(`${API_URL}/conversations`);
@@ -1044,13 +1082,14 @@
         
         const badgeClass = contact.isEscalated ? 'escalated' : contact.isInterested ? 'interested' : '';
         const badgeText = contact.isEscalated ? 'Escalado' : contact.isInterested ? 'Interesado' : '';
+        const safePhone = escapeHtml(contact.phone);
         
         return `
-          <div class="wa-chat-item ${contact.phone === currentPhone ? 'active' : ''}" onclick="selectChat('${contact.phone}')">
-            <div class="wa-chat-avatar">${contact.phone.slice(-2)}</div>
+          <div class="wa-chat-item ${contact.phone === currentPhone ? 'active' : ''}" onclick="selectChat('${safePhone}', event)">
+            <div class="wa-chat-avatar">${String(contact.phone || '').slice(-2)}</div>
             <div class="wa-chat-info">
               <div class="wa-chat-top">
-                <div class="wa-chat-name">${contact.phone}</div>
+                <div class="wa-chat-name">${safePhone}</div>
                 <div class="wa-chat-time">${lastTime}</div>
               </div>
               <div class="wa-chat-preview">
@@ -1063,14 +1102,14 @@
       }).join('');
     }
 
-    async function selectChat(phone) {
+    async function selectChat(phone, event) {
       currentPhone = phone;
       const contact = allContacts.find(c => c.phone === phone);
       
       if (!contact) return;
       
       // Update header
-      document.getElementById('chatAvatar').textContent = phone.slice(-2);
+      document.getElementById('chatAvatar').textContent = String(phone || '').slice(-2);
       document.getElementById('chatName').textContent = phone;
       document.getElementById('chatStatus').textContent = `${contact.messages.length} mensajes`;
       
@@ -1156,12 +1195,22 @@
         renderMessages(contact);
         renderChatList(allContacts);
       }
+
+      fetch('/api/webhook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'manual_reply',
+          phone: currentPhone,
+          message: text
+        })
+      }).catch(err => console.error('Error sending:', err));
       
       input.value = '';
     }
 
-    function refreshData() {
-      loadContacts();
+    async function refreshData() {
+      await loadContacts();
       if (currentPhone) {
         const contact = allContacts.find(c => c.phone === currentPhone);
         if (contact) {
@@ -1194,7 +1243,26 @@
     });
 
     // Load initial data
-    loadContacts();
+    loadContacts().then(() => {
+      // Check for phone hash from alerts/settings links
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        const phone = decodeURIComponent(hash);
+        const contact = allContacts.find(c => c.phone === phone);
+        if (contact) {
+          currentPhone = phone;
+          document.getElementById('chatAvatar').textContent = phone.slice(-2);
+          document.getElementById('chatName').textContent = phone;
+          document.getElementById('chatStatus').textContent = `${contact.messages.length} mensajes`;
+          document.getElementById('messageInput').disabled = false;
+          document.getElementById('sendBtn').disabled = false;
+          renderMessages(contact);
+          document.querySelectorAll('.wa-chat-item').forEach(item => {
+            item.classList.toggle('active', item.textContent.includes(phone));
+          });
+        }
+      }
+    });
     
     // Refresh every 15 seconds
     setInterval(() => {

@@ -1140,7 +1140,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <img src="/assets/logo.png" alt="Campamento Onawa">
           <div>
             <div class="sidebar-logo-text">Onawa</div>
             <div class="sidebar-logo-subtitle">Panel de Control</div>
@@ -1563,7 +1563,7 @@
         { keyword: 'ubicación', response: 'Campamento Onawa se encuentra en una zona privilegiada de la naturaleza. Te puedo compartir nuestra ubicación exacta y cómo llegar. ¿Te gustaría recibir la dirección?' }
       ],
       interestKeywords: ['precio', 'reservar', 'disponible', 'cabaña', 'camping', 'promoción'],
-      advisorNumber: '+5215530086410',
+      advisorNumber: '',
       escalationMessage: 'Voy a transferirte con uno de nuestros asesores para que te brinde una atención más personalizada. Por favor, espera un momento.',
       escalationThreshold: 5,
       notifyNewConversations: true,
@@ -1947,7 +1947,7 @@
       }
       
       // Validate phone format
-      const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+      const phoneRegex = /^\+?[\d\s\-()]{10,20}$/;
       if (!phoneRegex.test(settings.advisorNumber.replace(/\s/g, ''))) {
         showToast('El número del asesor no tiene un formato válido', 'error');
         return false;
@@ -1968,29 +1968,22 @@
       document.getElementById('loadingOverlay').classList.add('active');
       
       try {
-        // Try API first
         const response = await fetch(`${API_URL}/settings`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newSettings)
         });
-        
-        if (!response.ok) {
+        if (response.ok) {
+          const data = await response.json();
+          settings = { ...settings, ...data.settings };
+          showToast('Configuración guardada en el servidor', 'success');
+        } else {
           throw new Error('API error');
         }
-        
-        const data = await response.json();
-        settings = { ...settings, ...data.settings };
       } catch (error) {
-        // Fallback: save to localStorage only
-        console.log('API unavailable, saving to localStorage');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings));
+        showToast('Guardado localmente. Sincronización con servidor fallida.', 'warning');
       }
-      
-      // Always save to localStorage
-      settings = newSettings;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
       
       // Hide loading
       document.getElementById('loadingOverlay').classList.remove('active');
@@ -2006,8 +1999,6 @@
         hour: '2-digit',
         minute: '2-digit'
       });
-      
-      showToast('Configuración guardada exitosamente', 'success');
     }
 
     // Reset settings
@@ -2076,7 +2067,7 @@
       if (!text) return '';
       const div = document.createElement('div');
       div.textContent = text;
-      return div.innerHTML;
+      return div.innerHTML.replace(/'/g, '&#39;');
     }
 
     // Close sidebar on outside click (mobile)

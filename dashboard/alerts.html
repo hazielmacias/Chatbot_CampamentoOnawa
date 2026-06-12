@@ -781,7 +781,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <img src="/assets/logo.png" alt="Campamento Onawa">
           <div>
             <div class="sidebar-logo-text">Onawa</div>
             <div class="sidebar-logo-subtitle">Panel de Control</div>
@@ -823,7 +823,7 @@
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
             </svg>
             Alertas
-            <span class="badge" id="sidebarAlertBadge" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(212, 115, 94, 0.12); color: var(--coral); display: none;">0</span>
+            <span class="badge" id="alertBadge" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(212, 115, 94, 0.12); color: var(--coral); display: none;">0</span>
           </a>
         </div>
 
@@ -982,6 +982,16 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     function relativeTime(dateString) {
       const date = new Date(dateString);
       const now = new Date();
@@ -1010,7 +1020,7 @@
       document.getElementById('countUnread').textContent = unread;
 
       const headerBadge = document.getElementById('headerBadge');
-      const sidebarBadge = document.getElementById('sidebarAlertBadge');
+      const sidebarBadge = document.getElementById('alertBadge');
 
       if (unread > 0) {
         headerBadge.style.display = 'inline-block';
@@ -1062,7 +1072,7 @@
         const severity = alert.severity || 'info';
         const readClass = alert.read ? 'read' : 'unread';
         const unreadDot = !alert.read ? `<div class="unread-dot"></div>` : '';
-        const phoneLink = alert.phone ? `<a href="chats.html?phone=${encodeURIComponent(alert.phone)}">${icons.phone} ${alert.phone}</a>` : '';
+        const phoneLink = alert.phone ? `<a href="chats.html#${encodeURIComponent(alert.phone)}" title="El parámetro de teléfono será manejado en chats.html">${icons.phone} ${alert.phone}</a>` : '';
         const time = relativeTime(alert.timestamp);
 
         return `
@@ -1084,10 +1094,10 @@
             <div class="alert-actions">
               <span class="severity-badge ${severity}">${severity}</span>
               <div class="alert-actions-row">
-                <a href="chats.html?phone=${encodeURIComponent(alert.phone || '')}" class="btn btn-primary btn-sm">
+                <a href="chats.html#${encodeURIComponent(alert.phone || '')}" class="btn btn-primary btn-sm" title="El parámetro de teléfono será manejado en chats.html">
                   ${icons.arrow} Ver conversación
                 </a>
-                ${!alert.read ? `<button class="btn btn-text btn-sm" onclick="markAsRead('${alert.id}')">Marcar como leída</button>` : ''}
+                ${!alert.read ? `<button class="btn btn-text btn-sm" onclick="markAsRead('${escapeHtml(alert.id)}')">Marcar como leída</button>` : ''}
               </div>
             </div>
           </div>
@@ -1182,15 +1192,14 @@
       }
 
       try {
-        const promises = unreadAlerts.map(a =>
-          fetch(`${API_URL}/alerts`, {
+        for (const a of unreadAlerts) {
+          await fetch(`${API_URL}/alerts`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ alertId: a.id })
-          })
-        );
-
-        await Promise.all(promises);
+          });
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
         allAlerts.forEach(a => a.read = true);
         updateCounts();
         renderAlerts();

@@ -890,7 +890,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <img src="/assets/logo.png" alt="Campamento Onawa">
           <div>
             <div class="sidebar-logo-text">Onawa</div>
             <div class="sidebar-logo-subtitle">Panel de Control</div>
@@ -1215,7 +1215,12 @@
     const API_URL = '/api/dashboard';
     let currentDays = 7;
     let charts = {};
+    let historyData = {};
     let autoRefreshInterval = null;
+
+    function getCssVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
 
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
@@ -1442,14 +1447,14 @@
           datasets: [{
             label: 'Conversaciones',
             data: conversationsData,
-            borderColor: '#1a4d2e',
-            backgroundColor: 'rgba(26, 77, 46, 0.08)',
+            borderColor: getCssVar('--forest'),
+            backgroundColor: getCssVar('--forest') + '14',
             borderWidth: 2,
             fill: true,
             tension: 0.4,
             pointRadius: 3,
-            pointBackgroundColor: '#1a4d2e',
-            pointBorderColor: '#fff',
+            pointBackgroundColor: getCssVar('--forest'),
+            pointBorderColor: getCssVar('--white'),
             pointBorderWidth: 2
           }]
         },
@@ -1459,7 +1464,7 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#1a4d2e',
+              backgroundColor: getCssVar('--forest'),
               titleFont: { family: 'Montserrat', size: 12 },
               bodyFont: { family: 'Source Sans 3', size: 13 },
               padding: 12,
@@ -1471,11 +1476,11 @@
             y: {
               beginAtZero: true,
               grid: { color: 'rgba(0,0,0,0.05)' },
-              ticks: { font: { family: 'Source Sans 3' }, color: '#8a9a8a' }
+              ticks: { font: { family: 'Source Sans 3' }, color: getCssVar('--text-muted') }
             },
             x: {
               grid: { display: false },
-              ticks: { font: { family: 'Source Sans 3', size: 10 }, color: '#8a9a8a', maxTicksLimit: 10 }
+              ticks: { font: { family: 'Source Sans 3', size: 10 }, color: getCssVar('--text-muted'), maxTicksLimit: 10 }
             }
           }
         }
@@ -1497,14 +1502,14 @@
             {
               label: 'Enviados',
               data: sentData,
-              backgroundColor: '#7a9e7e',
+              backgroundColor: getCssVar('--sage'),
               borderRadius: 4,
               barPercentage: 0.6
             },
             {
               label: 'Recibidos',
               data: receivedData,
-              backgroundColor: '#d4735e',
+              backgroundColor: getCssVar('--coral'),
               borderRadius: 4,
               barPercentage: 0.6
             }
@@ -1517,10 +1522,10 @@
             legend: {
               position: 'top',
               align: 'end',
-              labels: { font: { family: 'Source Sans 3', size: 12 }, color: '#5a6b5a', usePointStyle: true, pointStyle: 'circle' }
+              labels: { font: { family: 'Source Sans 3', size: 12 }, color: getCssVar('--text-light'), usePointStyle: true, pointStyle: 'circle' }
             },
             tooltip: {
-              backgroundColor: '#1a4d2e',
+              backgroundColor: getCssVar('--forest'),
               titleFont: { family: 'Montserrat', size: 12 },
               bodyFont: { family: 'Source Sans 3', size: 13 },
               padding: 12,
@@ -1532,11 +1537,11 @@
             y: {
               beginAtZero: true,
               grid: { color: 'rgba(0,0,0,0.05)' },
-              ticks: { font: { family: 'Source Sans 3' }, color: '#8a9a8a' }
+              ticks: { font: { family: 'Source Sans 3' }, color: getCssVar('--text-muted') }
             },
             x: {
               grid: { display: false },
-              ticks: { font: { family: 'Source Sans 3', size: 10 }, color: '#8a9a8a', maxTicksLimit: 10 }
+              ticks: { font: { family: 'Source Sans 3', size: 10 }, color: getCssVar('--text-muted'), maxTicksLimit: 10 }
             }
           }
         }
@@ -1559,8 +1564,8 @@
           labels: ['Activo', 'Interesado', 'Escalado'],
           datasets: [{
             data: statusData,
-            backgroundColor: ['#7a9e7e', '#2d6a4f', '#d4735e'],
-            borderColor: '#fff',
+            backgroundColor: [getCssVar('--sage'), getCssVar('--forest-light'), getCssVar('--coral')],
+            borderColor: getCssVar('--white'),
             borderWidth: 2,
             hoverOffset: 4
           }]
@@ -1571,10 +1576,10 @@
           plugins: {
             legend: {
               position: 'bottom',
-              labels: { font: { family: 'Source Sans 3', size: 12 }, color: '#5a6b5a', usePointStyle: true, pointStyle: 'circle', padding: 20 }
+              labels: { font: { family: 'Source Sans 3', size: 12 }, color: getCssVar('--text-light'), usePointStyle: true, pointStyle: 'circle', padding: 20 }
             },
             tooltip: {
-              backgroundColor: '#1a4d2e',
+              backgroundColor: getCssVar('--forest'),
               titleFont: { family: 'Montserrat', size: 12 },
               bodyFont: { family: 'Source Sans 3', size: 13 },
               padding: 12,
@@ -1607,7 +1612,7 @@
           datasets: [{
             label: 'Mensajes',
             data: hourlyData,
-            backgroundColor: '#c8a45c',
+            backgroundColor: getCssVar('--gold'),
             borderRadius: 4,
             barPercentage: 0.7
           }]
@@ -1618,7 +1623,7 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#1a4d2e',
+              backgroundColor: getCssVar('--forest'),
               titleFont: { family: 'Montserrat', size: 12 },
               bodyFont: { family: 'Source Sans 3', size: 13 },
               padding: 12,
@@ -1635,11 +1640,11 @@
             y: {
               beginAtZero: true,
               grid: { color: 'rgba(0,0,0,0.05)' },
-              ticks: { font: { family: 'Source Sans 3' }, color: '#8a9a8a' }
+              ticks: { font: { family: 'Source Sans 3' }, color: getCssVar('--text-muted') }
             },
             x: {
               grid: { display: false },
-              ticks: { font: { family: 'Source Sans 3', size: 10 }, color: '#8a9a8a', maxTicksLimit: 12 }
+              ticks: { font: { family: 'Source Sans 3', size: 10 }, color: getCssVar('--text-muted'), maxTicksLimit: 12 }
             }
           }
         }
@@ -1729,7 +1734,7 @@
         ]);
 
         let statsData = {};
-        let historyData = {};
+        historyData = {};
 
         if (statsResponse && statsResponse.ok) {
           statsData = await statsResponse.json();
@@ -1742,8 +1747,7 @@
         // Merge stats from both endpoints
         const mergedStats = {
           ...statsData.stats,
-          ...historyData.summary,
-          ...statsData
+          ...historyData.summary
         };
 
         // Render stats cards
@@ -1753,6 +1757,12 @@
         if (historyData.dailyStats && historyData.dailyStats.length > 0) {
           renderCharts(historyData);
         } else {
+          // Destroy existing charts before showing empty states
+          Object.values(charts).forEach(chart => {
+            if (chart) chart.destroy();
+          });
+          charts = {};
+          
           // Show empty states for charts
           ['chartContainer1', 'chartContainer2', 'chartContainer3', 'chartContainer4'].forEach(id => {
             const container = document.getElementById(id);
@@ -1802,24 +1812,20 @@
     }
 
     function exportData() {
-      // Simulated export
-      const btn = document.querySelector('button[onclick="exportData()"]');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        Exportado
-      `;
-      btn.style.background = 'var(--sage)';
-      
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.style.background = '';
-      }, 2000);
-      
-      // In a real app, this would trigger a CSV download
-      console.log('Exporting data for', currentDays, 'days');
+      const csv = convertToCSV(historyData.dailyStats);
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'campamento-onawa-stats.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function convertToCSV(data) {
+      const headers = ['Fecha', 'Conversaciones', 'Mensajes', 'Entrantes', 'Salientes'];
+      const rows = data.map(d => [d.date, d.conversations, d.messages, d.inbound, d.outbound].join(','));
+      return [headers.join(','), ...rows].join('\n');
     }
 
     // Close sidebar on outside click (mobile)

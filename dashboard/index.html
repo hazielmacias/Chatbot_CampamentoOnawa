@@ -858,7 +858,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <img src="/assets/logo.png" alt="Campamento Onawa">
           <div>
             <div class="sidebar-logo-text">Onawa</div>
             <div class="sidebar-logo-subtitle">Panel de Control</div>
@@ -975,7 +975,7 @@
           </div>
 
           <div class="filters">
-            <input type="text" id="search" placeholder="Buscar por teléfono...">
+            <input type="text" id="search" placeholder="Buscar por teléfono..." onkeydown="if(event.key==='Enter') loadConversations()">
             <select id="status">
               <option value="">Todos los estados</option>
               <option value="escalated">Escalados</option>
@@ -1011,7 +1011,7 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay">
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" tabindex="-1">
     <div class="modal">
       <div class="modal-header">
         <h2 class="modal-title">
@@ -1031,6 +1031,12 @@
 
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
     }
 
     async function loadStats() {
@@ -1137,10 +1143,10 @@
                            conv.isInterested ? 'Interesado' : 'Activo';
           
           return `
-            <div class="conversation-row" onclick="showConversation('${conv.phone}')">
+             <div class="conversation-row" onclick="showConversation('${escapeHtml(conv.phone)}')">
               <div class="phone-cell">
-                <div class="phone-number">${conv.phone}</div>
-                <div class="phone-meta">${conv.messages.length} mensajes</div>
+                <div class="phone-number">${escapeHtml(conv.phone)}</div>
+                <div class="phone-meta">${conv.message_count || (conv.messages ? conv.messages.length : 0)} mensajes</div>
               </div>
               <div>
                 <span class="badge ${badgeClass}">${badgeText}</span>
@@ -1215,8 +1221,22 @@
         `;
         
         document.getElementById('modalOverlay').classList.add('active');
+        document.getElementById('modalOverlay').focus();
       } catch (error) {
-        alert('Error cargando conversación');
+        console.error('Error cargando conversación:', error);
+        document.getElementById('modalTitle').innerText = 'Error';
+        document.getElementById('modalBody').innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="empty-state-text">Error cargando conversación</div>
+          </div>
+        `;
+        document.getElementById('modalOverlay').classList.add('active');
+        document.getElementById('modalOverlay').focus();
       }
     }
 
@@ -1247,6 +1267,7 @@
     document.addEventListener('click', function(e) {
       const sidebar = document.getElementById('sidebar');
       const menuToggle = document.querySelector('.menu-toggle');
+      if (!menuToggle) return;
       if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
         sidebar.classList.remove('open');
       }
