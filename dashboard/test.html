@@ -409,9 +409,9 @@
               </div>
             </div>
             <div class="quick-replies" id="quickReplies">
-              <button class="quick-reply" onclick="sendQuickReply('Hola')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                Hola
+              <button class="quick-reply" onclick="sendQuickReply('Menu')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                Menu
               </button>
               <button class="quick-reply" onclick="sendQuickReply('Membresias y precios')">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -686,18 +686,21 @@ Cuota de mantenimiento anual por beneficiario y familiar registrado
 
       location: `*📍 Ubicación*
 
-*🌲 Campamento Onawa*
-Bosque de Villa del Carbón
-Estado de México
+*Campamento Onawa*
+Residencial Campestre y Club Deportivo
+Estado de México, México
 
-*📏 Distancia:*
-A tan solo 2 km del centro del pueblo mágico
+*📍 Coordenadas:*
+19.726313, -99.437399
 
-*🚗 Acceso:*
-Fácil llegada desde la Ciudad de México
+*🕗 Horario:*
+Lunes a domingo, 8:00 am a 6:00 pm
 
-¿Te envío la ubicación exacta por WhatsApp?
-¿O prefieres que un asesor te explique las mejores rutas?`,
+*📱 Contacto:*
+55 3008 6410
+
+*🔙 Volver al menú:*
+Escribe *menú* o *0* para regresar al inicio`,
 
       thanks: `*🙏 ¡Gracias por tu interés!*
 
@@ -734,6 +737,7 @@ Escribe el número o tu pregunta 👇`
 
     function getBotResponse(text) {
       const lower = text.toLowerCase();
+      if (lower.includes('menu') || lower.includes('hola') || lower.includes('inicio') || lower === '0') return { type: 'Menu / Bienvenida', response: BOT_RESPONSES.welcome, keywords: ['menu', 'hola', 'inicio'] };
       if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto') || lower.includes('membresia')) return { type: 'Membresias y Precios', response: BOT_RESPONSES.price, keywords: ['precio', 'costo', 'cuanto', 'membresia'] };
       if (lower.includes('actividad')) return { type: 'Actividades', response: BOT_RESPONSES.activities, keywords: ['actividad'] };
       if (lower.includes('instalacion')) return { type: 'Instalaciones', response: BOT_RESPONSES.facilities, keywords: ['instalacion'] };

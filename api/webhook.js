@@ -4,6 +4,22 @@ import { getOrCreateContact, saveMessage, markEscalated } from '../src/lib/db.js
 function getResponse(text) {
   const lower = text.toLowerCase();
   
+  if (lower.includes('menu') || lower.includes('hola') || lower.includes('inicio') || lower === '0') {
+    return `¡Hola! 👋 Bienvenido a *Campamento Onawa* 🌲
+
+Soy tu asistente virtual y estoy aquí para ayudarte.
+
+*¿Qué te gustaría conocer?*
+
+1️⃣ *Preventa y Beneficios* - Membresías y precios
+2️⃣ *Actividades* - Todo lo que puedes hacer
+3️⃣ *Instalaciones* - Lo que ya tenemos listo
+4️⃣ *Próximos Eventos* - Fechas importantes
+5️⃣ *Hablar con un Asesor* - Atención personalizada
+
+Escribe el número o tu pregunta 👇`;
+  }
+  
   if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto') || lower.includes('membresia')) {
     return `*💰 Membresías Campamento Onawa*
 
@@ -164,18 +180,21 @@ Cuota de mantenimiento anual por beneficiario y familiar registrado
   if (lower.includes('ubicacion') || lower.includes('donde')) {
     return `*📍 Ubicación*
 
-*🌲 Campamento Onawa*
-Bosque de Villa del Carbón
-Estado de México
+*Campamento Onawa*
+Residencial Campestre y Club Deportivo
+Estado de México, México
 
-*📏 Distancia:*
-A tan solo 2 km del centro del pueblo mágico
+*📍 Coordenadas:*
+19.726313, -99.437399
 
-*🚗 Acceso:*
-Fácil llegada desde la Ciudad de México
+*🕗 Horario:*
+Lunes a domingo, 8:00 am a 6:00 pm
 
-¿Te envío la ubicación exacta por WhatsApp?
-¿O prefieres que un asesor te explique las mejores rutas?`;
+*📱 Contacto:*
+55 3008 6410
+
+*🔙 Volver al menú:*
+Escribe *menú* o *0* para regresar al inicio`;
   }
   
   if (lower.includes('gracias') || lower.includes('adios')) {
