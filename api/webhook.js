@@ -2,9 +2,10 @@ import { sendMessage } from '../src/lib/whatsapp.js';
 import { getOrCreateContact, saveMessage, markEscalated } from '../src/lib/db.js';
 
 function getResponse(text) {
-  const lower = text.toLowerCase();
+  const lower = text.toLowerCase().trim();
   
-  if (lower.includes('menu') || lower.includes('hola') || lower.includes('inicio') || lower === '0') {
+  // Menu triggers
+  if (lower === 'menu' || lower === 'hola' || lower === 'inicio' || lower === '0') {
     return `¡Hola! 👋 Bienvenido a *Campamento Onawa* 🌲
 
 Soy tu asistente virtual y estoy aquí para ayudarte.
@@ -20,6 +21,128 @@ Soy tu asistente virtual y estoy aquí para ayudarte.
 Escribe el número o tu pregunta 👇`;
   }
   
+  // Number shortcuts
+  if (lower === '1' || lower === '1️⃣') {
+    return `*💰 Membresías Campamento Onawa*
+
+Nuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.
+
+*📋 Niveles disponibles:*
+
+*Nivel Plata* 💎
+$14,950 | 10 años | 10% descuento
+
+*Nivel Oro* 🥇
+$29,560 | 25 años | 15% descuento
+
+*Nivel Platino* 🏆
+$58,200 | 50 años | 20% descuento
+
+*Nivel Diamante* 💎
+$117,640 | 100 años | 25% descuento
+
+*📌 Incluye:*
+• Cuota de mantenimiento: $600/beneficiario, $300/familiar
+• Membresía transferible, vendible y heredable
+• Certificado de *Miembro Fundador*
+• Primer pago de mantenimiento: *enero 2027*
+
+*✅ El descuento aplica en:*
+Consumo, atracciones, servicios y promociones
+
+¿Te gustaría que un asesor te contacte?`;
+  }
+  
+  if (lower === '2' || lower === '2️⃣') {
+    return `*🏃 Actividades Disponibles*
+
+*🎯 Deportes y Aventura:*
+• Exatlón (campo de obstáculos)
+• Tiro con arco y tiro con hacha
+• Gotcha
+• Cancha de fútbol
+• Senderismo entre pinos y encinos
+
+*🌿 Naturaleza y Exploración:*
+• Área de campamentos en el bosque
+• Lago natural (peces, tortugas, ranas)
+• Granja didáctica
+• Paseo a caballo
+
+*🎮 Juegos y Recreación:*
+• Minigolf
+• Juegos gigantes (ajedrez, dominó, jenga)
+• Aqua Esferas
+• Área infantil
+• Brincolines
+• Área de hamacas
+
+*🍽️ Servicios Actuales:*
+• Restaurante y Salón de Eventos (50% capacidad)
+• Estacionamiento y sanitarios
+
+*🔜 Próximamente:*
+Tirolesas, muro de escalar, pádel, tenis, tren, ciclismo y albercas
+
+¿Te interesa alguna actividad?`;
+  }
+  
+  if (lower === '3' || lower === '3️⃣') {
+    return `*🏡 Instalaciones - Lo que ya tenemos listo*
+
+• Restaurante y Salón de Eventos
+• Área de campamentos en el bosque
+• Lago natural
+• Granja didáctica
+• Cancha de fútbol
+• Minigolf
+• Campo de obstáculos (Exatlón)
+• Estacionamiento
+• Sanitarios
+
+*🔨 Próximas etapas:*
+• Cabañas
+• Albercas
+
+*📍 Ubicación:*
+Bosque de Villa del Carbón, Estado de México
+A 2 km del centro del pueblo mágico
+
+¿Te gustaría agendar una visita?`;
+  }
+  
+  if (lower === '4' || lower === '4️⃣') {
+    return `*📆 Acceso y Horario*
+
+*🕗 Horario:*
+365 días del año
+8:00 am - 6:00 pm
+
+*🎁 Beneficios de Preventa:*
+• Certificado de *Miembro Fundador*
+• Primer pago de mantenimiento: *enero 2027*
+
+*🍽️ Inauguración del Restaurante:*
+30 de mayo de 2026
+
+¿Te gustaría recibir más información?`;
+  }
+  
+  if (lower === '5' || lower === '5️⃣') {
+    return `*🎉 ¡Excelente elección!*
+
+Para finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te conecto con nuestro Coordinador de Atención Personalizada.
+
+*👤 Contacto directo:*
+https://wa.me/525530086410
+
+*📱 O escribe al número:*
+55 3008 6410
+
+Mientras tanto, puedo seguir respondiendo tus preguntas.`;
+  }
+  
+  // Text keywords
   if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto') || lower.includes('membresia')) {
     return `*💰 Membresías Campamento Onawa*
 

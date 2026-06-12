@@ -736,8 +736,16 @@ Escribe el número o tu pregunta 👇`
     const ESCALATION_KEYWORDS = ['inscribir', 'reservar', 'interesa', 'quiero', 'asesor'];
 
     function getBotResponse(text) {
-      const lower = text.toLowerCase();
-      if (lower.includes('menu') || lower.includes('hola') || lower.includes('inicio') || lower === '0') return { type: 'Menu / Bienvenida', response: BOT_RESPONSES.welcome, keywords: ['menu', 'hola', 'inicio'] };
+      const lower = text.toLowerCase().trim();
+      // Menu triggers
+      if (lower === 'menu' || lower === 'hola' || lower === 'inicio' || lower === '0') return { type: 'Menu / Bienvenida', response: BOT_RESPONSES.welcome, keywords: ['menu', 'hola', 'inicio'] };
+      // Number shortcuts
+      if (lower === '1' || lower === '1️⃣') return { type: 'Membresias y Precios', response: BOT_RESPONSES.price, keywords: ['1'] };
+      if (lower === '2' || lower === '2️⃣') return { type: 'Actividades', response: BOT_RESPONSES.activities, keywords: ['2'] };
+      if (lower === '3' || lower === '3️⃣') return { type: 'Instalaciones', response: BOT_RESPONSES.facilities, keywords: ['3'] };
+      if (lower === '4' || lower === '4️⃣') return { type: 'Fechas y Eventos', response: BOT_RESPONSES.dates, keywords: ['4'] };
+      if (lower === '5' || lower === '5️⃣') return { type: 'Asesor / Inscripcion', response: BOT_RESPONSES.advisor, keywords: ['5'] };
+      // Text keywords
       if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto') || lower.includes('membresia')) return { type: 'Membresias y Precios', response: BOT_RESPONSES.price, keywords: ['precio', 'costo', 'cuanto', 'membresia'] };
       if (lower.includes('actividad')) return { type: 'Actividades', response: BOT_RESPONSES.activities, keywords: ['actividad'] };
       if (lower.includes('instalacion')) return { type: 'Instalaciones', response: BOT_RESPONSES.facilities, keywords: ['instalacion'] };
@@ -747,6 +755,8 @@ Escribe el número o tu pregunta 👇`
       if (lower.includes('edad') || lower.includes('requisito')) return { type: 'Requisitos', response: BOT_RESPONSES.requirements, keywords: ['edad', 'requisito'] };
       if (lower.includes('ubicacion') || lower.includes('donde')) return { type: 'Ubicacion', response: BOT_RESPONSES.location, keywords: ['ubicacion', 'donde'] };
       if (lower.includes('gracias') || lower.includes('adios')) return { type: 'Despedida', response: BOT_RESPONSES.thanks, keywords: ['gracias', 'adios'] };
+      // Fallback: if contains only numbers, default to welcome
+      if (/^\d+$/.test(lower)) return { type: 'Menu / Bienvenida', response: BOT_RESPONSES.welcome, keywords: [] };
       return { type: 'Bienvenida', response: BOT_RESPONSES.welcome, keywords: [] };
     }
 
