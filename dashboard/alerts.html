@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Alertas - Campamento Onawa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #1a4d2e;
+      --forest-light: #2d6a4f;
+      --forest-dark: #0f3d2e;
+      --gold: #c8a45c;
+      --gold-light: #e8d5a3;
+      --sage: #7a9e7e;
+      --sage-light: #b8d4ba;
+      --sand: #f5f0e8;
+      --sand-dark: #e8e0d0;
+      --coral: #d4735e;
+      --coral-light: #e8a090;
+      --earth: #8b6f47;
+      --text: #2c3e2c;
+      --text-light: #5a6b5a;
+      --text-muted: #8a9a8a;
+      --white: #ffffff;
+      --shadow: rgba(26, 58, 42, 0.08);
+      --shadow-lg: rgba(26, 58, 42, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      min-width: 280px;
+      background: var(--forest);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      box-shadow: 4px 0 20px var(--shadow-lg);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 2rem 1.5rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: var(--white);
+    }
+
+    .sidebar-logo-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    .sidebar-logo-subtitle {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      font-weight: 500;
+      margin-top: 0.2rem;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+    }
+
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+      padding: 0 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1.5rem;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background: rgba(255,255,255,0.12);
+      color: var(--white);
+      border-left-color: var(--gold);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .nav-item.active svg {
+      opacity: 1;
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--sage-light);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      min-height: 100vh;
+    }
+
+    .top-header {
+      background: var(--white);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--sand-dark);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .header-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 10px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--forest);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--forest-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--sand);
+      color: var(--text);
+      border: 1px solid var(--sand-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--sand-dark);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .btn-text {
+      background: transparent;
+      color: var(--text-light);
+      border: none;
+      padding: 0.4rem 0.6rem;
+    }
+
+    .btn-text:hover {
+      background: var(--sand);
+      color: var(--forest);
+    }
+
+    .content {
+      padding: 2rem;
+      max-width: 1400px;
+    }
+
+    .header-badge {
+      background: var(--coral);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 50px;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 0.6rem 1.25rem;
+      border-radius: 10px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid var(--sand-dark);
+      background: var(--white);
+      color: var(--text-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-tab:hover {
+      border-color: var(--sage);
+      color: var(--forest);
+    }
+
+    .filter-tab.active {
+      background: var(--forest);
+      color: var(--white);
+      border-color: var(--forest);
+    }
+
+    .filter-tab .tab-count {
+      background: var(--sand-dark);
+      color: var(--text-light);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 50px;
+    }
+
+    .filter-tab.active .tab-count {
+      background: rgba(255,255,255,0.25);
+      color: var(--white);
+    }
+
+    /* Alert cards */
+    .alert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .alert-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px var(--shadow);
+      border: 1px solid var(--sand-dark);
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .alert-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 25px var(--shadow-lg);
+      border-color: var(--sage-light);
+    }
+
+    .alert-card.unread {
+      border-left: 4px solid var(--sage);
+    }
+
+    .alert-card.read {
+      border-left: 4px solid transparent;
+      opacity: 0.85;
+    }
+
+    .alert-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .alert-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .alert-icon.new_conversation {
+      background: rgba(122, 158, 126, 0.15);
+      color: var(--sage);
+    }
+
+    .alert-icon.escalated {
+      background: rgba(212, 115, 94, 0.15);
+      color: var(--coral);
+    }
+
+    .alert-icon.interested {
+      background: rgba(200, 164, 92, 0.15);
+      color: var(--gold);
+    }
+
+    .alert-icon.engaged {
+      background: rgba(26, 77, 46, 0.15);
+      color: var(--forest);
+    }
+
+    .alert-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .alert-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--forest);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .alert-description {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .alert-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .alert-meta a {
+      color: var(--forest-light);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s ease;
+    }
+
+    .alert-meta a:hover {
+      color: var(--forest);
+      text-decoration: underline;
+    }
+
+    .alert-meta a svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .alert-meta .timestamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .alert-meta .timestamp svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .alert-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+      min-width: 150px;
+    }
+
+    .unread-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--sage);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.25);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.25); }
+      50% { box-shadow: 0 0 0 6px rgba(122, 158, 126, 0.1); }
+    }
+
+    .severity-badge {
+      display: inline-block;
+      padding: 0.3rem 0.85rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .severity-badge.info {
+      background: rgba(122, 158, 126, 0.12);
+      color: var(--sage);
+    }
+
+    .severity-badge.high {
+      background: rgba(212, 115, 94, 0.12);
+      color: var(--coral);
+    }
+
+    .severity-badge.medium {
+      background: rgba(200, 164, 92, 0.12);
+      color: var(--gold);
+    }
+
+    .severity-badge.low {
+      background: rgba(26, 77, 46, 0.12);
+      color: var(--forest);
+    }
+
+    .alert-actions-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 2px 10px var(--shadow);
+      border: 1px solid var(--sand-dark);
+    }
+
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.5rem;
+      opacity: 0.35;
+      color: var(--sage);
+    }
+
+    .empty-state-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* Skeleton loader */
+    .skeleton-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      border: 1px solid var(--sand-dark);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .skeleton-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 100%
+      );
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .skeleton-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--sand-dark);
+      flex-shrink: 0;
+    }
+
+    .skeleton-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .skeleton-title {
+      height: 18px;
+      width: 60%;
+      background: var(--sand-dark);
+      border-radius: 6px;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      width: 80%;
+      background: var(--sand-dark);
+      border-radius: 6px;
+    }
+
+    .skeleton-line.short {
+      width: 40%;
+    }
+
+    .skeleton-actions {
+      width: 120px;
+      height: 14px;
+      background: var(--sand-dark);
+      border-radius: 6px;
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--sand-dark);
+      border-top-color: var(--forest);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--forest);
+      color: var(--white);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(26, 58, 42, 0.3);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Mobile */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--forest);
+    }
+
+    .menu-toggle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 1rem;
+      }
+      .top-header {
+        padding: 1rem;
+      }
+      .header-title {
+        font-size: 1.25rem;
+      }
+      .header-actions {
+        gap: 0.5rem;
+      }
+      .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+      .filter-tabs {
+        gap: 0.4rem;
+      }
+      .filter-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+      .alert-card {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .alert-actions {
+        align-items: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .alert-actions-row {
+        justify-content: flex-start;
+      }
+      .empty-state {
+        padding: 3rem 1rem;
+      }
+      .toast {
+        right: 1rem;
+        left: 1rem;
+        bottom: 1rem;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .main-content ::-webkit-scrollbar-thumb {
+      background: #ccc;
+    }
+    .main-content ::-webkit-scrollbar-thumb:hover {
+      background: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <div>
+            <div class="sidebar-logo-text">Onawa</div>
+            <div class="sidebar-logo-subtitle">Panel de Control</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Dashboard
+          </a>
+          <a href="chats.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+            Conversaciones
+            <span class="badge" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(45, 106, 79, 0.12); color: var(--forest-light);">Nuevo</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Monitoreo</div>
+          <a href="stats.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20v-6M6 20V10M18 20V4"/>
+            </svg>
+            Estadísticas
+          </a>
+          <a href="alerts.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Alertas
+            <span class="badge" id="sidebarAlertBadge" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(212, 115, 94, 0.12); color: var(--coral); display: none;">0</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuración</div>
+          <a href="settings.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Ajustes
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          <span>Bot en vivo</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="menu-toggle" onclick="toggleSidebar()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <h1 class="header-title">
+            Centro de Alertas
+            <span class="header-badge" id="headerBadge" style="display: none;">0</span>
+          </h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="markAllAsRead()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6L7 17l-5-5"/>
+              <path d="M22 10l-7 7-4-4"/>
+            </svg>
+            Marcar todas como leídas
+          </button>
+          <button class="btn btn-primary" onclick="refreshAlerts()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            Actualizar
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">
+            Todas
+            <span class="tab-count" id="countAll">0</span>
+          </button>
+          <button class="filter-tab" data-filter="unread" onclick="setFilter('unread')">
+            No leídas
+            <span class="tab-count" id="countUnread">0</span>
+          </button>
+          <button class="filter-tab" data-filter="escalated" onclick="setFilter('escalated')">
+            Escalados
+          </button>
+          <button class="filter-tab" data-filter="interested" onclick="setFilter('interested')">
+            Interesados
+          </button>
+          <button class="filter-tab" data-filter="new_conversation" onclick="setFilter('new_conversation')">
+            Nuevas conversaciones
+          </button>
+          <button class="filter-tab" data-filter="engaged" onclick="setFilter('engaged')">
+            Alta interacción
+          </button>
+        </div>
+
+        <!-- Alert List -->
+        <div id="alertContainer">
+          <!-- Skeleton loaders -->
+          <div class="alert-list" id="skeletonList">
+            <div class="skeleton-card">
+              <div class="skeleton-icon"></div>
+              <div class="skeleton-body">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+              </div>
+              <div class="skeleton-actions"></div>
+            </div>
+            <div class="skeleton-card">
+              <div class="skeleton-icon"></div>
+              <div class="skeleton-body">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+              </div>
+              <div class="skeleton-actions"></div>
+            </div>
+            <div class="skeleton-card">
+              <div class="skeleton-icon"></div>
+              <div class="skeleton-body">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+              </div>
+              <div class="skeleton-actions"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span id="toastMessage">Alerta marcada como leída</span>
+  </div>
+
+  <script>
+    const API_URL = '/api/dashboard';
+    let currentFilter = 'all';
+    let allAlerts = [];
+    let autoRefreshInterval = null;
+
+    // Icons
+    const icons = {
+      new_conversation: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+      escalated: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+      interested: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      engaged: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+      bell: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+      check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
+      clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+      arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`
+    };
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function relativeTime(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffSec = Math.floor(diffMs / 1000);
+      const diffMin = Math.floor(diffSec / 60);
+      const diffHour = Math.floor(diffMin / 60);
+      const diffDay = Math.floor(diffHour / 24);
+
+      if (diffSec < 60) return 'hace un momento';
+      if (diffMin < 60) return `hace ${diffMin} min`;
+      if (diffHour < 24) return `hace ${diffHour} hora${diffHour > 1 ? 's' : ''}`;
+      if (diffDay < 30) return `hace ${diffDay} día${diffDay > 1 ? 's' : ''}`;
+      return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+    }
+
+    function updateCounts() {
+      const total = allAlerts.length;
+      const unread = allAlerts.filter(a => !a.read).length;
+      const escalated = allAlerts.filter(a => a.type === 'escalated').length;
+      const interested = allAlerts.filter(a => a.type === 'interested').length;
+      const newConv = allAlerts.filter(a => a.type === 'new_conversation').length;
+      const engaged = allAlerts.filter(a => a.type === 'engaged').length;
+
+      document.getElementById('countAll').textContent = total;
+      document.getElementById('countUnread').textContent = unread;
+
+      const headerBadge = document.getElementById('headerBadge');
+      const sidebarBadge = document.getElementById('sidebarAlertBadge');
+
+      if (unread > 0) {
+        headerBadge.style.display = 'inline-block';
+        headerBadge.textContent = unread;
+        sidebarBadge.style.display = 'inline-block';
+        sidebarBadge.textContent = unread;
+      } else {
+        headerBadge.style.display = 'none';
+        sidebarBadge.style.display = 'none';
+      }
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.filter === filter);
+      });
+      renderAlerts();
+    }
+
+    function getFilteredAlerts() {
+      if (currentFilter === 'all') return allAlerts;
+      if (currentFilter === 'unread') return allAlerts.filter(a => !a.read);
+      return allAlerts.filter(a => a.type === currentFilter);
+    }
+
+    function renderAlerts() {
+      const container = document.getElementById('alertContainer');
+      const filtered = getFilteredAlerts();
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div style="position: relative; display: inline-block;">
+              ${icons.bell}
+              <div style="position: absolute; bottom: 0; right: 0; background: var(--white); border-radius: 50%; padding: 4px; border: 2px solid var(--sand);">
+                ${icons.check}
+              </div>
+            </div>
+            <div class="empty-state-text">No hay alertas nuevas</div>
+            <div class="empty-state-sub">Las alertas aparecerán cuando haya actividad en las conversaciones</div>
+          </div>
+        `;
+        return;
+      }
+
+      const html = filtered.map(alert => {
+        const iconClass = alert.type;
+        const severity = alert.severity || 'info';
+        const readClass = alert.read ? 'read' : 'unread';
+        const unreadDot = !alert.read ? `<div class="unread-dot"></div>` : '';
+        const phoneLink = alert.phone ? `<a href="chats.html?phone=${encodeURIComponent(alert.phone)}">${icons.phone} ${alert.phone}</a>` : '';
+        const time = relativeTime(alert.timestamp);
+
+        return `
+          <div class="alert-card ${readClass}" data-id="${alert.id}">
+            <div class="alert-icon ${iconClass}">
+              ${icons[alert.type] || icons.new_conversation}
+            </div>
+            <div class="alert-body">
+              <div class="alert-title">
+                ${alert.title}
+                ${unreadDot}
+              </div>
+              <div class="alert-description">${alert.description}</div>
+              <div class="alert-meta">
+                ${phoneLink}
+                <span class="timestamp">${icons.clock} ${time}</span>
+              </div>
+            </div>
+            <div class="alert-actions">
+              <span class="severity-badge ${severity}">${severity}</span>
+              <div class="alert-actions-row">
+                <a href="chats.html?phone=${encodeURIComponent(alert.phone || '')}" class="btn btn-primary btn-sm">
+                  ${icons.arrow} Ver conversación
+                </a>
+                ${!alert.read ? `<button class="btn btn-text btn-sm" onclick="markAsRead('${alert.id}')">Marcar como leída</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `<div class="alert-list">${html}</div>`;
+    }
+
+    async function loadAlerts() {
+      const container = document.getElementById('alertContainer');
+      container.innerHTML = `
+        <div class="alert-list" id="skeletonList">
+          <div class="skeleton-card">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-title"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="skeleton-actions"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-title"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="skeleton-actions"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-title"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <div class="skeleton-actions"></div>
+          </div>
+        </div>
+      `;
+
+      try {
+        const response = await fetch(`${API_URL}/alerts`);
+        const data = await response.json();
+        allAlerts = data.alerts || [];
+        updateCounts();
+        renderAlerts();
+      } catch (error) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="empty-state-text">Error cargando alertas</div>
+            <div class="empty-state-sub">No se pudieron obtener las alertas. Intenta de nuevo.</div>
+          </div>
+        `;
+      }
+    }
+
+    async function markAsRead(alertId) {
+      try {
+        const response = await fetch(`${API_URL}/alerts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ alertId })
+        });
+
+        if (response.ok) {
+          const alert = allAlerts.find(a => a.id === alertId);
+          if (alert) {
+            alert.read = true;
+          }
+          updateCounts();
+          renderAlerts();
+          showToast('Alerta marcada como leída');
+        }
+      } catch (error) {
+        showToast('Error al marcar como leída');
+      }
+    }
+
+    async function markAllAsRead() {
+      const unreadAlerts = allAlerts.filter(a => !a.read);
+      if (unreadAlerts.length === 0) {
+        showToast('No hay alertas sin leer');
+        return;
+      }
+
+      try {
+        const promises = unreadAlerts.map(a =>
+          fetch(`${API_URL}/alerts`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ alertId: a.id })
+          })
+        );
+
+        await Promise.all(promises);
+        allAlerts.forEach(a => a.read = true);
+        updateCounts();
+        renderAlerts();
+        showToast(`${unreadAlerts.length} alertas marcadas como leídas`);
+      } catch (error) {
+        showToast('Error al marcar alertas');
+      }
+    }
+
+    function refreshAlerts() {
+      loadAlerts();
+      showToast('Alertas actualizadas');
+    }
+
+    // Auto-refresh
+    function startAutoRefresh() {
+      if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+      autoRefreshInterval = setInterval(loadAlerts, 15000);
+    }
+
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', function(e) {
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.querySelector('.menu-toggle');
+      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // Close sidebar on escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('sidebar').classList.remove('open');
+      }
+    });
+
+    // Initial load
+    loadAlerts();
+    startAutoRefresh();
+  </script>
+</body>
+</html>

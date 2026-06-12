@@ -32,6 +32,18 @@
       "dest": "/api/dashboard/conversation.js"
     },
     {
+      "src": "/api/dashboard/alerts",
+      "dest": "/api/dashboard/alerts.js"
+    },
+    {
+      "src": "/api/dashboard/settings",
+      "dest": "/api/dashboard/settings.js"
+    },
+    {
+      "src": "/api/dashboard/history",
+      "dest": "/api/dashboard/history.js"
+    },
+    {
       "src": "/api/webhook",
       "dest": "/api/webhook.js"
     },

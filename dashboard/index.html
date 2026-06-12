@@ -707,6 +707,50 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Skeleton Loaders */
+    .skeleton {
+      background: linear-gradient(90deg, var(--sand-dark) 25%, var(--sand) 50%, var(--sand-dark) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-card {
+      height: 120px;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .skeleton-row {
+      height: 60px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-text {
+      height: 16px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-title {
+      height: 24px;
+      border-radius: 4px;
+      width: 60%;
+      margin-bottom: 16px;
+    }
+
+    .skeleton-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
     /* Mobile Menu Toggle */
     .menu-toggle {
       display: none;
@@ -845,23 +889,24 @@
         
         <div class="nav-section">
           <div class="nav-section-title">Monitoreo</div>
-          <a href="#" class="nav-item" onclick="alert('En desarrollo')">
+          <a href="stats.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 20v-6M6 20V10M18 20V4"/>
             </svg>
             Estadísticas
           </a>
-          <a href="#" class="nav-item" onclick="alert('En desarrollo')">
+          <a href="alerts.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
             </svg>
             Alertas
+            <span class="badge badge-interested" id="alertBadge" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem; display: none;">0</span>
           </a>
         </div>
         
         <div class="nav-section">
           <div class="nav-section-title">Configuración</div>
-          <a href="#" class="nav-item" onclick="alert('En desarrollo')">
+          <a href="settings.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -906,10 +951,10 @@
       <main class="content">
         <!-- Stats -->
         <div class="stats-grid" id="stats">
-          <div class="loading">
-            <div class="spinner"></div>
-            <span>Cargando estadísticas...</span>
-          </div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
         </div>
 
         <!-- Conversations Section -->
@@ -953,10 +998,11 @@
               <div>Fecha</div>
             </div>
             <div id="conversations">
-              <div class="loading">
-                <div class="spinner"></div>
-                <span>Cargando conversaciones...</span>
-              </div>
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
             </div>
           </div>
         </div>

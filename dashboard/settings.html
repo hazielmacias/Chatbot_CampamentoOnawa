@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración - Campamento Onawa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #1a4d2e;
+      --forest-light: #2d6a4f;
+      --forest-dark: #0f3d2e;
+      --gold: #c8a45c;
+      --gold-light: #e8d5a3;
+      --sage: #7a9e7e;
+      --sage-light: #b8d4ba;
+      --sand: #f5f0e8;
+      --sand-dark: #e8e0d0;
+      --coral: #d4735e;
+      --coral-light: #e8a090;
+      --earth: #8b6f47;
+      --text: #2c3e2c;
+      --text-light: #5a6b5a;
+      --text-muted: #8a9a8a;
+      --white: #ffffff;
+      --shadow: rgba(26, 58, 42, 0.08);
+      --shadow-lg: rgba(26, 58, 42, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      min-width: 280px;
+      background: var(--forest);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      box-shadow: 4px 0 20px var(--shadow-lg);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 2rem 1.5rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: var(--white);
+    }
+
+    .sidebar-logo-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    .sidebar-logo-subtitle {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      font-weight: 500;
+      margin-top: 0.2rem;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+    }
+
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+      padding: 0 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1.5rem;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+    }
+
+    .nav-item.active {
+      background: rgba(255,255,255,0.12);
+      color: var(--white);
+      border-left-color: var(--gold);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .nav-item.active svg {
+      opacity: 1;
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--sage-light);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .top-header {
+      background: var(--white);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--sand-dark);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .header-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .header-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .header-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 10px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--forest);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--forest-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--sand);
+      color: var(--text);
+      border: 1px solid var(--sand-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--sand-dark);
+    }
+
+    .btn-sm {
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      border-radius: 8px;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-danger {
+      background: rgba(212, 115, 94, 0.12);
+      color: var(--coral);
+      border: 1px solid rgba(212, 115, 94, 0.2);
+    }
+
+    .btn-danger:hover {
+      background: rgba(212, 115, 94, 0.2);
+    }
+
+    .btn-danger svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Content Area */
+    .content {
+      padding: 2rem;
+      max-width: 900px;
+      flex: 1;
+    }
+
+    /* Skeleton Loaders */
+    .skeleton {
+      background: linear-gradient(90deg, var(--sand-dark) 25%, var(--sand) 50%, var(--sand-dark) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+      border-radius: 8px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-text {
+      height: 16px;
+      margin-bottom: 0.75rem;
+    }
+
+    .skeleton-text.short {
+      width: 60%;
+    }
+
+    .skeleton-text.medium {
+      width: 80%;
+    }
+
+    .skeleton-title {
+      height: 24px;
+      width: 40%;
+      margin-bottom: 1rem;
+    }
+
+    .skeleton-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 10px var(--shadow);
+      border: 1px solid var(--sand-dark);
+    }
+
+    .skeleton-accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+    }
+
+    .skeleton-accordion-header .skeleton-text {
+      width: 200px;
+      margin-bottom: 0;
+    }
+
+    .skeleton-accordion-header .skeleton {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .skeleton-body {
+      padding: 1.5rem;
+      border-top: 1px solid var(--sand-dark);
+    }
+
+    /* Accordion */
+    .accordion {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px var(--shadow);
+      border: 1px solid var(--sand-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background: var(--sand);
+    }
+
+    .accordion-header-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .accordion-header-content svg {
+      width: 24px;
+      height: 24px;
+      color: var(--gold);
+    }
+
+    .accordion-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .accordion-chevron {
+      width: 24px;
+      height: 24px;
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+    }
+
+    .accordion.open .accordion-chevron {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 1.5rem;
+    }
+
+    .accordion.open .accordion-body {
+      max-height: 2000px;
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    .accordion-body-inner {
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--sand-dark);
+    }
+
+    .accordion.open .accordion-body-inner {
+      border-top: 1px solid var(--sand-dark);
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label .required {
+      color: var(--coral);
+      margin-left: 0.25rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--sand-dark);
+      border-radius: 10px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+      background: var(--sand);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: var(--white);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-input[readonly] {
+      background: var(--sand);
+      cursor: not-allowed;
+    }
+
+    .char-counter {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 0.35rem;
+    }
+
+    .char-counter.warning {
+      color: var(--coral);
+    }
+
+    .form-helper {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      font-style: italic;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .input-group .form-input {
+      flex: 1;
+    }
+
+    /* Auto Response List */
+    .auto-response-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .auto-response-item {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      padding: 1rem;
+      background: var(--sand);
+      border-radius: 12px;
+      border: 1px solid var(--sand-dark);
+      transition: all 0.2s ease;
+    }
+
+    .auto-response-item:hover {
+      border-color: var(--sage);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .auto-response-item .form-input {
+      background: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .auto-response-item .form-input:last-child {
+      margin-bottom: 0;
+    }
+
+    .auto-response-fields {
+      flex: 1;
+    }
+
+    .auto-response-actions {
+      display: flex;
+      align-items: center;
+      padding-top: 0.25rem;
+    }
+
+    .auto-response-add {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      border: 2px dashed var(--sand-dark);
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--forest);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      background: transparent;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .auto-response-add:hover {
+      border-color: var(--sage);
+      background: rgba(122, 158, 126, 0.08);
+    }
+
+    .auto-response-add svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Tags */
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.75rem;
+      background: rgba(122, 158, 126, 0.15);
+      color: var(--forest);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      background: rgba(122, 158, 126, 0.25);
+    }
+
+    .tag-remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.15rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--forest);
+      opacity: 0.6;
+      transition: all 0.2s ease;
+      border-radius: 50%;
+    }
+
+    .tag-remove:hover {
+      opacity: 1;
+      background: rgba(212, 115, 94, 0.15);
+      color: var(--coral);
+    }
+
+    .tag-remove svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .tag-input-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .tag-input-group .form-input {
+      flex: 1;
+    }
+
+    /* Toggle Switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--sand-dark);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .toggle-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .toggle-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--sand-dark);
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: var(--white);
+      transition: 0.3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: var(--sage);
+    }
+
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Range Slider */
+    .range-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .range-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--sand-dark);
+      outline: none;
+      transition: background 0.2s;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--forest);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(26, 77, 46, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: var(--forest-light);
+    }
+
+    .range-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--forest);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(26, 77, 46, 0.3);
+    }
+
+    .range-value {
+      min-width: 32px;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--forest);
+      background: var(--sand);
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      border: 2px solid var(--sand-dark);
+    }
+
+    /* System Info */
+    .system-info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--sand-dark);
+    }
+
+    .system-info-row:last-child {
+      border-bottom: none;
+    }
+
+    .system-info-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .system-info-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-status.active {
+      background: rgba(122, 158, 126, 0.15);
+      color: var(--forest-light);
+    }
+
+    .badge-status.inactive {
+      background: var(--sand-dark);
+      color: var(--text-muted);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .badge-status.active .status-dot {
+      background: var(--sage);
+    }
+
+    .badge-status.inactive .status-dot {
+      background: var(--text-muted);
+    }
+
+    .system-link {
+      color: var(--forest);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s ease;
+    }
+
+    .system-link:hover {
+      color: var(--forest-light);
+      text-decoration: underline;
+    }
+
+    .system-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Sticky Footer */
+    .sticky-footer {
+      position: sticky;
+      bottom: 0;
+      background: var(--white);
+      border-top: 1px solid var(--sand-dark);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      z-index: 40;
+      box-shadow: 0 -4px 20px var(--shadow);
+    }
+
+    .footer-info {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-info.unsaved {
+      color: var(--coral);
+      font-weight: 600;
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 5rem;
+      right: 2rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--forest);
+      color: var(--white);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(26, 58, 42, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      animation: toastIn 0.3s ease;
+      pointer-events: auto;
+      min-width: 280px;
+    }
+
+    .toast.toast-out {
+      animation: toastOut 0.3s ease forwards;
+    }
+
+    .toast svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .toast-success {
+      background: var(--forest);
+    }
+
+    .toast-error {
+      background: var(--coral);
+    }
+
+    @keyframes toastIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes toastOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100px); opacity: 0; }
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--forest);
+    }
+
+    .menu-toggle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 1rem;
+      }
+      
+      .top-header {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      
+      .header-title {
+        font-size: 1.25rem;
+      }
+      
+      .header-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      .sticky-footer {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .footer-actions {
+        justify-content: flex-end;
+      }
+      
+      .auto-response-item {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      
+      .auto-response-actions {
+        align-self: flex-end;
+        padding-top: 0;
+      }
+      
+      .toast-container {
+        right: 1rem;
+        left: 1rem;
+        bottom: 6rem;
+      }
+      
+      .toast {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .main-content ::-webkit-scrollbar-thumb {
+      background: #ccc;
+    }
+
+    .main-content ::-webkit-scrollbar-thumb:hover {
+      background: #aaa;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(245, 240, 232, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .loading-overlay .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--sand-dark);
+      border-top-color: var(--forest);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-overlay p {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .loading-overlay-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="../assets/logo.png" alt="Campamento Onawa">
+          <div>
+            <div class="sidebar-logo-text">Onawa</div>
+            <div class="sidebar-logo-subtitle">Panel de Control</div>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Dashboard
+          </a>
+          <a href="chats.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+            Conversaciones
+            <span class="badge badge-interested" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem;">Nuevo</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Monitoreo</div>
+          <a href="stats.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20v-6M6 20V10M18 20V4"/>
+            </svg>
+            Estadísticas
+          </a>
+          <a href="alerts.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Alertas
+            <span class="badge badge-interested" id="alertBadge" style="margin-left: auto; font-size: 0.65rem; padding: 0.2rem 0.5rem; display: none;">0</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Configuración</div>
+          <a href="settings.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Ajustes
+          </a>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          <span>Bot en vivo</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="menu-toggle" onclick="toggleSidebar()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <div class="header-title-group">
+            <h1 class="header-title">Configuración del Bot</h1>
+            <p class="header-subtitle">Personaliza el comportamiento del chatbot de Campamento Onawa</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" onclick="resetSettings()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+            Restaurar
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="saveSettings()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Guardar
+          </button>
+        </div>
+      </header>
+
+      <main class="content" id="content">
+        <!-- Skeleton loaders while loading -->
+        <div id="skeleton-container">
+          <div class="skeleton-card">
+            <div class="skeleton-accordion-header">
+              <div class="skeleton skeleton-text" style="width: 200px; margin-bottom: 0;"></div>
+              <div class="skeleton" style="width: 24px; height: 24px; border-radius: 50%;"></div>
+            </div>
+            <div class="skeleton-body">
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-text short"></div>
+              <div class="skeleton skeleton-text medium"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-accordion-header">
+              <div class="skeleton skeleton-text" style="width: 220px; margin-bottom: 0;"></div>
+              <div class="skeleton" style="width: 24px; height: 24px; border-radius: 50%;"></div>
+            </div>
+            <div class="skeleton-body">
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-text short"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-accordion-header">
+              <div class="skeleton skeleton-text" style="width: 180px; margin-bottom: 0;"></div>
+              <div class="skeleton" style="width: 24px; height: 24px; border-radius: 50%;"></div>
+            </div>
+            <div class="skeleton-body">
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-text short"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-accordion-header">
+              <div class="skeleton skeleton-text" style="width: 210px; margin-bottom: 0;"></div>
+              <div class="skeleton" style="width: 24px; height: 24px; border-radius: 50%;"></div>
+            </div>
+            <div class="skeleton-body">
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-text short"></div>
+              <div class="skeleton skeleton-text medium"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actual content (hidden initially) -->
+        <div id="settings-container" style="display: none;">
+          <!-- Section A: Bot Configuration -->
+          <div class="accordion open" id="accordion-bot">
+            <div class="accordion-header" onclick="toggleAccordion('accordion-bot')">
+              <div class="accordion-header-content">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span class="accordion-title">Configuración del Bot</span>
+              </div>
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <div class="form-group">
+                  <label class="form-label" for="welcomeMessage">Mensaje de bienvenida</label>
+                  <textarea class="form-textarea" id="welcomeMessage" rows="3" maxlength="500" oninput="updateCharCounter(this)"></textarea>
+                  <div class="char-counter" id="welcomeCounter">0 / 500</div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Respuestas automáticas</label>
+                  <div class="auto-response-list" id="autoResponseList">
+                    <!-- Dynamically populated -->
+                  </div>
+                  <button class="auto-response-add" onclick="addAutoResponse()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Agregar respuesta
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Palabras clave de interés</label>
+                  <div class="tags-container" id="tagsContainer">
+                    <!-- Dynamically populated -->
+                  </div>
+                  <div class="tag-input-group">
+                    <input type="text" class="form-input" id="tagInput" placeholder="Escribe una palabra clave..." onkeydown="handleTagKeydown(event)">
+                    <button class="btn btn-primary btn-sm" onclick="addTag()">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                      Agregar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section B: Escalation Settings -->
+          <div class="accordion" id="accordion-escalation">
+            <div class="accordion-header" onclick="toggleAccordion('accordion-escalation')">
+              <div class="accordion-header-content">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="accordion-title">Configuración de Escalamiento</span>
+              </div>
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <div class="form-group">
+                  <label class="form-label" for="advisorNumber">Número del asesor</label>
+                  <input type="tel" class="form-input" id="advisorNumber" placeholder="+5215530086410">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="escalationMessage">Mensaje de escalamiento</label>
+                  <textarea class="form-textarea" id="escalationMessage" rows="2" maxlength="300"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="escalationThreshold">Umbral de mensajes para escalar</label>
+                  <div class="range-container">
+                    <input type="range" class="range-slider" id="escalationThreshold" min="3" max="10" value="5" oninput="updateRangeValue(this)">
+                    <span class="range-value" id="escalationValue">5</span>
+                  </div>
+                  <p class="form-helper">Cuando un usuario envíe más de <span id="thresholdDisplay">5</span> mensajes sin ser escalado, el bot derivará automáticamente al asesor</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section C: Notifications -->
+          <div class="accordion" id="accordion-notifications">
+            <div class="accordion-header" onclick="toggleAccordion('accordion-notifications')">
+              <div class="accordion-header-content">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="accordion-title">Notificaciones</span>
+              </div>
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <div class="toggle-row">
+                  <div class="toggle-label">
+                    <span class="toggle-title">Notificar nuevas conversaciones</span>
+                    <span class="toggle-desc">Recibe alertas cuando un nuevo usuario inicia una conversación</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifyNewConversations" onchange="markAsModified()">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-label">
+                    <span class="toggle-title">Notificar escalados</span>
+                    <span class="toggle-desc">Recibe alertas cuando una conversación es escalada al asesor</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifyEscalated" onchange="markAsModified()">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-label">
+                    <span class="toggle-title">Notificar interesados</span>
+                    <span class="toggle-desc">Recibe alertas cuando un usuario muestra interés en reservar</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifyInterested" onchange="markAsModified()">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-label">
+                    <span class="toggle-title">Sonido de notificaciones</span>
+                    <span class="toggle-desc">Reproduce un sonido al recibir una nueva alerta</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notifySound" onchange="markAsModified()">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section D: System Info -->
+          <div class="accordion" id="accordion-system">
+            <div class="accordion-header" onclick="toggleAccordion('accordion-system')">
+              <div class="accordion-header-content">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                <span class="accordion-title">Información del Sistema</span>
+              </div>
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <div class="system-info-row">
+                  <span class="system-info-label">Webhook URL</span>
+                  <div class="system-info-value">
+                    <div class="input-group">
+                      <input type="text" class="form-input" id="webhookUrl" value="https://chatbot-campamento-onawa.vercel.app/api/webhook" readonly>
+                      <button class="btn btn-secondary btn-sm" onclick="copyToClipboard()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Copiar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="system-info-row">
+                  <span class="system-info-label">Estado del bot</span>
+                  <div class="system-info-value">
+                    <span class="badge-status active" id="botStatus">
+                      <span class="status-dot"></span>
+                      Activo
+                    </span>
+                  </div>
+                </div>
+                <div class="system-info-row">
+                  <span class="system-info-label">Última sincronización</span>
+                  <span class="system-info-value" id="lastSync">--</span>
+                </div>
+                <div class="system-info-row">
+                  <span class="system-info-label">Versión</span>
+                  <span class="system-info-value">1.0.0</span>
+                </div>
+                <div class="system-info-row">
+                  <span class="system-info-label">Logs</span>
+                  <a href="#" class="system-link" onclick="showToast('Ver logs del sistema - En desarrollo', 'info'); return false;">
+                    Ver logs del sistema
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Sticky Footer -->
+      <div class="sticky-footer" id="stickyFooter">
+        <span class="footer-info" id="footerInfo">Los cambios se guardan automáticamente en el servidor</span>
+        <div class="footer-actions">
+          <button class="btn btn-secondary" onclick="resetSettings()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+            Restaurar valores
+          </button>
+          <button class="btn btn-primary" onclick="saveSettings()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Guardar cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay-content">
+      <div class="spinner"></div>
+      <p>Guardando configuración...</p>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/api/dashboard';
+    const STORAGE_KEY = 'campamento_onawa_settings';
+    
+    let settings = {};
+    let defaults = {};
+    let isModified = false;
+    let autoResponseCounter = 0;
+
+    // Default settings
+    const DEFAULT_SETTINGS = {
+      welcomeMessage: '¡Hola! Bienvenido a Campamento Onawa. Soy tu asistente virtual y estoy aquí para ayudarte con información sobre reservas, actividades, instalaciones y más. ¿En qué puedo ayudarte hoy?',
+      autoResponses: [
+        { keyword: 'precio', response: 'Tenemos diferentes tarifas según la temporada y tipo de alojamiento. ¿Te gustaría que te envíe nuestro menú de precios?' },
+        { keyword: 'reservar', response: '¡Con gusto te ayudo con tu reserva! Para brindarte la mejor opción, ¿qué fechas tienes en mente y cuántas personas serían?' },
+        { keyword: 'ubicación', response: 'Campamento Onawa se encuentra en una zona privilegiada de la naturaleza. Te puedo compartir nuestra ubicación exacta y cómo llegar. ¿Te gustaría recibir la dirección?' }
+      ],
+      interestKeywords: ['precio', 'reservar', 'disponible', 'cabaña', 'camping', 'promoción'],
+      advisorNumber: '+5215530086410',
+      escalationMessage: 'Voy a transferirte con uno de nuestros asesores para que te brinde una atención más personalizada. Por favor, espera un momento.',
+      escalationThreshold: 5,
+      notifyNewConversations: true,
+      notifyEscalated: true,
+      notifyInterested: true,
+      notifySound: false,
+      botStatus: 'active',
+      lastSync: null,
+      version: '1.0.0'
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadSettings();
+    });
+
+    // Toggle sidebar
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // Toggle accordion
+    function toggleAccordion(id) {
+      const accordion = document.getElementById(id);
+      accordion.classList.toggle('open');
+    }
+
+    // Load settings
+    async function loadSettings() {
+      try {
+        // Try API first
+        const response = await fetch(`${API_URL}/settings`);
+        if (response.ok) {
+          const data = await response.json();
+          settings = { ...DEFAULT_SETTINGS, ...data.settings };
+          defaults = data.defaults || DEFAULT_SETTINGS;
+        } else {
+          throw new Error('API error');
+        }
+      } catch (error) {
+        // Fallback to localStorage
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          try {
+            settings = { ...DEFAULT_SETTINGS, ...JSON.parse(stored) };
+          } catch (e) {
+            settings = DEFAULT_SETTINGS;
+          }
+        } else {
+          settings = DEFAULT_SETTINGS;
+        }
+        defaults = DEFAULT_SETTINGS;
+      }
+
+      // Update last sync
+      settings.lastSync = new Date().toISOString();
+      
+      // Render
+      renderSettings();
+      
+      // Hide skeleton, show content
+      document.getElementById('skeleton-container').style.display = 'none';
+      document.getElementById('settings-container').style.display = 'block';
+    }
+
+    // Render all settings
+    function renderSettings() {
+      // Welcome message
+      const welcomeInput = document.getElementById('welcomeMessage');
+      welcomeInput.value = settings.welcomeMessage || '';
+      updateCharCounter(welcomeInput);
+
+      // Auto responses
+      renderAutoResponses();
+
+      // Interest keywords
+      renderTags();
+
+      // Advisor number
+      document.getElementById('advisorNumber').value = settings.advisorNumber || '';
+
+      // Escalation message
+      document.getElementById('escalationMessage').value = settings.escalationMessage || '';
+
+      // Escalation threshold
+      const threshold = settings.escalationThreshold || 5;
+      document.getElementById('escalationThreshold').value = threshold;
+      document.getElementById('escalationValue').textContent = threshold;
+      document.getElementById('thresholdDisplay').textContent = threshold;
+
+      // Notifications
+      document.getElementById('notifyNewConversations').checked = settings.notifyNewConversations !== false;
+      document.getElementById('notifyEscalated').checked = settings.notifyEscalated !== false;
+      document.getElementById('notifyInterested').checked = settings.notifyInterested !== false;
+      document.getElementById('notifySound').checked = settings.notifySound === true;
+
+      // Bot status
+      const statusEl = document.getElementById('botStatus');
+      if (settings.botStatus === 'active') {
+        statusEl.className = 'badge-status active';
+        statusEl.innerHTML = '<span class="status-dot"></span>Activo';
+      } else {
+        statusEl.className = 'badge-status inactive';
+        statusEl.innerHTML = '<span class="status-dot"></span>Inactivo';
+      }
+
+      // Last sync
+      const lastSync = settings.lastSync ? new Date(settings.lastSync) : new Date();
+      document.getElementById('lastSync').textContent = lastSync.toLocaleString('es-MX', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      isModified = false;
+      updateFooterStatus();
+    }
+
+    // Render auto responses
+    function renderAutoResponses() {
+      const container = document.getElementById('autoResponseList');
+      const responses = settings.autoResponses || [];
+      
+      container.innerHTML = '';
+      autoResponseCounter = 0;
+      
+      if (responses.length === 0) {
+        return;
+      }
+      
+      responses.forEach((item, index) => {
+        autoResponseCounter = Math.max(autoResponseCounter, index + 1);
+        const div = document.createElement('div');
+        div.className = 'auto-response-item';
+        div.id = `auto-response-${index}`;
+        div.innerHTML = `
+          <div class="auto-response-fields">
+            <input type="text" class="form-input" placeholder="palabra clave" value="${escapeHtml(item.keyword)}" onchange="updateAutoResponseKeyword(${index}, this.value); markAsModified()">
+            <textarea class="form-textarea" rows="2" placeholder="respuesta automática" onchange="updateAutoResponseResponse(${index}, this.value); markAsModified()">${escapeHtml(item.response)}</textarea>
+          </div>
+          <div class="auto-response-actions">
+            <button class="btn btn-danger btn-icon" onclick="removeAutoResponse(${index})" title="Eliminar respuesta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Add auto response
+    function addAutoResponse() {
+      const container = document.getElementById('autoResponseList');
+      const index = autoResponseCounter++;
+      
+      const div = document.createElement('div');
+      div.className = 'auto-response-item';
+      div.id = `auto-response-${index}`;
+      div.innerHTML = `
+        <div class="auto-response-fields">
+          <input type="text" class="form-input" placeholder="palabra clave" value="" onchange="updateAutoResponseKeyword(${index}, this.value); markAsModified()">
+          <textarea class="form-textarea" rows="2" placeholder="respuesta automática" onchange="updateAutoResponseResponse(${index}, this.value); markAsModified()"></textarea>
+        </div>
+        <div class="auto-response-actions">
+          <button class="btn btn-danger btn-icon" onclick="removeAutoResponse(${index})" title="Eliminar respuesta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      `;
+      container.appendChild(div);
+      
+      // Scroll to new item
+      div.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Focus first input
+      const firstInput = div.querySelector('input');
+      if (firstInput) firstInput.focus();
+      
+      markAsModified();
+    }
+
+    // Remove auto response
+    function removeAutoResponse(index) {
+      const element = document.getElementById(`auto-response-${index}`);
+      if (element) {
+        element.style.opacity = '0';
+        element.style.transform = 'translateX(-20px)';
+        element.style.transition = 'all 0.2s ease';
+        setTimeout(() => {
+          element.remove();
+          rebuildAutoResponsesFromDOM();
+          markAsModified();
+        }, 200);
+      }
+    }
+
+    // Update auto response keyword
+    function updateAutoResponseKeyword(index, value) {
+      // Handled by rebuild on remove
+    }
+
+    // Update auto response response
+    function updateAutoResponseResponse(index, value) {
+      // Handled by rebuild on remove
+    }
+
+    // Rebuild auto responses from DOM
+    function rebuildAutoResponsesFromDOM() {
+      const items = document.querySelectorAll('.auto-response-item');
+      const responses = [];
+      items.forEach(item => {
+        const keyword = item.querySelector('input').value.trim();
+        const response = item.querySelector('textarea').value.trim();
+        if (keyword || response) {
+          responses.push({ keyword, response });
+        }
+      });
+      settings.autoResponses = responses;
+    }
+
+    // Render tags
+    function renderTags() {
+      const container = document.getElementById('tagsContainer');
+      const tags = settings.interestKeywords || [];
+      
+      container.innerHTML = '';
+      
+      tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.innerHTML = `
+          ${escapeHtml(tag)}
+          <button class="tag-remove" onclick="removeTag('${escapeHtml(tag)}')" title="Eliminar etiqueta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        `;
+        container.appendChild(span);
+      });
+    }
+
+    // Add tag
+    function addTag() {
+      const input = document.getElementById('tagInput');
+      const value = input.value.trim().toLowerCase();
+      
+      if (!value) {
+        showToast('Ingresa una palabra clave', 'error');
+        return;
+      }
+      
+      if (!settings.interestKeywords) {
+        settings.interestKeywords = [];
+      }
+      
+      if (settings.interestKeywords.includes(value)) {
+        showToast('Esta palabra clave ya existe', 'error');
+        return;
+      }
+      
+      settings.interestKeywords.push(value);
+      input.value = '';
+      renderTags();
+      markAsModified();
+    }
+
+    // Handle tag input keydown
+    function handleTagKeydown(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        addTag();
+      }
+    }
+
+    // Remove tag
+    function removeTag(tag) {
+      if (settings.interestKeywords) {
+        settings.interestKeywords = settings.interestKeywords.filter(t => t !== tag);
+        renderTags();
+        markAsModified();
+      }
+    }
+
+    // Update char counter
+    function updateCharCounter(textarea) {
+      const counter = document.getElementById('welcomeCounter');
+      const max = parseInt(textarea.getAttribute('maxlength')) || 500;
+      const current = textarea.value.length;
+      counter.textContent = `${current} / ${max}`;
+      
+      if (current > max * 0.9) {
+        counter.classList.add('warning');
+      } else {
+        counter.classList.remove('warning');
+      }
+      
+      markAsModified();
+    }
+
+    // Update range value
+    function updateRangeValue(slider) {
+      const value = slider.value;
+      document.getElementById('escalationValue').textContent = value;
+      document.getElementById('thresholdDisplay').textContent = value;
+      markAsModified();
+    }
+
+    // Mark as modified
+    function markAsModified() {
+      isModified = true;
+      updateFooterStatus();
+    }
+
+    // Update footer status
+    function updateFooterStatus() {
+      const info = document.getElementById('footerInfo');
+      if (isModified) {
+        info.textContent = 'Hay cambios sin guardar';
+        info.className = 'footer-info unsaved';
+      } else {
+        info.textContent = 'Los cambios se guardan automáticamente en el servidor';
+        info.className = 'footer-info';
+      }
+    }
+
+    // Copy to clipboard
+    async function copyToClipboard() {
+      const input = document.getElementById('webhookUrl');
+      try {
+        await navigator.clipboard.writeText(input.value);
+        showToast('URL copiada al portapapeles', 'success');
+      } catch (err) {
+        // Fallback
+        input.select();
+        document.execCommand('copy');
+        showToast('URL copiada al portapapeles', 'success');
+      }
+    }
+
+    // Collect settings from form
+    function collectSettings() {
+      rebuildAutoResponsesFromDOM();
+      
+      return {
+        welcomeMessage: document.getElementById('welcomeMessage').value.trim(),
+        autoResponses: settings.autoResponses || [],
+        interestKeywords: settings.interestKeywords || [],
+        advisorNumber: document.getElementById('advisorNumber').value.trim(),
+        escalationMessage: document.getElementById('escalationMessage').value.trim(),
+        escalationThreshold: parseInt(document.getElementById('escalationThreshold').value) || 5,
+        notifyNewConversations: document.getElementById('notifyNewConversations').checked,
+        notifyEscalated: document.getElementById('notifyEscalated').checked,
+        notifyInterested: document.getElementById('notifyInterested').checked,
+        notifySound: document.getElementById('notifySound').checked,
+        botStatus: settings.botStatus || 'active',
+        lastSync: new Date().toISOString(),
+        version: '1.0.0'
+      };
+    }
+
+    // Validate settings
+    function validateSettings(settings) {
+      if (!settings.welcomeMessage) {
+        showToast('El mensaje de bienvenida es requerido', 'error');
+        return false;
+      }
+      
+      if (!settings.advisorNumber) {
+        showToast('El número del asesor es requerido', 'error');
+        return false;
+      }
+      
+      // Validate phone format
+      const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+      if (!phoneRegex.test(settings.advisorNumber.replace(/\s/g, ''))) {
+        showToast('El número del asesor no tiene un formato válido', 'error');
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Save settings
+    async function saveSettings() {
+      const newSettings = collectSettings();
+      
+      if (!validateSettings(newSettings)) {
+        return;
+      }
+      
+      // Show loading
+      document.getElementById('loadingOverlay').classList.add('active');
+      
+      try {
+        // Try API first
+        const response = await fetch(`${API_URL}/settings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newSettings)
+        });
+        
+        if (!response.ok) {
+          throw new Error('API error');
+        }
+        
+        const data = await response.json();
+        settings = { ...settings, ...data.settings };
+      } catch (error) {
+        // Fallback: save to localStorage only
+        console.log('API unavailable, saving to localStorage');
+      }
+      
+      // Always save to localStorage
+      settings = newSettings;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      
+      // Hide loading
+      document.getElementById('loadingOverlay').classList.remove('active');
+      
+      isModified = false;
+      updateFooterStatus();
+      
+      // Update last sync display
+      document.getElementById('lastSync').textContent = new Date().toLocaleString('es-MX', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      showToast('Configuración guardada exitosamente', 'success');
+    }
+
+    // Reset settings
+    async function resetSettings() {
+      if (!confirm('¿Estás seguro de que deseas restaurar los valores por defecto? Se perderán todos los cambios personalizados.')) {
+        return;
+      }
+      
+      document.getElementById('loadingOverlay').classList.add('active');
+      
+      try {
+        // Try API first
+        const response = await fetch(`${API_URL}/settings`, {
+          method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+          throw new Error('API error');
+        }
+      } catch (error) {
+        console.log('API unavailable, resetting localStorage');
+      }
+      
+      // Clear localStorage
+      localStorage.removeItem(STORAGE_KEY);
+      
+      // Reset to defaults
+      settings = { ...DEFAULT_SETTINGS };
+      settings.lastSync = new Date().toISOString();
+      
+      renderSettings();
+      
+      document.getElementById('loadingOverlay').classList.remove('active');
+      showToast('Valores restaurados a los predeterminados', 'success');
+    }
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      let icon = '';
+      if (type === 'success') {
+        icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+      } else if (type === 'error') {
+        icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+      } else {
+        icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+      }
+      
+      toast.innerHTML = `${icon}<span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+        toast.classList.add('toast-out');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 4000);
+    }
+
+    // Escape HTML
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', function(e) {
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.querySelector('.menu-toggle');
+      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
