@@ -1,18 +1,4 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "routes": [
-    {
-      "src": "/dashboard/(.*)",
-      "dest": "/dashboard/$1.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/dashboard/index.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js"
-    }
-  ]
+  "buildCommand": "npm run build"
 }
