@@ -5,173 +5,217 @@ function getResponse(text) {
   const lower = text.toLowerCase();
   
   if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto') || lower.includes('membresia')) {
-    return `*💰 Membresias Campamento Onawa*
+    return `*💰 Membresías Campamento Onawa*
 
-Nuestras membresias te garantizan acceso al club deportivo los 365 dias del ano, de 8:00 am a 6:00 pm.
+Nuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.
 
-*Nivel Plata:* $14,950 - 10 anos de acceso - 10% descuento base
-*Nivel Oro:* $29,560 - 25 anos de acceso - 15% descuento base
-*Nivel Platino:* $58,200 - 50 anos de acceso - 20% descuento base
-*Nivel Diamante:* $117,640 - 100 anos de acceso - 25% descuento base
+*📋 Niveles disponibles:*
 
-Cuota de mantenimiento anual: $600 por beneficiario, $300 por familiar registrado.
-Todas las membresias son transferibles, vendibles y heredables.
+*Nivel Plata* 💎
+$14,950 | 10 años | 10% descuento
 
-Al adquirir tu membresia en preventa, obtienes el *Certificado de Miembro Fundador* y tu primer pago de mantenimiento comienza hasta enero de 2027.
+*Nivel Oro* 🥇
+$29,560 | 25 años | 15% descuento
 
-El descuento de tu nivel se aplica en mantenimiento, consumo, atracciones y servicios.
+*Nivel Platino* 🏆
+$58,200 | 50 años | 20% descuento
 
-¿Te gustaria que un asesor te contacte para finalizar tu proceso?`;
+*Nivel Diamante* 💎
+$117,640 | 100 años | 25% descuento
+
+*📌 Incluye:*
+• Cuota de mantenimiento: $600/beneficiario, $300/familiar
+• Membresía transferible, vendible y heredable
+• Certificado de *Miembro Fundador*
+• Primer pago de mantenimiento: *enero 2027*
+
+*✅ El descuento aplica en:*
+Consumo, atracciones, servicios y promociones
+
+¿Te gustaría que un asesor te contacte?`;
   }
   
   if (lower.includes('actividad')) {
-    return `*🏊 Actividades Campamento Onawa*
+    return `*🏃 Actividades Disponibles*
 
-*Deportes y Aventura:*
-Exatlon (campo de obstaculos)
-Tiro con arco y tiro con hacha
-Gotcha
-Cancha de futbol
-Senderismo entre pinos y encinos
+*🎯 Deportes y Aventura:*
+• Exatlón (campo de obstáculos)
+• Tiro con arco y tiro con hacha
+• Gotcha
+• Cancha de fútbol
+• Senderismo entre pinos y encinos
 
-*Naturaleza y Exploracion:*
-Area de campamentos en el bosque
-Lago natural (peces, tortugas, ranas)
-Granja didactica
-Paseo a caballo por senderos
+*🌿 Naturaleza y Exploración:*
+• Área de campamentos en el bosque
+• Lago natural (peces, tortugas, ranas)
+• Granja didáctica
+• Paseo a caballo
 
-*Juegos y Recreacion:*
-Minigolf
-Juegos gigantes (ajedrez, domino, jenga)
-Aqua Esferas
-Area infantil
-Brincolines
-Area de hamacas
+*🎮 Juegos y Recreación:*
+• Minigolf
+• Juegos gigantes (ajedrez, dominó, jenga)
+• Aqua Esferas
+• Área infantil
+• Brincolines
+• Área de hamacas
 
-*Servicios Actuales:*
-Restaurante y Salon de Eventos (operando al 50%)
-Estacionamiento y sanitarios
+*🍽️ Servicios Actuales:*
+• Restaurante y Salón de Eventos (50% capacidad)
+• Estacionamiento y sanitarios
 
-*Próximas etapas:* Tirolesas, muro de escalar, padel, tenis, tren, ciclismo de montaña y albercas.
+*🔜 Próximamente:*
+Tirolesas, muro de escalar, pádel, tenis, tren, ciclismo y albercas
 
-Te interesa alguna actividad en particular?`;
+¿Te interesa alguna actividad?`;
   }
   
   if (lower.includes('instalacion')) {
-    return `*🏡 Instalaciones Campamento Onawa*
+    return `*🏡 Instalaciones - Lo que ya tenemos listo*
 
-Actualmente contamos con:
-
-• Restaurante y Salon de Eventos
-• Area de campamentos
+• Restaurante y Salón de Eventos
+• Área de campamentos en el bosque
 • Lago natural
-• Granja didactica
-• Cancha de futbol
+• Granja didáctica
+• Cancha de fútbol
 • Minigolf
-• Campo de obstaculos (Exatlon)
+• Campo de obstáculos (Exatlón)
 • Estacionamiento
 • Sanitarios
 
-*Próximas etapas de construccion:*
-Cabañas y albercas
+*🔨 Próximas etapas:*
+• Cabañas
+• Albercas
 
-Todo en un entorno natural y seguro en el bosque de Villa del Carbon.
+*📍 Ubicación:*
+Bosque de Villa del Carbón, Estado de México
+A 2 km del centro del pueblo mágico
 
-Te gustaria agendar una visita familiar?`;
+¿Te gustaría agendar una visita?`;
   }
   
   if (lower.includes('inscribir') || lower.includes('reservar') || lower.includes('interesa') || lower.includes('quiero') || lower.includes('asesor')) {
-    return `¡Excelente eleccion!
+    return `*🎉 ¡Excelente elección!*
 
-Para finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te comunicare ahora mismo con nuestro Coordinador de Atencion Personalizada.
+Para finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te conecto con nuestro Coordinador de Atención Personalizada.
 
-Puedes escribirle directamente aqui:
+*👤 Contacto directo:*
 https://wa.me/525530086410
 
-Mientras tanto, puedes seguir preguntandome lo que necesites.`;
+*📱 O escribe al número:*
+55 3008 6410
+
+Mientras tanto, puedo seguir respondiendo tus preguntas.`;
   }
   
   if (lower.includes('fecha') || lower.includes('cuando') || lower.includes('evento')) {
-    return `*📆 Fechas y Acceso*
+    return `*📆 Acceso y Eventos*
 
-Campamento Onawa esta abierto los *365 dias del ano* en un horario continuo de 8:00 am a 6:00 pm.
+*🕗 Horario:*
+365 días del año
+8:00 am - 6:00 pm
 
-*Beneficios de Preventa:*
-Al adquirir tu membresia hoy, obtienes el Certificado de Miembro Fundador y tu primer pago de mantenimiento comienza hasta *enero de 2027*.
+*🎁 Beneficios de Preventa:*
+• Certificado de *Miembro Fundador*
+• Primer pago de mantenimiento: *enero 2027*
 
-*Próximos Eventos Confirmados:*
-• 30 de mayo de 2026: Inauguracion oficial del Restaurante
-• 8 y 9 de agosto de 2026: Gran Campamento Familiar (dos dias de aventura en el bosque - cupo limitado)
+*📅 Próximos Eventos Confirmados:*
 
-Te gustaria reservar para algun evento?`;
+*30 de mayo de 2026*
+🍽️ Inauguración oficial del Restaurante
+
+*8 y 9 de agosto de 2026*
+🏕️ Gran Campamento Familiar
+Dos días de aventura en el bosque
+*⚠️ Cupo limitado*
+
+¿Te gustaría reservar tu lugar?`;
   }
   
   if (lower.includes('seguridad')) {
-    return `*🛡️ Seguridad en Campamento Onawa*
+    return `*🛡️ Seguridad y Compromiso*
 
-Campamento Onawa esta disenado para ofrecerte un espacio sano y un entorno completamente seguro para disfrutar de actividades al aire libre en compania de toda la familia.
+En Campamento Onawa diseñamos un espacio *sano y seguro* para que toda la familia disfrute de actividades al aire libre.
 
-Nuestra vision es ser reconocidos como el mejor espacio de la zona por nuestro compromiso con la seguridad y el medio ambiente.
+*🎯 Nuestra Visión:*
+Ser reconocidos como el mejor espacio de la zona por nuestro compromiso con la seguridad y el medio ambiente.
 
-*Próximas mejoras:*
-Como parte de nuestra Etapa 2 de construccion (2026-2027), integraremos una enfermeria a nuestras instalaciones.
+*🏥 Próximas Mejoras:*
+Etapa 2 de construcción (2026-2027):
+Integración de enfermería permanente
 
-Tienes alguna preocupacion especifica?`;
+¿Tienes alguna preocupación específica?`;
   }
   
   if (lower.includes('edad') || lower.includes('requisito')) {
-    return `*📄 Requisitos para Campamento Onawa*
+    return `*📄 Requisitos para Acceder*
 
-En Campamento Onawa *no tenemos limite de edad*. Somos un club deportivo campestre disenado para *toda la familia*.
+*✅ Edad:*
+Sin límite de edad. Somos un *club deportivo familiar* diseñado para todos.
 
-El unico requisito para disfrutar de nuestras instalaciones y actividades es adquirir cualquiera de nuestras membresias a largo plazo:
+*📋 Único requisito:*
+Adquirir una membresía a largo plazo:
 • Plata
 • Oro
 • Platino
 • Diamante
 
-Las cuales te permiten registrar a tus familiares.
+*👨‍👩‍👧‍👦 Incluye:*
+Registro de familiares en tu membresía
 
-Ademas, se debe cubrir una cuota de mantenimiento anual por cada beneficiario y familiar registrado.
+*💰 Adicional:*
+Cuota de mantenimiento anual por beneficiario y familiar registrado
 
-Te gustaria que te enviemos informacion detallada de las membresias?`;
+¿Te gustaría conocer los detalles de cada membresía?`;
   }
   
   if (lower.includes('ubicacion') || lower.includes('donde')) {
-    return `*📍 Ubicacion*
+    return `*📍 Ubicación*
 
-Campamento Onawa se encuentra en el corazon del bosque de *Villa del Carbon, Estado de Mexico*.
+*🌲 Campamento Onawa*
+Bosque de Villa del Carbón
+Estado de México
 
-A tan solo *2 km del centro del pueblo magico*.
+*📏 Distancia:*
+A tan solo 2 km del centro del pueblo mágico
 
-Te envio la ubicacion exacta por WhatsApp?
+*🚗 Acceso:*
+Fácil llegada desde la Ciudad de México
 
-O prefieres que un asesor te explique las mejores rutas para llegar?`;
+¿Te envío la ubicación exacta por WhatsApp?
+¿O prefieres que un asesor te explique las mejores rutas?`;
   }
   
   if (lower.includes('gracias') || lower.includes('adios')) {
-    return `¡Gracias a ti por tu interes en Campamento Onawa!
+    return `*🙏 ¡Gracias por tu interés!*
 
-Recuerda que actualmente estamos en etapa de *preventa*, por lo que es el mejor momento para asegurar tus beneficios exclusivos de *Miembro Fundador*.
+Recuerda que estamos en etapa de *preventa* y es el mejor momento para asegurar tus beneficios de *Miembro Fundador*.
 
-Si mas adelante deseas agendar una visita familiar a nuestras instalaciones en el bosque de Villa del Carbon o hablar con uno de nuestros asesores, aqui estare para ayudarte.
+*📅 Cuándo quieras:*
+• Agendar una visita familiar
+• Hablar con un asesor
+• Conocer más detalles
 
-¡Que tengas un excelente dia!`;
+Aquí estaré para ayudarte.
+
+*🌲 Campamento Onawa*
+Tu espacio en armonía con la naturaleza
+
+¡Que tengas un excelente día! ☀️`;
   }
   
-  return `¡Hola! 👋
+  return `¡Hola! 👋 Bienvenido a *Campamento Onawa* 🌲
 
-Soy el asistente de *Campamento Onawa*, un club deportivo 100% mexicano en armonia con la naturaleza.
+Soy tu asistente virtual y estoy aquí para ayudarte.
 
-Puedo ayudarte con:
+*¿Qué te gustaría conocer?*
 
-• *Preventa y Beneficios* (Escenario A)
-• *Informacion de Membresias* (Escenario B)
-• *Actividades Actuales* (Escenario C)
-• *Próximos Eventos* (Escenario D)
-• *Hablar con un Asesor* (Escenario E)
+1️⃣ *Preventa y Beneficios* - Membresías y precios
+2️⃣ *Actividades* - Todo lo que puedes hacer
+3️⃣ *Instalaciones* - Lo que ya tenemos listo
+4️⃣ *Próximos Eventos* - Fechas importantes
+5️⃣ *Hablar con un Asesor* - Atención personalizada
 
-En que puedo ayudarte hoy?`;
+Escribe el número o tu pregunta 👇`;
 }
 
 export default async function handler(req, res) {
