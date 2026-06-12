@@ -104,22 +104,18 @@
           <div class="stat-card">
             <h3>Total Conversaciones</h3>
             <div class="value">${data.stats.totalConversations}</div>
-            <div class="label">${data.stats.newConversationsToday} hoy</div>
           </div>
           <div class="stat-card">
             <h3>Total Mensajes</h3>
             <div class="value">${data.stats.totalMessages}</div>
-            <div class="label">${data.stats.messagesToday} hoy</div>
           </div>
           <div class="stat-card">
             <h3>Escalados</h3>
             <div class="value">${data.stats.escalatedCount}</div>
-            <div class="label">${data.stats.escalationsThisWeek} esta semana</div>
           </div>
           <div class="stat-card">
             <h3>Interesados</h3>
             <div class="value">${data.stats.interestedCount}</div>
-            <div class="label">En inscripción</div>
           </div>
         `;
         
@@ -150,12 +146,12 @@
                            conv.isInterested ? 'Interesado' : 'Activo';
           
           return `
-            <div class="conversation-row" onclick="showConversation('${conv.id}', '${conv.phone}')">
+            <div class="conversation-row" onclick="showConversation('${conv.phone}')">
               <div class="phone">${conv.phone}</div>
               <div class="meta">
                 <span class="badge ${badgeClass}">${badgeText}</span>
-                <span>${conv._count.messages} mensajes</span>
-                <span>${new Date(conv.lastMessageAt).toLocaleString('es-MX')}</span>
+                <span>${conv.message_count} mensajes</span>
+                <span>${new Date(conv.createdAt).toLocaleString('es-MX')}</span>
               </div>
             </div>
           `;
@@ -179,9 +175,9 @@
       loadConversations();
     }
 
-    async function showConversation(id, phone) {
+    async function showConversation(phone) {
       try {
-        const response = await fetch(`${API_URL}/conversation?id=${id}`);
+        const response = await fetch(`${API_URL}/conversation?phone=${phone}`);
         const data = await response.json();
         
         document.getElementById('modalTitle').innerText = `Conversación: ${phone}`;

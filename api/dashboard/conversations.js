@@ -1,4 +1,4 @@
-import pool from '../../src/lib/db.js';
+import { getAllContacts } from '../../src/lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -7,34 +7,34 @@ export default async function handler(req, res) {
 
   try {
     const { search, status } = req.query;
-    let where = 'WHERE 1=1';
+    let contacts = getAllContacts();
     
     if (search) {
-      where += ` AND (phone ILIKE '%${search}%' OR name ILIKE '%${search}%')`;
+      const lowerSearch = search.toLowerCase();
+      contacts = contacts.filter(c => 
+        c.phone.toLowerCase().includes(lowerSearch)
+      );
     }
     
     if (status === 'escalated') {
-      where += ' AND is_escalated = true';
+      contacts = contacts.filter(c => c.isEscalated);
     } else if (status === 'interested') {
-      where += ' AND is_interested = true';
+      contacts = contacts.filter(c => c.isInterested);
     }
 
-    const result = await pool.query(
-      `SELECT c.*, COUNT(m.id) as message_count 
-       FROM onawa_contacts c 
-       LEFT JOIN onawa_messages m ON c.id = m.contact_id 
-       ${where}
-       GROUP BY c.id 
-       ORDER BY c.last_message_at DESC 
-       LIMIT 50`
-    );
+    contacts = contacts
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map(c => ({
+        ...c,
+        message_count: c.messages.length
+      }));
 
     return res.status(200).json({
-      conversations: result.rows,
-      total: result.rows.length
+      conversations: contacts,
+      total: contacts.length
     });
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ error: 'Database error', message: error.message });
+    return res.status(500).json({ error: 'Error', message: error.message });
   }
 }

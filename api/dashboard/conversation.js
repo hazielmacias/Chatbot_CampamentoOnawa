@@ -1,4 +1,4 @@
-import pool from '../../src/lib/db.js';
+import { getContact } from '../../src/lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -6,28 +6,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { id } = req.query;
-    if (!id) {
-      return res.status(400).json({ error: 'ID is required' });
+    const { phone } = req.query;
+    if (!phone) {
+      return res.status(400).json({ error: 'Phone is required' });
     }
 
-    const contact = (await pool.query(
-      'SELECT * FROM onawa_contacts WHERE id = $1',
-      [id]
-    )).rows[0];
-
+    const contact = getContact(phone);
     if (!contact) {
       return res.status(404).json({ error: 'Contact not found' });
     }
 
-    const messages = (await pool.query(
-      `SELECT * FROM onawa_messages WHERE contact_id = $1 ORDER BY timestamp ASC`,
-      [id]
-    )).rows;
-
-    return res.status(200).json({ contact: { ...contact, messages } });
+    return res.status(200).json({ contact });
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ error: 'Database error', message: error.message });
+    return res.status(500).json({ error: 'Error', message: error.message });
   }
 }

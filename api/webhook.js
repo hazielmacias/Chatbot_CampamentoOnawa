@@ -1,36 +1,5 @@
 import { sendMessage } from '../src/lib/whatsapp.js';
-import pool from '../src/lib/db.js';
-
-async function getOrCreateContact(phone) {
-  const result = await pool.query(
-    'SELECT * FROM onawa_contacts WHERE phone = $1',
-    [phone]
-  );
-  
-  if (result.rows.length > 0) {
-    await pool.query(
-      'UPDATE onawa_contacts SET last_message_at = NOW() WHERE id = $1',
-      [result.rows[0].id]
-    );
-    return result.rows[0];
-  }
-  
-  const newContact = await pool.query(
-    `INSERT INTO onawa_contacts (phone, first_contact_at, last_message_at) 
-     VALUES ($1, NOW(), NOW()) 
-     RETURNING *`,
-    [phone]
-  );
-  return newContact.rows[0];
-}
-
-async function saveMessage(contactId, direction, content) {
-  await pool.query(
-    `INSERT INTO onawa_messages (contact_id, direction, content, timestamp) 
-     VALUES ($1, $2, $3, NOW())`,
-    [contactId, direction, content]
-  );
-}
+import { getOrCreateContact, saveMessage, markEscalated } from '../src/lib/db.js';
 
 function getResponse(text) {
   const lower = text.toLowerCase();
@@ -60,7 +29,7 @@ Kayak, canotaje, natación, vela, basketball, tenis, fútbol, tiro con arco, cab
 10 hectáreas: alberca, lago privado, cabañas, canchas, comedor, enfermería 24/7, seguridad 24/7`;
   }
   
-  if (lower.includes('inscribir') || lower.includes('reservar') || lower.includes('interesa') || lower.includes('quiero')) {
+  if (lower.includes('inscribir') || lower.includes('reservar') || lower.includes('interesa') || lower.includes('quiero') || lower.includes('asesor')) {
     return `¡Que emoción! 🎉
 
 Te conecto con un asesor personal:
@@ -125,26 +94,6 @@ Valle de Bravo, Estado de México
 Escribe tu pregunta o "asesor" para hablar con alguien 👨‍💼`;
 }
 
-async function handleEscalation(contact, text) {
-  const advisorPhone = process.env.ADVISOR_PHONE;
-  if (!advisorPhone) return;
-  
-  await pool.query(
-    `INSERT INTO onawa_escalations (contact_id, reason, advisor_phone) 
-     VALUES ($1, $2, $3)`,
-    [contact.id, 'Interes en campamento', advisorPhone]
-  );
-  
-  await pool.query(
-    'UPDATE onawa_contacts SET is_escalated = true, is_interested = true WHERE id = $1',
-    [contact.id]
-  );
-  
-  await sendMessage(advisorPhone, 
-    `🚨 Nuevo lead - Campamento Onawa\n📱 ${contact.phone}\n💬 ${text}\n\nContactar urgente.`
-  );
-}
-
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const token = req.query['hub.verify_token'];
@@ -164,19 +113,25 @@ export default async function handler(req, res) {
       const phone = message.from;
       const text = message.text?.body || '';
       
-      const contact = await getOrCreateContact(phone);
-      await saveMessage(contact.id, 'inbound', text);
+      getOrCreateContact(phone);
+      saveMessage(phone, 'inbound', text);
       
       const response = getResponse(text);
       await sendMessage(phone, response);
-      await saveMessage(contact.id, 'outbound', response);
+      saveMessage(phone, 'outbound', response);
       
       if (text.toLowerCase().includes('inscribir') || 
           text.toLowerCase().includes('reservar') || 
           text.toLowerCase().includes('interesa') ||
           text.toLowerCase().includes('quiero') ||
           text.toLowerCase().includes('asesor')) {
-        await handleEscalation(contact, text);
+        markEscalated(phone);
+        const advisorPhone = process.env.ADVISOR_PHONE;
+        if (advisorPhone) {
+          await sendMessage(advisorPhone, 
+            `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n💬 ${text}\n\nContactar urgente.`
+          );
+        }
       }
       
       return res.status(200).send('OK');
