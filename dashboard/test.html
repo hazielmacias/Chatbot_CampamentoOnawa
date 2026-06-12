@@ -6,7 +6,7 @@
   <title>Simulador de Chat - Campamento Onawa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --forest: #1a4d2e;
@@ -27,16 +27,17 @@
       --white: #ffffff;
       --shadow: rgba(26, 58, 42, 0.08);
       --shadow-lg: rgba(26, 58, 42, 0.15);
-      --wa-bg: #e5ddd5;
+      --shadow-xl: rgba(26, 58, 42, 0.25);
+      --wa-bg: #efeae2;
       --wa-panel: #f0f2f5;
       --wa-bubble-in: #fff;
-      --wa-bubble-out: #dcf8c6;
+      --wa-bubble-out: #d9fdd3;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--sand);
       color: var(--text);
       min-height: 100vh;
@@ -49,128 +50,196 @@
     .sidebar {
       width: 280px; min-width: 280px; background: var(--forest); color: var(--white);
       display: flex; flex-direction: column; position: fixed; height: 100vh;
-      left: 0; top: 0; z-index: 100; box-shadow: 4px 0 20px var(--shadow-lg);
-      transition: transform 0.3s ease;
+      left: 0; top: 0; z-index: 100; box-shadow: 4px 0 30px rgba(0,0,0,0.15);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .sidebar-header { padding: 2rem 1.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-header { padding: 2rem 1.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .sidebar-logo { display: flex; align-items: center; gap: 1rem; }
-    .sidebar-logo img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: var(--white); }
-    .sidebar-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.2rem; line-height: 1.2; }
-    .sidebar-logo-subtitle { font-size: 0.75rem; opacity: 0.7; font-weight: 500; margin-top: 0.2rem; }
+    .sidebar-logo img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .sidebar-logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.3rem; line-height: 1.2; letter-spacing: -0.02em; }
+    .sidebar-logo-subtitle { font-size: 0.75rem; opacity: 0.6; font-weight: 500; margin-top: 0.2rem; font-family: 'DM Sans', sans-serif; }
     .sidebar-nav { flex: 1; padding: 1.5rem 0; overflow-y: auto; }
     .nav-section { margin-bottom: 1.5rem; }
-    .nav-section-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; padding: 0 1.5rem; margin-bottom: 0.75rem; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.2s ease; border-left: 3px solid transparent; }
-    .nav-item:hover { background: rgba(255,255,255,0.08); color: var(--white); }
-    .nav-item.active { background: rgba(255,255,255,0.12); color: var(--white); border-left-color: var(--gold); }
-    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; opacity: 0.7; }
+    .nav-section-title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.45; padding: 0 1.5rem; margin-bottom: 0.75rem; font-family: 'DM Sans', sans-serif; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.25s ease; border-left: 3px solid transparent; font-family: 'DM Sans', sans-serif; }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+    .nav-item.active { background: rgba(255,255,255,0.1); color: var(--white); border-left-color: var(--gold); }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; opacity: 0.7; transition: opacity 0.2s; }
     .nav-item.active svg { opacity: 1; }
-    .sidebar-footer { padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
-    .live-badge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; padding: 0.75rem 1rem; background: rgba(255,255,255,0.1); border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); }
+    .sidebar-footer { padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .live-badge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; padding: 0.75rem 1rem; background: rgba(255,255,255,0.08); border-radius: 50px; border: 1px solid rgba(255,255,255,0.15); }
     .live-dot { width: 8px; height: 8px; background: var(--sage-light); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
 
-    .main-content { flex: 1; margin-left: 280px; min-height: 100vh; }
-    .top-header { background: var(--white); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 10px var(--shadow); }
-    .header-title { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--forest); display: flex; align-items: center; gap: 0.75rem; }
+    .main-content { flex: 1; margin-left: 280px; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header */
+    .top-header {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+      padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 4px 20px var(--shadow-lg);
+    }
+    .header-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 0.75rem; letter-spacing: -0.02em; }
     .header-title svg { width: 28px; height: 28px; color: var(--gold); }
     .header-actions { display: flex; align-items: center; gap: 1rem; }
-    .btn { padding: 0.6rem 1.25rem; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: none; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-    .btn-primary { background: var(--forest); color: var(--white); }
-    .btn-primary:hover { background: var(--forest-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3); }
-    .btn-secondary { background: var(--sand); color: var(--text); border: 1px solid var(--sand-dark); }
-    .btn-secondary:hover { background: var(--sand-dark); }
-    .btn-danger { background: rgba(212, 115, 94, 0.12); color: var(--coral); border: 1px solid rgba(212, 115, 94, 0.2); }
-    .btn-danger:hover { background: rgba(212, 115, 94, 0.2); }
-    .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.85rem; border-radius: 8px; }
-    .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--forest); }
+    .btn { padding: 0.6rem 1.25rem; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .btn-primary { background: var(--gold); color: var(--forest-dark); }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(200, 164, 92, 0.3); }
+    .btn-danger { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+    .btn-danger:hover { background: rgba(212, 115, 94, 0.3); border-color: var(--coral); }
+    .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.85rem; border-radius: 10px; }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--white); }
     .menu-toggle svg { width: 24px; height: 24px; }
 
-    .content { padding: 2rem; max-width: 1400px; }
+    .content { padding: 2rem; max-width: 1400px; flex: 1; }
+
+    /* Info Banner */
+    .info-banner {
+      background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 16px; padding: 1.25rem 1.75rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 4px 20px var(--shadow); position: relative; overflow: hidden;
+    }
+    .info-banner::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--gold), var(--sage));
+    }
+    .info-banner svg { width: 24px; height: 24px; color: var(--forest); flex-shrink: 0; }
+    .info-banner-text { font-size: 0.9rem; color: var(--text-light); line-height: 1.5; }
+    .info-banner-text strong { color: var(--forest); font-weight: 700; }
 
     /* Simulator Layout */
-    .simulator-layout { display: flex; gap: 2rem; height: calc(100vh - 140px); min-height: 600px; }
-    .chat-panel { flex: 1; display: flex; flex-direction: column; background: var(--wa-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px var(--shadow); border: 1px solid var(--sand-dark); max-width: 600px; }
-    .chat-header { background: var(--wa-panel); padding: 12px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #e0e0e0; }
-    .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--forest); display: flex; align-items: center; justify-content: center; color: var(--white); font-weight: 700; font-size: 14px; font-family: 'Montserrat', sans-serif; }
-    .chat-header-info { display: flex; flex-direction: column; }
-    .chat-header-name { font-weight: 600; font-size: 16px; color: var(--text); font-family: 'Montserrat', sans-serif; }
-    .chat-header-status { font-size: 13px; color: #666; }
-    .chat-header-badge { margin-left: auto; font-size: 0.7rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .badge-escalated { background: rgba(212, 115, 94, 0.15); color: var(--coral); }
-    .badge-interested { background: rgba(45, 106, 79, 0.15); color: var(--forest-light); }
-    .badge-active { background: rgba(122, 158, 126, 0.15); color: var(--sage); }
+    .simulator-layout { display: flex; gap: 2rem; height: calc(100vh - 180px); min-height: 500px; }
+    .chat-panel { flex: 1; display: flex; flex-direction: column; background: var(--wa-bg); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 40px var(--shadow-xl); border: 1px solid var(--sand-dark); max-width: 600px; position: relative; }
 
-    .chat-messages { flex: 1; overflow-y: auto; padding: 20px; position: relative; }
+    /* Chat Header */
+    .chat-header {
+      background: linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%);
+      padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+      border-bottom: none; position: relative; z-index: 2;
+    }
+    .chat-header::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.15);
+    }
+    .chat-avatar {
+      width: 44px; height: 44px; border-radius: 50%; background: var(--white); display: flex;
+      align-items: center; justify-content: center; color: var(--forest); font-weight: 700;
+      font-size: 15px; font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border: 2px solid rgba(255,255,255,0.3); flex-shrink: 0;
+    }
+    .chat-header-info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    .chat-header-name { font-weight: 700; font-size: 16px; color: var(--white); font-family: 'DM Sans', sans-serif; letter-spacing: -0.01em; }
+    .chat-header-status { font-size: 13px; color: rgba(255,255,255,0.65); font-weight: 500; }
+    .chat-header-badge {
+      margin-left: auto; font-size: 0.65rem; font-weight: 700; padding: 0.35rem 0.85rem;
+      border-radius: 50px; text-transform: uppercase; letter-spacing: 0.08em; flex-shrink: 0;
+    }
+    .badge-escalated { background: rgba(212, 115, 94, 0.25); color: #fff; border: 1px solid rgba(212, 115, 94, 0.4); }
+    .badge-interested { background: rgba(200, 164, 92, 0.25); color: #fff; border: 1px solid rgba(200, 164, 92, 0.4); }
+    .badge-active { background: rgba(122, 158, 126, 0.25); color: #fff; border: 1px solid rgba(122, 158, 126, 0.4); }
+
+    /* Chat Messages */
+    .chat-messages { flex: 1; overflow-y: auto; padding: 24px; position: relative; }
     .chat-messages::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c4b8a8' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c4b8a8' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       pointer-events: none; z-index: 0;
     }
-    .chat-messages-inner { max-width: 500px; margin: 0 auto; position: relative; z-index: 1; }
-    .wa-message { display: flex; margin-bottom: 12px; animation: messageIn 0.3s ease; }
-    @keyframes messageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .chat-messages-inner { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+    .wa-message { display: flex; margin-bottom: 14px; animation: messageIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    @keyframes messageIn { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .wa-message.inbound { justify-content: flex-start; }
     .wa-message.outbound { justify-content: flex-end; }
-    .wa-message-bubble { max-width: 75%; padding: 10px 14px; border-radius: 8px; font-size: 14px; line-height: 1.4; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-    .wa-message.inbound .wa-message-bubble { background: var(--wa-bubble-in); color: var(--text); border-top-left-radius: 2px; }
-    .wa-message.outbound .wa-message-bubble { background: var(--wa-bubble-out); color: var(--text); border-top-right-radius: 2px; }
+    .wa-message-bubble {
+      max-width: 78%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.55;
+      position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .wa-message.inbound .wa-message-bubble {
+      background: var(--wa-bubble-in); color: var(--text); border-top-left-radius: 4px;
+    }
+    .wa-message.outbound .wa-message-bubble {
+      background: var(--wa-bubble-out); color: var(--text); border-top-right-radius: 4px;
+    }
     .wa-message-content { white-space: pre-wrap; word-break: break-word; }
-    .wa-message-time { font-size: 11px; color: #999; margin-top: 4px; text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+    .wa-message-content strong { font-weight: 700; color: var(--forest); }
+    .wa-message-content ul { margin: 8px 0; padding-left: 20px; }
+    .wa-message-content ul li { margin-bottom: 4px; }
+    .wa-message-content a { color: var(--forest-light); text-decoration: underline; font-weight: 600; }
+    .wa-message-content a:hover { color: var(--forest); }
+    .wa-message-time { font-size: 11px; color: #8896a0; margin-top: 6px; text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-weight: 500; }
     .wa-message-status { font-size: 12px; color: #53bdeb; }
-    .wa-date-separator { text-align: center; margin: 20px 0; }
-    .wa-date-separator span { background: var(--wa-panel); color: #54656f; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .wa-date-separator { text-align: center; margin: 24px 0; }
+    .wa-date-separator span { background: var(--wa-panel); color: #54656f; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 
-    .typing-indicator { display: none; margin-bottom: 12px; justify-content: flex-start; }
+    /* Typing Indicator */
+    .typing-indicator { display: none; margin-bottom: 14px; justify-content: flex-start; }
     .typing-indicator.active { display: flex; }
-    .typing-bubble { background: var(--wa-bubble-in); padding: 14px 18px; border-radius: 8px; border-top-left-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-    .typing-dots { display: flex; gap: 4px; align-items: center; }
-    .typing-dot { width: 8px; height: 8px; background: #999; border-radius: 50%; animation: typingBounce 1.4s ease-in-out infinite; }
+    .typing-bubble { background: var(--wa-bubble-in); padding: 16px 20px; border-radius: 14px; border-top-left-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .typing-dots { display: flex; gap: 5px; align-items: center; }
+    .typing-dot { width: 8px; height: 8px; background: #a0a0a0; border-radius: 50%; animation: typingBounce 1.6s ease-in-out infinite; }
     .typing-dot:nth-child(1) { animation-delay: 0s; }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
-
-    .chat-input-area { background: var(--wa-panel); padding: 10px 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #e0e0e0; }
-    .chat-input-wrapper { flex: 1; background: var(--white); border-radius: 24px; padding: 10px 20px; display: flex; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-    .chat-input { flex: 1; border: none; background: none; font-size: 15px; color: var(--text); outline: none; font-family: 'Source Sans 3', sans-serif; }
-    .chat-input::placeholder { color: #999; }
-    .chat-send-btn { background: var(--forest); color: var(--white); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .chat-send-btn:hover { background: var(--forest-light); transform: scale(1.05); }
-    .chat-send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-7px); } }
 
     /* Quick Replies */
-    .quick-replies { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 10px 20px; background: var(--wa-panel); border-top: 1px solid #e0e0e0; }
-    .quick-reply { padding: 0.5rem 1rem; border-radius: 20px; background: var(--white); border: 1px solid var(--sand-dark); color: var(--forest); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: 'Source Sans 3', sans-serif; }
-    .quick-reply:hover { background: var(--forest); color: var(--white); border-color: var(--forest); transform: translateY(-1px); }
+    .quick-replies { display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 12px 20px; background: var(--wa-panel); border-top: 1px solid #e0e0e0; }
+    .quick-reply { padding: 0.5rem 1rem; border-radius: 20px; background: var(--white); border: 1.5px solid var(--sand-dark); color: var(--forest); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.25s ease; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 0.4rem; }
+    .quick-reply:hover { background: var(--forest); color: var(--white); border-color: var(--forest); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(26, 77, 46, 0.2); }
+    .quick-reply:active { transform: translateY(0); }
+
+    /* Chat Input */
+    .chat-input-area { background: var(--wa-panel); padding: 12px 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #e0e0e0; }
+    .chat-input-wrapper { flex: 1; background: var(--white); border-radius: 24px; padding: 10px 20px; display: flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; transition: all 0.3s; }
+    .chat-input-wrapper:focus-within { box-shadow: 0 2px 8px rgba(26, 77, 46, 0.1); border-color: var(--sage); }
+    .chat-input { flex: 1; border: none; background: none; font-size: 15px; color: var(--text); outline: none; font-family: 'DM Sans', sans-serif; }
+    .chat-input::placeholder { color: #8896a0; }
+    .chat-send-btn { background: var(--forest); color: var(--white); border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(26, 77, 46, 0.2); }
+    .chat-send-btn:hover { background: var(--forest-light); transform: scale(1.08); box-shadow: 0 6px 20px rgba(26, 77, 46, 0.3); }
+    .chat-send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* Empty State */
+    .chat-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .chat-empty svg { width: 72px; height: 72px; margin-bottom: 20px; opacity: 0.3; color: var(--sage); }
+    .chat-empty-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text-light); margin-bottom: 10px; }
+    .chat-empty-text { font-size: 14px; color: var(--text-muted); max-width: 360px; margin: 0 auto; line-height: 1.6; }
 
     /* Debug Panel */
-    .debug-panel { width: 360px; min-width: 360px; display: flex; flex-direction: column; gap: 1.5rem; }
-    .debug-card { background: var(--white); border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 10px var(--shadow); border: 1px solid var(--sand-dark); }
-    .debug-card-title { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--forest); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .debug-panel { width: 380px; min-width: 380px; display: flex; flex-direction: column; gap: 1.25rem; }
+    .debug-card {
+      background: var(--white); border-radius: 18px; padding: 1.5rem; box-shadow: 0 4px 20px var(--shadow);
+      border: 1px solid var(--sand-dark); transition: all 0.3s ease;
+    }
+    .debug-card:hover { box-shadow: 0 8px 30px var(--shadow-lg); }
+    .debug-card-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
     .debug-card-title svg { width: 20px; height: 20px; color: var(--gold); }
-    .debug-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid var(--sand-dark); }
+    .debug-row { display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0; border-bottom: 1px solid var(--sand-dark); }
     .debug-row:last-child { border-bottom: none; }
-    .debug-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
-    .debug-value { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .debug-label { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); }
+    .debug-value { font-size: 0.9rem; font-weight: 700; color: var(--text); font-family: 'DM Sans', sans-serif; }
     .debug-value.escalated { color: var(--coral); }
     .debug-value.interested { color: var(--forest-light); }
     .debug-value.normal { color: var(--sage); }
-    .debug-badge { padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .debug-log { font-family: 'Source Code Pro', monospace; font-size: 0.8rem; color: var(--text-light); background: var(--sand); border-radius: 10px; padding: 1rem; max-height: 200px; overflow-y: auto; white-space: pre-wrap; line-height: 1.6; }
-    .debug-log-entry { margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--sand-dark); }
+    .debug-badge { padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .debug-log {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-light);
+      background: #1e293b; border-radius: 12px; padding: 1rem; max-height: 220px; overflow-y: auto;
+      white-space: pre-wrap; line-height: 1.6; color: #e2e8f0;
+    }
+    .debug-log-entry { margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #334155; }
     .debug-log-entry:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .debug-log-time { color: var(--text-muted); font-size: 0.75rem; }
+    .debug-log-time { color: #64748b; font-size: 0.7rem; }
     .debug-log-keyword { color: var(--gold); font-weight: 600; }
-    .debug-log-response { color: var(--forest); }
+    .debug-log-response { color: #7dd3fc; }
     .debug-log-escalation { color: var(--coral); font-weight: 600; }
-
-    /* Info Banner */
-    .info-banner { background: rgba(122, 158, 126, 0.12); border: 1px solid rgba(122, 158, 126, 0.3); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
-    .info-banner svg { width: 24px; height: 24px; color: var(--sage); flex-shrink: 0; }
-    .info-banner-text { font-size: 0.9rem; color: var(--text-light); }
-    .info-banner-text strong { color: var(--forest); }
+    .debug-log-info { color: #94a3b8; }
+    .debug-keyword-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.65rem;
+      background: rgba(122, 158, 126, 0.12); color: var(--forest); border-radius: 50px;
+      font-size: 0.75rem; font-weight: 600; transition: all 0.2s; cursor: default;
+    }
+    .debug-keyword-chip:hover { background: rgba(122, 158, 126, 0.2); transform: scale(1.05); }
+    .debug-keyword-chip.escalation { background: rgba(212, 115, 94, 0.12); color: var(--coral); }
+    .debug-keyword-chip.escalation:hover { background: rgba(212, 115, 94, 0.2); }
 
     /* Responsive */
     @media (max-width: 1024px) {
@@ -180,20 +249,29 @@
       .menu-toggle { display: block; }
       .simulator-layout { flex-direction: column; height: auto; }
       .debug-panel { width: 100%; min-width: 100%; }
-      .chat-panel { max-width: 100%; }
+      .chat-panel { max-width: 100%; height: 70vh; }
     }
     @media (max-width: 768px) {
       .content { padding: 1rem; }
-      .quick-replies { gap: 0.4rem; }
-      .quick-reply { font-size: 0.8rem; padding: 0.4rem 0.75rem; }
+      .quick-replies { gap: 0.4rem; padding: 10px 14px; }
+      .quick-reply { font-size: 0.78rem; padding: 0.4rem 0.75rem; }
+      .chat-header { padding: 12px 16px; }
+      .chat-messages { padding: 16px; }
+      .debug-panel { gap: 1rem; }
+      .debug-card { padding: 1.25rem; }
+      .info-banner { padding: 1rem; }
+      .top-header { padding: 1rem; }
+      .header-title { font-size: 1.25rem; }
     }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
-    .main-content ::-webkit-scrollbar-thumb { background: #ccc; }
-    .main-content ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+    .main-content ::-webkit-scrollbar-thumb { background: #c4b8a8; }
+    .main-content ::-webkit-scrollbar-thumb:hover { background: #a09585; }
+    .debug-log::-webkit-scrollbar-thumb { background: #475569; }
+    .debug-log::-webkit-scrollbar-thumb:hover { background: #64748b; }
   </style>
 </head>
 <body>
@@ -298,7 +376,7 @@
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
           </svg>
           <div class="info-banner-text">
-            <strong>Modo de prueba:</strong> Escribe mensajes como si fueras un usuario de WhatsApp. El bot responderá exactamente como lo haría en producción. Revisa el panel derecho para ver la lógica interna.
+            <strong>Modo de prueba:</strong> Escribe mensajes como si fueras un usuario de WhatsApp. El bot respondera exactamente como lo haria en produccion. Revisa el panel derecho para ver la logica interna.
           </div>
         </div>
 
@@ -309,13 +387,13 @@
               <div class="chat-avatar">+</div>
               <div class="chat-header-info">
                 <div class="chat-header-name">Usuario de Prueba</div>
-                <div class="chat-header-status" id="chatStatus">en linea</div>
+                <div class="chat-header-status">en linea</div>
               </div>
               <div class="chat-header-badge badge-active" id="statusBadge">Activo</div>
             </div>
             <div class="chat-messages" id="messagesContainer">
               <div class="chat-messages-inner" id="messagesWrapper">
-                <!-- Messages will appear here -->
+                <!-- Messages appear here -->
               </div>
               <div class="typing-indicator" id="typingIndicator">
                 <div class="typing-bubble">
@@ -328,12 +406,34 @@
               </div>
             </div>
             <div class="quick-replies" id="quickReplies">
-              <button class="quick-reply" onclick="sendQuickReply('Hola')">Hola</button>
-              <button class="quick-reply" onclick="sendQuickReply('Cuanto cuesta')">Cuanto cuesta</button>
-              <button class="quick-reply" onclick="sendQuickReply('Que actividades hay')">Actividades</button>
-              <button class="quick-reply" onclick="sendQuickReply('Quiero inscribirme')">Quiero inscribirme</button>
-              <button class="quick-reply" onclick="sendQuickReply('Donde estan ubicados')">Ubicación</button>
-              <button class="quick-reply" onclick="sendQuickReply('Gracias')">Gracias</button>
+              <button class="quick-reply" onclick="sendQuickReply('Hola')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Hola
+              </button>
+              <button class="quick-reply" onclick="sendQuickReply('Membresias y precios')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Membresias
+              </button>
+              <button class="quick-reply" onclick="sendQuickReply('Que actividades hay')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Actividades
+              </button>
+              <button class="quick-reply" onclick="sendQuickReply('Quiero ser miembro')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Ser miembro
+              </button>
+              <button class="quick-reply" onclick="sendQuickReply('Donde estan ubicados')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Ubicacion
+              </button>
+              <button class="quick-reply" onclick="sendQuickReply('Proximos eventos')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Eventos
+              </button>
+              <button class="quick-reply" onclick="sendQuickReply('Gracias')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                Gracias
+              </button>
             </div>
             <div class="chat-input-area">
               <div class="chat-input-wrapper">
@@ -355,7 +455,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-                Estado de la Conversación
+                Estado de la Conversacion
               </div>
               <div class="debug-row">
                 <span class="debug-label">Total de mensajes</span>
@@ -378,7 +478,7 @@
                 <span class="debug-value normal" id="debugInterested">No</span>
               </div>
               <div class="debug-row">
-                <span class="debug-label">Último keyword</span>
+                <span class="debug-label">Ultimo keyword</span>
                 <span class="debug-value" id="debugLastKeyword">Ninguno</span>
               </div>
               <div class="debug-row">
@@ -387,13 +487,13 @@
               </div>
             </div>
 
-            <!-- Bot Logic -->
+            <!-- Bot Logic Log -->
             <div class="debug-card">
               <div class="debug-card-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
                 </svg>
-                Lógica del Bot
+                Logica del Bot
               </div>
               <div class="debug-log" id="debugLog">
                 <div class="debug-log-entry">
@@ -407,26 +507,26 @@
               <div class="debug-card-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-                  <polyline points="10 9 9 9 8 9"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
                 </svg>
                 Keywords Detectadas
               </div>
-              <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;" id="debugKeywords">
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">precio</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">costo</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">actividad</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">instalacion</span>
-                <span class="debug-badge" style="background: rgba(200,164,92,0.15); color: var(--gold);">inscribir</span>
-                <span class="debug-badge" style="background: rgba(200,164,92,0.15); color: var(--gold);">reservar</span>
-                <span class="debug-badge" style="background: rgba(200,164,92,0.15); color: var(--gold);">interesa</span>
-                <span class="debug-badge" style="background: rgba(200,164,92,0.15); color: var(--gold);">quiero</span>
-                <span class="debug-badge" style="background: rgba(200,164,92,0.15); color: var(--gold);">asesor</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">fecha</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">seguridad</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">edad</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">ubicacion</span>
-                <span class="debug-badge" style="background: rgba(122,158,126,0.15); color: var(--sage);">gracias</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="debugKeywords">
+                <span class="debug-keyword-chip">precio</span>
+                <span class="debug-keyword-chip">costo</span>
+                <span class="debug-keyword-chip">membresia</span>
+                <span class="debug-keyword-chip">actividad</span>
+                <span class="debug-keyword-chip">instalacion</span>
+                <span class="debug-keyword-chip">inscribir</span>
+                <span class="debug-keyword-chip">reservar</span>
+                <span class="debug-keyword-chip">interesa</span>
+                <span class="debug-keyword-chip">quiero</span>
+                <span class="debug-keyword-chip">asesor</span>
+                <span class="debug-keyword-chip">fecha</span>
+                <span class="debug-keyword-chip">seguridad</span>
+                <span class="debug-keyword-chip">edad</span>
+                <span class="debug-keyword-chip">ubicacion</span>
+                <span class="debug-keyword-chip">gracias</span>
               </div>
             </div>
           </div>
@@ -436,126 +536,156 @@
   </div>
 
   <script>
-    // ==================== BOT LOGIC (replicated from webhook.js) ====================
+    // ==================== BOT RESPONSES (CORRECTAS) ====================
     const BOT_RESPONSES = {
-      price: `Nuestras tarifas para la temporada 2025 son:
+      price: `*💰 Membresias Campamento Onawa*
 
-3 dias: $7,000 MXN
-1 semana: $14,000 MXN
-2 semanas: $25,000 MXN
-3 semanas: $32,000 MXN
+Nuestras membresias te garantizan acceso al club deportivo los 365 dias del ano, de 8:00 am a 6:00 pm.
 
-Incluye alojamiento, alimentacion y todas las actividades.
-Descuento del 10% por inscripcion temprana.
+*Nivel Plata:* $14,950 - 10 anos de acceso - 10% descuento base
+*Nivel Oro:* $29,560 - 25 anos de acceso - 15% descuento base
+*Nivel Platino:* $58,200 - 50 anos de acceso - 20% descuento base
+*Nivel Diamante:* $117,640 - 100 anos de acceso - 25% descuento base
 
-Quieres que un asesor te contacte para mas detalles?`,
+Cuota de mantenimiento anual: $600 por beneficiario, $300 por familiar registrado.
+Todas las membresias son transferibles, vendibles y heredables.
 
-      activities: `En Campamento Onawa ofrecemos:
+Al adquirir tu membresia en preventa, obtienes el *Certificado de Miembro Fundador* y tu primer pago de mantenimiento comienza hasta enero de 2027.
 
-- Kayak y paddleboard
-- Natacion en lago
-- Vela y windsurf
-- Escalada en roca
-- Senderismo guiado
-- Talleres de supervivencia
-- Fotografia de naturaleza
-- Yoga al amanecer
-- Fogata nocturna con historias
+El descuento de tu nivel se aplica en mantenimiento, consumo, atracciones y servicios.
 
-Todas las actividades incluyen equipo y guias certificados.
+¿Te gustaria que un asesor te contacte para finalizar tu proceso?`,
+
+      activities: `*🏊 Actividades Campamento Onawa*
+
+*Deportes y Aventura:*
+Exatlon (campo de obstaculos)
+Tiro con arco y tiro con hacha
+Gotcha
+Cancha de futbol
+Senderismo entre pinos y encinos
+
+*Naturaleza y Exploracion:*
+Area de campamentos en el bosque
+Lago natural (peces, tortugas, ranas)
+Granja didactica
+Paseo a caballo por senderos
+
+*Juegos y Recreacion:*
+Minigolf
+Juegos gigantes (ajedrez, domino, jenga)
+Aqua Esferas
+Area infantil
+Brincolines
+Area de hamacas
+
+*Servicios Actuales:*
+Restaurante y Salon de Eventos (operando al 50%)
+Estacionamiento y sanitarios
+
+*Próximas etapas:* Tirolesas, muro de escalar, padel, tenis, tren, ciclismo de montaña y albercas.
 
 Te interesa alguna actividad en particular?`,
 
-      facilities: `Nuestras instalaciones:
+      facilities: `*🏡 Instalaciones Campamento Onawa*
 
-- 10 hectareas de bosque privado
-- Lago natural para natacion
-- Cabanas con vista al lago
-- Zona de camping
-- Comedor con chef
-- Sala de juegos
-- Enfermeria 24h
-- Areas de fogata
+Actualmente contamos con:
 
-Todo en un entorno natural y seguro.
+• Restaurante y Salon de Eventos
+• Area de campamentos
+• Lago natural
+• Granja didactica
+• Cancha de futbol
+• Minigolf
+• Campo de obstaculos (Exatlon)
+• Estacionamiento
+• Sanitarios
 
-Te gustaria reservar una visita?`,
+*Próximas etapas de construccion:*
+Cabañas y albercas
 
-      advisor: `Perfecto! Te conecto con uno de nuestros asesores para atenderte personalmente.
+Todo en un entorno natural y seguro en el bosque de Villa del Carbon.
 
-El asesor te contactara pronto para ayudarte con tu reserva y resolver todas tus dudas.
+Te gustaria agendar una visita familiar?`,
+
+      advisor: `¡Excelente eleccion!
+
+Para finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te comunicare ahora mismo con nuestro Coordinador de Atencion Personalizada.
+
+Puedes escribirle directamente aqui:
+https://wa.me/525530086410
 
 Mientras tanto, puedes seguir preguntandome lo que necesites.`,
 
-      dates: `La temporada 2025 sera del 30 de junio al 20 de julio.
+      dates: `*📆 Fechas y Acceso*
 
-Tambien tenemos fines de semana durante todo el año:
-- Sabados y domingos
-- Puentes festivos
+Campamento Onawa esta abierto los *365 dias del ano* en un horario continuo de 8:00 am a 6:00 pm.
 
-Inscripciones abiertas desde marzo.
+*Beneficios de Preventa:*
+Al adquirir tu membresia hoy, obtienes el Certificado de Miembro Fundador y tu primer pago de mantenimiento comienza hasta *enero de 2027*.
 
-Te gustaria reservar para alguna fecha especifica?`,
+*Próximos Eventos Confirmados:*
+• 30 de mayo de 2026: Inauguracion oficial del Restaurante
+• 8 y 9 de agosto de 2026: Gran Campamento Familiar (dos dias de aventura en el bosque - cupo limitado)
 
-      security: `Tu seguridad es nuestra prioridad:
+Te gustaria reservar para algun evento?`,
 
-- Vigilancia 24 horas
-- Enfermera permanente
-- Seguro de accidentes incluido
-- Protocolos de emergencia
-- Personal certificado en primeros auxilios
-- Areas delimitadas y seguras
-- Comunicacion directa con padres
+      security: `*🛡️ Seguridad en Campamento Onawa*
 
-Informamos a los padres de cualquier incidente inmediatamente.
+Campamento Onawa esta disenado para ofrecerte un espacio sano y un entorno completamente seguro para disfrutar de actividades al aire libre en compania de toda la familia.
+
+Nuestra vision es ser reconocidos como el mejor espacio de la zona por nuestro compromiso con la seguridad y el medio ambiente.
+
+*Próximas mejoras:*
+Como parte de nuestra Etapa 2 de construccion (2026-2027), integraremos una enfermeria a nuestras instalaciones.
 
 Tienes alguna preocupacion especifica?`,
 
-      requirements: `Requisitos para participar:
+      requirements: `*📄 Requisitos para Campamento Onawa*
 
-- Edades: 6 a 17 anos
-- Certificado medico vigente
-- Copia de acta de nacimiento
-- Contacto de emergencia
-- Autorizacion de padres/tutores
+En Campamento Onawa *no tenemos limite de edad*. Somos un club deportivo campestre disenado para *toda la familia*.
 
-No se requiere experiencia previa en actividades al aire libre.
+El unico requisito para disfrutar de nuestras instalaciones y actividades es adquirir cualquiera de nuestras membresias a largo plazo:
+• Plata
+• Oro
+• Platino
+• Diamante
 
-Te gustaria que te enviemos la lista completa de documentos?`,
+Las cuales te permiten registrar a tus familiares.
 
-      location: `Campamento Onawa se encuentra en:
+Ademas, se debe cubrir una cuota de mantenimiento anual por cada beneficiario y familiar registrado.
 
-Valle de Bravo, Estado de Mexico
-A 2 horas de la Ciudad de Mexico
+Te gustaria que te enviemos informacion detallada de las membresias?`,
 
-Transporte:
-- Salidas desde CDMX (Polanco y Santa Fe)
-- Opcion de llegar por cuenta propia
-- Estacionamiento disponible
+      location: `*📍 Ubicacion*
+
+Campamento Onawa se encuentra en el corazon del bosque de *Villa del Carbon, Estado de Mexico*.
+
+A tan solo *2 km del centro del pueblo magico*.
 
 Te envio la ubicacion exacta por WhatsApp?
 
-O prefieres que un asesor te explique las opciones de transporte?`,
+O prefieres que un asesor te explique las mejores rutas para llegar?`,
 
-      thanks: `De nada! Estoy aqui para ayudarte.
+      thanks: `¡Gracias a ti por tu interes en Campamento Onawa!
 
-Si tienes mas preguntas sobre Campamento Onawa, no dudes en escribirme.
+Recuerda que actualmente estamos en etapa de *preventa*, por lo que es el mejor momento para asegurar tus beneficios exclusivos de *Miembro Fundador*.
 
-Tambien puedo conectarte con un asesor si necesitas informacion mas detallada o quieres hacer una reserva.
+Si mas adelante deseas agendar una visita familiar a nuestras instalaciones en el bosque de Villa del Carbon o hablar con uno de nuestros asesores, aqui estare para ayudarte.
 
-Que tengas un excelente dia!`,
+¡Que tengas un excelente dia!`,
 
-      welcome: `Hola! Bienvenido a Campamento Onawa.
+      welcome: `¡Hola! 👋
 
-Soy tu asistente virtual y estoy aqui para ayudarte con informacion sobre:
+Soy el asistente de *Campamento Onawa*, un club deportivo 100% mexicano en armonia con la naturaleza.
 
-- Precios y temporadas
-- Actividades disponibles
-- Instalaciones
-- Fechas de inscripcion
-- Requisitos y edades
-- Ubicacion y transporte
-- Seguridad
+Puedo ayudarte con:
+
+• *Preventa y Beneficios* (Escenario A)
+• *Informacion de Membresias* (Escenario B)
+• *Actividades Actuales* (Escenario C)
+• *Próximos Eventos* (Escenario D)
+• *Hablar con un Asesor* (Escenario E)
 
 En que puedo ayudarte hoy?`
     };
@@ -564,21 +694,57 @@ En que puedo ayudarte hoy?`
 
     function getBotResponse(text) {
       const lower = text.toLowerCase();
-      if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto')) return { type: 'price', response: BOT_RESPONSES.price, keywords: ['precio', 'costo', 'cuanto'] };
-      if (lower.includes('actividad')) return { type: 'activities', response: BOT_RESPONSES.activities, keywords: ['actividad'] };
-      if (lower.includes('instalacion')) return { type: 'facilities', response: BOT_RESPONSES.facilities, keywords: ['instalacion'] };
-      if (lower.includes('inscribir') || lower.includes('reservar') || lower.includes('interesa') || lower.includes('quiero') || lower.includes('asesor')) return { type: 'advisor', response: BOT_RESPONSES.advisor, keywords: ['inscribir', 'reservar', 'interesa', 'quiero', 'asesor'] };
-      if (lower.includes('fecha') || lower.includes('cuando')) return { type: 'dates', response: BOT_RESPONSES.dates, keywords: ['fecha', 'cuando'] };
-      if (lower.includes('seguridad')) return { type: 'security', response: BOT_RESPONSES.security, keywords: ['seguridad'] };
-      if (lower.includes('edad') || lower.includes('requisito')) return { type: 'requirements', response: BOT_RESPONSES.requirements, keywords: ['edad', 'requisito'] };
-      if (lower.includes('ubicacion') || lower.includes('donde')) return { type: 'location', response: BOT_RESPONSES.location, keywords: ['ubicacion', 'donde'] };
-      if (lower.includes('gracias') || lower.includes('adios')) return { type: 'thanks', response: BOT_RESPONSES.thanks, keywords: ['gracias', 'adios'] };
-      return { type: 'welcome', response: BOT_RESPONSES.welcome, keywords: [] };
+      if (lower.includes('precio') || lower.includes('costo') || lower.includes('cuanto') || lower.includes('membresia')) return { type: 'Membresias y Precios', response: BOT_RESPONSES.price, keywords: ['precio', 'costo', 'cuanto', 'membresia'] };
+      if (lower.includes('actividad')) return { type: 'Actividades', response: BOT_RESPONSES.activities, keywords: ['actividad'] };
+      if (lower.includes('instalacion')) return { type: 'Instalaciones', response: BOT_RESPONSES.facilities, keywords: ['instalacion'] };
+      if (lower.includes('inscribir') || lower.includes('reservar') || lower.includes('interesa') || lower.includes('quiero') || lower.includes('asesor')) return { type: 'Asesor / Inscripcion', response: BOT_RESPONSES.advisor, keywords: ['inscribir', 'reservar', 'interesa', 'quiero', 'asesor'] };
+      if (lower.includes('fecha') || lower.includes('cuando') || lower.includes('evento')) return { type: 'Fechas y Eventos', response: BOT_RESPONSES.dates, keywords: ['fecha', 'cuando', 'evento'] };
+      if (lower.includes('seguridad')) return { type: 'Seguridad', response: BOT_RESPONSES.security, keywords: ['seguridad'] };
+      if (lower.includes('edad') || lower.includes('requisito')) return { type: 'Requisitos', response: BOT_RESPONSES.requirements, keywords: ['edad', 'requisito'] };
+      if (lower.includes('ubicacion') || lower.includes('donde')) return { type: 'Ubicacion', response: BOT_RESPONSES.location, keywords: ['ubicacion', 'donde'] };
+      if (lower.includes('gracias') || lower.includes('adios')) return { type: 'Despedida', response: BOT_RESPONSES.thanks, keywords: ['gracias', 'adios'] };
+      return { type: 'Bienvenida', response: BOT_RESPONSES.welcome, keywords: [] };
     }
 
     function checkEscalation(text) {
       const lower = text.toLowerCase();
       return ESCALATION_KEYWORDS.some(k => lower.includes(k));
+    }
+
+    // ==================== FORMAT WHATSAPP TEXT ====================
+    function parseWhatsAppFormat(text) {
+      let html = escapeHtml(text);
+      // Bold: *text* -> <strong>text</strong>
+      html = html.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+      // Lists: • item -> <li>item</li>
+      // Convert lines starting with • into list items
+      const lines = html.split('\n');
+      let result = [];
+      let inList = false;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.trim().startsWith('•')) {
+          if (!inList) {
+            result.push('<ul style="margin:8px 0;padding-left:20px;">');
+            inList = true;
+          }
+          const itemText = line.trim().substring(1).trim();
+          result.push('<li style="margin-bottom:4px;">' + itemText + '</li>');
+        } else {
+          if (inList) {
+            result.push('</ul>');
+            inList = false;
+          }
+          result.push(line);
+        }
+      }
+      if (inList) result.push('</ul>');
+      html = result.join('\n');
+      // URLs -> clickable links
+      html = html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--forest-light);text-decoration:underline;font-weight:600;">$1</a>');
+      // Line breaks -> <br>
+      html = html.replace(/\n/g, '<br>');
+      return html;
     }
 
     // ==================== SIMULATOR STATE ====================
@@ -611,12 +777,12 @@ En que puedo ayudarte hoy?`
       const wrapper = document.getElementById('messagesWrapper');
       if (messages.length === 0) {
         wrapper.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; color: #999;">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px; opacity: 0.4; color: var(--sage);">
+          <div class="chat-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
             </svg>
-            <div style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: var(--text-light); margin-bottom: 8px;">Simulador de WhatsApp</div>
-            <div style="font-size: 14px; color: var(--text-muted);">Escribe un mensaje o usa los botones rapidos para probar el bot</div>
+            <div class="chat-empty-title">Simulador de WhatsApp</div>
+            <div class="chat-empty-text">Escribe un mensaje o usa los botones rapidos para probar el bot de Campamento Onawa</div>
           </div>
         `;
         return;
@@ -632,10 +798,11 @@ En que puedo ayudarte hoy?`
           lastDate = msgDate;
           dateSeparator = `<div class="wa-date-separator"><span>${msgDate}</span></div>`;
         }
+        const content = isInbound ? escapeHtml(msg.content) : parseWhatsAppFormat(msg.content);
         return `${dateSeparator}
           <div class="wa-message ${isInbound ? 'inbound' : 'outbound'}">
             <div class="wa-message-bubble">
-              <div class="wa-message-content">${escapeHtml(msg.content)}</div>
+              <div class="wa-message-content">${content}</div>
               <div class="wa-message-time">
                 ${time}
                 ${!isInbound ? '<span class="wa-message-status">✓✓</span>' : ''}
@@ -700,41 +867,31 @@ En que puedo ayudarte hoy?`
       const input = document.getElementById('messageInput');
       const text = input.value.trim();
       if (!text) return;
-
       input.value = '';
 
-      // Add user message
       const now = new Date();
       messages.push({ direction: 'inbound', content: text, timestamp: now });
       renderMessages();
 
-      // Check bot response
       const botResult = getBotResponse(text);
-      lastKeyword = botResult.keywords.length > 0 ? botResult.keywords.join(', ') : 'Ninguno (default)';
+      lastKeyword = botResult.keywords.length > 0 ? botResult.keywords.join(', ') : 'Ninguno (fallback)';
       lastResponseType = botResult.type;
 
-      // Check escalation
       const shouldEscalate = checkEscalation(text);
       if (shouldEscalate && !isEscalated) {
         isEscalated = true;
         isInterested = true;
       }
 
-      // Show typing
       showTyping();
-
-      // Delay response (simulates real bot delay)
-      const delay = Math.min(1000 + Math.random() * 1000, 2000);
+      const delay = Math.min(800 + Math.random() * 800, 1600);
       await new Promise(r => setTimeout(r, delay));
-
       hideTyping();
 
-      // Add bot response
       messages.push({ direction: 'outbound', content: botResult.response, timestamp: new Date() });
       renderMessages();
       updateDebugPanel();
 
-      // Log
       let logEntry = '';
       if (botResult.keywords.length > 0) {
         logEntry += `Keywords: <span class="debug-log-keyword">${botResult.keywords.join(', ')}</span>`;
@@ -745,7 +902,7 @@ En que puedo ayudarte hoy?`
       if (shouldEscalate && !isEscalated) {
         logEntry += ` | <span class="debug-log-escalation">ESCALADO</span>`;
       } else if (shouldEscalate) {
-        logEntry += ` | <span class="debug-log-escalation">ya estaba escalado</span>`;
+        logEntry += ` | <span class="debug-log-escalation">ya escalado</span>`;
       }
       addDebugLog(logEntry);
     }
@@ -765,12 +922,11 @@ En que puedo ayudarte hoy?`
       updateDebugPanel();
       document.getElementById('debugLog').innerHTML = `
         <div class="debug-log-entry">
-          <span class="debug-log-time">${formatTime(new Date())}</span> Conversacion reseteada
+          <span class="debug-log-time">${formatTime(new Date())}</span> <span class="debug-log-info">Conversacion reseteada</span>
         </div>
       `;
     }
 
-    // Close sidebar on outside click (mobile)
     document.addEventListener('click', function(e) {
       const sidebar = document.getElementById('sidebar');
       const menuToggle = document.querySelector('.menu-toggle');
@@ -779,7 +935,6 @@ En que puedo ayudarte hoy?`
       }
     });
 
-    // Initial render
     renderMessages();
     updateDebugPanel();
   </script>
