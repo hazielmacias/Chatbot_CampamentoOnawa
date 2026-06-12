@@ -5,63 +5,57 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL")
 }
 
 model Contact {
-  id             String   @id @default(cuid())
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   phone          String   @unique
   name           String?
-  firstContactAt DateTime @default(now())
-  lastMessageAt  DateTime @updatedAt
+  firstContactAt DateTime @default(now()) @map("first_contact_at")
+  lastMessageAt  DateTime @default(now()) @map("last_message_at")
   status         String   @default("active")
-  isEscalated    Boolean  @default(false)
-  isInterested   Boolean  @default(false)
+  isEscalated    Boolean  @default(false) @map("is_escalated")
+  isInterested   Boolean  @default(false) @map("is_interested")
   messages       Message[]
   escalations    Escalation[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @map("updated_at")
 
   @@map("onawa_contacts")
-  @@index([phone])
-  @@index([lastMessageAt])
 }
 
 model Message {
-  id          String   @id @default(cuid())
-  contactId   String
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  contactId   String   @map("contact_id") @db.Uuid
   contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
   direction   String
   content     String
-  messageType String   @default("text")
+  messageType String   @default("text") @map("message_type")
   timestamp   DateTime @default(now())
-  createdAt   DateTime @default(now())
+  createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("onawa_messages")
-  @@index([contactId])
-  @@index([timestamp])
 }
 
 model Escalation {
-  id              String   @id @default(cuid())
-  contactId       String
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  contactId       String   @map("contact_id") @db.Uuid
   contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
   reason          String
-  escalatedAt     DateTime @default(now())
-  advisorNotified Boolean  @default(false)
-  advisorPhone    String?
-  createdAt       DateTime @default(now())
+  escalatedAt     DateTime @default(now()) @map("escalated_at")
+  advisorNotified Boolean  @default(false) @map("advisor_notified")
+  advisorPhone    String?  @map("advisor_phone")
+  createdAt       DateTime @default(now()) @map("created_at")
 
   @@map("onawa_escalations")
-  @@index([contactId])
 }
 
 model DashboardUser {
-  id           String   @id @default(cuid())
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   username     String   @unique
-  passwordHash String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
 
   @@map("onawa_dashboard_users")
 }
