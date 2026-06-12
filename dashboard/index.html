@@ -3,28 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campamento Onawa - Dashboard</title>
+  <title>Campamento Onawa - Dashboard de Conversaciones</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --forest: #1a3a2a;
-      --forest-light: #2d5a3d;
-      --forest-dark: #0f2a1a;
-      --sage: #8fb98f;
-      --sage-light: #c4e0c4;
-      --sand: #f5f0e8;
-      --sand-dark: #e8e0d0;
-      --coral: #d4735e;
-      --coral-light: #e8a090;
-      --earth: #8b6f47;
-      --text: #2c3e2c;
-      --text-light: #5a6b5a;
-      --text-muted: #8a9a8a;
-      --white: #ffffff;
-      --shadow: rgba(26, 58, 42, 0.08);
-      --shadow-lg: rgba(26, 58, 42, 0.15);
+      --primary: #1a4d2e;
+      --primary-dark: #0f3d1f;
+      --primary-light: #2d6a4f;
+      --accent: #c8a45c;
+      --accent-light: #e8d5a3;
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --success: #059669;
+      --success-light: #d1fae5;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --error: #dc2626;
+      --error-light: #fee2e2;
+      --info: #2563eb;
+      --info-light: #dbeafe;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 8px;
+      --radius-lg: 12px;
     }
 
     * {
@@ -34,336 +43,349 @@
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--sand);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
     }
 
-    /* Nature Background Pattern */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        radial-gradient(ellipse at 20% 80%, rgba(143, 185, 143, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(212, 115, 94, 0.08) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
     }
 
     /* Header */
     .header {
-      background: var(--forest);
-      color: var(--white);
-      padding: 2rem 2rem 1.5rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 20px var(--shadow-lg);
-    }
-
-    .header::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: var(--sand);
-      clip-path: ellipse(60% 100% at 50% 100%);
-    }
-
-    .header-inner {
-      max-width: 1400px;
-      margin: 0 auto;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: relative;
-      z-index: 2;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
     }
 
-    .logo {
+    .header-brand {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
 
-    .logo-icon {
-      font-size: 2.5rem;
-      animation: sway 3s ease-in-out infinite;
-    }
-
-    @keyframes sway {
-      0%, 100% { transform: rotate(-5deg); }
-      50% { transform: rotate(5deg); }
-    }
-
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      line-height: 1.2;
-    }
-
-    .logo-subtitle {
-      font-size: 0.85rem;
-      opacity: 0.8;
-      font-weight: 400;
-      margin-top: 0.2rem;
-    }
-
-    .header-badge {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      padding: 0.75rem 1.5rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
+    .header-logo {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: var(--radius);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      justify-content: center;
     }
 
-    .live-dot {
+    .header-logo svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .header-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .header-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: var(--success-light);
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--success);
+    }
+
+    .status-dot {
       width: 8px;
       height: 8px;
-      background: var(--sage);
+      background: var(--success);
       border-radius: 50%;
       animation: pulse 2s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.2); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
-    /* Main Container */
-    .container {
+    /* Layout */
+    .main {
       max-width: 1400px;
       margin: 0 auto;
       padding: 2rem;
-      position: relative;
-      z-index: 1;
     }
 
-    /* Stats Cards */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
+    /* Stats Grid */
+    .stats-section {
       margin-bottom: 2rem;
     }
 
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
     .stat-card {
-      background: var(--white);
-      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       padding: 1.5rem;
-      box-shadow: 0 4px 15px var(--shadow);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--sand-dark);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
     }
 
     .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px var(--shadow-lg);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
     }
 
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--sage);
-      border-radius: 20px 20px 0 0;
-    }
-
-    .stat-card.conversations::before { background: var(--sage); }
-    .stat-card.messages::before { background: var(--coral); }
-    .stat-card.escalated::before { background: var(--earth); }
-    .stat-card.interested::before { background: var(--forest-light); }
-
-    .stat-icon {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-      opacity: 0.8;
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
     }
 
     .stat-label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 500;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .stat-icon.primary {
+      background: var(--primary-light);
+    }
+
+    .stat-icon.primary svg {
+      fill: white;
+    }
+
+    .stat-icon.accent {
+      background: var(--accent-light);
+    }
+
+    .stat-icon.accent svg {
+      fill: var(--accent);
+    }
+
+    .stat-icon.info {
+      background: var(--info-light);
+    }
+
+    .stat-icon.info svg {
+      fill: var(--info);
+    }
+
+    .stat-icon.warning {
+      background: var(--warning-light);
+    }
+
+    .stat-icon.warning svg {
+      fill: var(--warning);
     }
 
     .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--forest);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-primary);
       line-height: 1;
-      font-family: 'Playfair Display', serif;
     }
 
-    .stat-trend {
+    .stat-meta {
       margin-top: 0.75rem;
-      font-size: 0.8rem;
+      font-size: 0.875rem;
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
     }
 
     /* Section Title */
     .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      color: var(--forest);
-      margin-bottom: 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
 
-    .section-title .icon {
-      font-size: 1.2rem;
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: var(--primary);
+      border-radius: 2px;
     }
 
     /* Filters */
-    .filters {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 1.25rem 1.5rem;
+    .filters-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.5rem;
       margin-bottom: 1.5rem;
       display: flex;
       gap: 1rem;
       align-items: center;
       flex-wrap: wrap;
-      box-shadow: 0 2px 10px var(--shadow);
-      border: 1px solid var(--sand-dark);
+      box-shadow: var(--shadow-sm);
     }
 
-    .filters input {
+    .filters-bar input {
       flex: 1;
-      min-width: 200px;
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--sand-dark);
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
+      min-width: 250px;
+      padding: 0.625rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Source Sans 3', sans-serif;
       font-size: 0.95rem;
-      color: var(--text);
+      color: var(--text-primary);
+      background: var(--bg);
       transition: all 0.2s ease;
-      background: var(--sand);
     }
 
-    .filters input:focus {
+    .filters-bar input:focus {
       outline: none;
-      border-color: var(--sage);
-      background: var(--white);
+      border-color: var(--primary);
+      background: var(--surface);
     }
 
-    .filters select {
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--sand-dark);
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
+    .filters-bar input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .filters-bar select {
+      padding: 0.625rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Source Sans 3', sans-serif;
       font-size: 0.95rem;
-      color: var(--text);
-      background: var(--sand);
+      color: var(--text-primary);
+      background: var(--surface);
       cursor: pointer;
       transition: all 0.2s ease;
+      min-width: 150px;
     }
 
-    .filters select:focus {
+    .filters-bar select:focus {
       outline: none;
-      border-color: var(--sage);
-      background: var(--white);
+      border-color: var(--primary);
     }
 
-    .filters button {
-      padding: 0.75rem 1.5rem;
-      background: var(--forest);
-      color: var(--white);
+    .filters-bar button {
+      padding: 0.625rem 1.5rem;
+      background: var(--primary);
+      color: white;
       border: none;
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
+      border-radius: var(--radius);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.875rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .filters button:hover {
-      background: var(--forest-light);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(26, 58, 42, 0.2);
+    .filters-bar button:hover {
+      background: var(--primary-dark);
+      box-shadow: var(--shadow);
     }
 
-    /* Conversations Table */
-    .conversations-card {
-      background: var(--white);
-      border-radius: 20px;
+    /* Table */
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: 0 4px 15px var(--shadow);
-      border: 1px solid var(--sand-dark);
+      box-shadow: var(--shadow-sm);
     }
 
     .table-header {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
       padding: 1rem 1.5rem;
-      background: var(--sand);
-      border-bottom: 2px solid var(--sand-dark);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
     }
 
-    .conversation-row {
+    .table-row {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--sand-dark);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
       align-items: center;
     }
 
-    .conversation-row:hover {
-      background: var(--sand);
-      transform: translateX(5px);
+    .table-row:hover {
+      background: var(--bg);
+      border-left: 3px solid var(--primary);
     }
 
-    .conversation-row:last-child {
+    .table-row:last-child {
       border-bottom: none;
     }
 
-    .phone-cell {
+    .cell-phone {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
 
     .phone-number {
-      font-weight: 600;
-      color: var(--forest);
+      font-weight: 700;
       font-size: 1rem;
+      color: var(--text-primary);
+      font-family: 'Montserrat', sans-serif;
     }
 
     .phone-meta {
@@ -373,38 +395,39 @@
 
     .badge {
       display: inline-block;
-      padding: 0.5rem 1rem;
+      padding: 0.375rem 0.875rem;
       border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
     .badge-escalated {
-      background: rgba(212, 115, 94, 0.15);
-      color: var(--coral);
+      background: var(--error-light);
+      color: var(--error);
+      border: 1px solid var(--error-light);
     }
 
     .badge-interested {
-      background: rgba(26, 58, 42, 0.1);
-      color: var(--forest);
+      background: var(--info-light);
+      color: var(--info);
+      border: 1px solid var(--info-light);
     }
 
     .badge-active {
-      background: rgba(143, 185, 143, 0.2);
-      color: var(--forest-light);
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid var(--success-light);
     }
 
-    .message-count {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .cell-count {
       font-size: 0.95rem;
-      color: var(--text-light);
+      color: var(--text-secondary);
+      font-weight: 600;
     }
 
-    .date-cell {
+    .cell-date {
       font-size: 0.85rem;
       color: var(--text-muted);
     }
@@ -416,15 +439,49 @@
       color: var(--text-muted);
     }
 
-    .empty-state-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      opacity: 0.5;
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 1.5rem;
+      opacity: 0.3;
+      stroke: var(--text-muted);
+    }
+
+    .empty-state-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
     }
 
     .empty-state-text {
-      font-size: 1.1rem;
-      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 3rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     /* Modal */
@@ -435,111 +492,96 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(26, 58, 42, 0.5);
-      backdrop-filter: blur(5px);
+      background: rgba(30, 41, 59, 0.6);
       z-index: 1000;
-      animation: fadeIn 0.3s ease;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
     }
 
     .modal-overlay.active {
       display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     .modal {
-      background: var(--white);
-      border-radius: 24px;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
       width: 90%;
-      max-width: 600px;
-      max-height: 80vh;
+      max-width: 650px;
+      max-height: 85vh;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(26, 58, 42, 0.3);
-      animation: slideUp 0.3s ease;
-      border: 1px solid var(--sand-dark);
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
     }
 
     .modal-header {
-      padding: 1.5rem 2rem;
-      border-bottom: 2px solid var(--sand-dark);
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--sand);
+      background: var(--bg);
     }
 
     .modal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      color: var(--forest);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
     }
 
     .modal-close {
       background: none;
       border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: color 0.2s ease;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 50%;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all 0.2s ease;
+      color: var(--text-muted);
     }
 
     .modal-close:hover {
-      color: var(--coral);
-      background: rgba(212, 115, 94, 0.1);
+      background: var(--error-light);
+      color: var(--error);
     }
 
     .modal-body {
-      padding: 2rem;
+      padding: 1.5rem;
       overflow-y: auto;
-      max-height: 60vh;
+      max-height: 65vh;
     }
 
     .message {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       padding: 1rem 1.25rem;
-      border-radius: 16px;
-      max-width: 85%;
+      border-radius: var(--radius);
+      max-width: 90%;
       position: relative;
-      animation: messageIn 0.3s ease;
-    }
-
-    @keyframes messageIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      border: 1px solid var(--border);
     }
 
     .message.inbound {
-      background: var(--sand);
+      background: var(--bg);
       margin-left: 0;
-      border-left: 4px solid var(--sage);
+      border-left: 3px solid var(--primary);
     }
 
     .message.outbound {
-      background: var(--forest);
-      color: var(--white);
+      background: var(--primary);
+      color: white;
       margin-left: auto;
-      border-right: 4px solid var(--sage-light);
+      border-left: 3px solid var(--accent);
     }
 
     .message-label {
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       margin-bottom: 0.5rem;
       opacity: 0.7;
     }
@@ -555,128 +597,137 @@
       opacity: 0.6;
       margin-top: 0.5rem;
       text-align: right;
+      font-weight: 600;
     }
 
-    /* Loading */
-    .loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      padding: 3rem;
-      color: var(--text-muted);
-    }
-
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 3px solid var(--sand-dark);
-      border-top-color: var(--forest);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .message.outbound .message-time {
+      color: rgba(255, 255, 255, 0.7);
     }
 
     /* Responsive */
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     @media (max-width: 768px) {
       .header {
-        padding: 1.5rem 1rem;
+        padding: 0 1rem;
+        height: 60px;
       }
       
-      .header-inner {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
+      .header-title {
+        font-size: 1rem;
       }
       
-      .logo-text {
-        font-size: 1.5rem;
-      }
-      
-      .container {
+      .main {
         padding: 1rem;
       }
       
       .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 1rem;
       }
       
       .stat-value {
-        font-size: 2rem;
+        font-size: 1.75rem;
       }
       
-      .table-header,
-      .conversation-row {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
+      .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filters-bar input {
+        width: 100%;
+        min-width: auto;
       }
       
       .table-header {
         display: none;
       }
       
-      .conversation-row {
+      .table-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
         padding: 1rem;
       }
       
-      .filters {
-        flex-direction: column;
+      .table-row > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
       
-      .filters input {
-        width: 100%;
+      .table-row > div::before {
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+      }
+      
+      .table-row .cell-phone::before { content: 'Teléfono: '; }
+      .table-row .cell-status::before { content: 'Estado: '; }
+      .table-row .cell-count::before { content: 'Mensajes: '; }
+      .table-row .cell-date::before { content: 'Fecha: '; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-value {
+        font-size: 1.5rem;
+      }
+      
+      .section-title {
+        font-size: 1.1rem;
       }
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <div class="header-inner">
-      <div class="logo">
-        <span class="logo-icon">🏕️</span>
-        <div>
-          <div class="logo-text">Campamento Onawa</div>
-          <div class="logo-subtitle">Panel de Monitoreo</div>
-        </div>
+    <div class="header-brand">
+      <div class="header-logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 22h20L12 2zm0 4l7 14H5l7-14z"/>
+          <path d="M12 8l-3 6h6l-3-6z"/>
+        </svg>
       </div>
-      <div class="header-badge">
-        <span class="live-dot"></span>
-        <span>En vivo</span>
+      <div>
+        <div class="header-title">Campamento Onawa</div>
+        <div class="header-subtitle">Dashboard de Conversaciones</div>
       </div>
+    </div>
+    <div class="header-status">
+      <div class="status-dot"></div>
+      <span>En vivo</span>
     </div>
   </header>
 
-  <main class="container">
-    <div class="stats-grid" id="stats">
-      <div class="loading">
-        <div class="spinner"></div>
-        <span>Cargando estadísticas...</span>
+  <main class="main">
+    <div class="stats-section">
+      <div class="stats-grid" id="stats">
+        <div class="loading">
+          <div class="spinner"></div>
+          <span>Cargando estadísticas...</span>
+        </div>
       </div>
     </div>
 
-    <h2 class="section-title">
-      <span class="icon">💬</span>
-      Conversaciones
-    </h2>
+    <h2 class="section-title">Conversaciones</h2>
 
-    <div class="filters">
+    <div class="filters-bar">
       <input type="text" id="search" placeholder="Buscar por teléfono...">
       <select id="status">
-        <option value="">Todos</option>
+        <option value="">Todos los estados</option>
         <option value="escalated">Escalados</option>
         <option value="interested">Interesados</option>
       </select>
-      <button onclick="loadConversations()">
-        <span>🔍</span>
-        Filtrar
-      </button>
+      <button onclick="loadConversations()">Filtrar</button>
     </div>
 
-    <div class="conversations-card">
+    <div class="table-container">
       <div class="table-header">
         <div>Teléfono</div>
         <div>Estado</div>
@@ -696,7 +747,12 @@
     <div class="modal">
       <div class="modal-header">
         <h2 class="modal-title" id="modalTitle">Conversación</h2>
-        <button class="modal-close" onclick="closeModal()">✕</button>
+        <button class="modal-close" onclick="closeModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
@@ -705,35 +761,51 @@
   <script>
     const API_URL = '/api/dashboard';
 
+    const SVG_ICONS = {
+      phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+      message: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+      bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+      star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+      chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
+    };
+
     async function loadStats() {
       try {
         const response = await fetch(`${API_URL}/stats`);
         const data = await response.json();
         
         const statsHtml = `
-          <div class="stat-card conversations">
-            <div class="stat-icon">📞</div>
-            <div class="stat-label">Conversaciones</div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-label">Conversaciones</div>
+              <div class="stat-icon primary">${SVG_ICONS.phone}</div>
+            </div>
             <div class="stat-value">${data.stats.totalConversations}</div>
-            <div class="stat-trend">📈 Total acumulado</div>
+            <div class="stat-meta">Total acumulado</div>
           </div>
-          <div class="stat-card messages">
-            <div class="stat-icon">💬</div>
-            <div class="stat-label">Mensajes</div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-label">Mensajes</div>
+              <div class="stat-icon accent">${SVG_ICONS.message}</div>
+            </div>
             <div class="stat-value">${data.stats.totalMessages}</div>
-            <div class="stat-trend">📈 Interacciones totales</div>
+            <div class="stat-meta">Interacciones totales</div>
           </div>
-          <div class="stat-card escalated">
-            <div class="stat-icon">🔔</div>
-            <div class="stat-label">Escalados</div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-label">Escalados</div>
+              <div class="stat-icon warning">${SVG_ICONS.bell}</div>
+            </div>
             <div class="stat-value">${data.stats.escalatedCount}</div>
-            <div class="stat-trend">📈 Derivados a asesor</div>
+            <div class="stat-meta">Derivados a asesor</div>
           </div>
-          <div class="stat-card interested">
-            <div class="stat-icon">⭐</div>
-            <div class="stat-label">Interesados</div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-label">Interesados</div>
+              <div class="stat-icon info">${SVG_ICONS.star}</div>
+            </div>
             <div class="stat-value">${data.stats.interestedCount}</div>
-            <div class="stat-trend">📈 Potenciales clientes</div>
+            <div class="stat-meta">Potenciales clientes</div>
           </div>
         `;
         
@@ -741,8 +813,13 @@
       } catch (error) {
         document.getElementById('stats').innerHTML = `
           <div class="empty-state">
-            <div class="empty-state-icon">⚠️</div>
-            <div class="empty-state-text">Error cargando estadísticas</div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="empty-state-title">Error al cargar</div>
+            <div class="empty-state-text">No se pudieron obtener las estadísticas</div>
           </div>
         `;
       }
@@ -763,11 +840,11 @@
         if (data.conversations.length === 0) {
           document.getElementById('conversations').innerHTML = `
             <div class="empty-state">
-              <div class="empty-state-icon">🌿</div>
-              <div class="empty-state-text">No hay conversaciones aún</div>
-              <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-                Cuando alguien escriba al bot, aparecerá aquí
-              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <div class="empty-state-title">Sin conversaciones</div>
+              <div class="empty-state-text">Cuando alguien escriba al bot, aparecerá aquí</div>
             </div>
           `;
           return;
@@ -780,22 +857,20 @@
                            conv.isInterested ? 'Interesado' : 'Activo';
           
           return `
-            <div class="conversation-row" onclick="showConversation('${conv.phone}')">
-              <div class="phone-cell">
+            <div class="table-row" onclick="showConversation('${conv.phone}')">
+              <div class="cell-phone">
                 <div class="phone-number">${conv.phone}</div>
-                <div class="phone-meta">${conv.messages.length} mensajes</div>
+                <div class="phone-meta">${conv.messages.length} mensajes totales</div>
               </div>
-              <div>
+              <div class="cell-status">
                 <span class="badge ${badgeClass}">${badgeText}</span>
               </div>
-              <div class="message-count">
-                <span>💬</span>
-                <span>${conv.message_count}</span>
-              </div>
-              <div class="date-cell">
+              <div class="cell-count">${conv.message_count}</div>
+              <div class="cell-date">
                 ${new Date(conv.createdAt).toLocaleDateString('es-MX', {
                   day: 'numeric',
                   month: 'short',
+                  year: 'numeric',
                   hour: '2-digit',
                   minute: '2-digit'
                 })}
@@ -808,8 +883,13 @@
       } catch (error) {
         document.getElementById('conversations').innerHTML = `
           <div class="empty-state">
-            <div class="empty-state-icon">⚠️</div>
-            <div class="empty-state-text">Error cargando conversaciones</div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div class="empty-state-title">Error al cargar</div>
+            <div class="empty-state-text">No se pudieron obtener las conversaciones</div>
           </div>
         `;
       }
@@ -820,11 +900,11 @@
         const response = await fetch(`${API_URL}/conversation?phone=${phone}`);
         const data = await response.json();
         
-        document.getElementById('modalTitle').innerText = `📱 ${phone}`;
+        document.getElementById('modalTitle').innerText = `Conversación: ${phone}`;
         
         const messagesHtml = data.contact.messages.map(msg => {
           const direction = msg.direction === 'inbound' ? 'inbound' : 'outbound';
-          const label = msg.direction === 'inbound' ? '👤 Usuario' : '🤖 Bot';
+          const label = msg.direction === 'inbound' ? 'Usuario' : 'Bot';
           
           return `
             <div class="message ${direction}">
@@ -834,6 +914,7 @@
                 ${new Date(msg.timestamp).toLocaleString('es-MX', {
                   day: 'numeric',
                   month: 'short',
+                  year: 'numeric',
                   hour: '2-digit',
                   minute: '2-digit'
                 })}
@@ -844,40 +925,41 @@
         
         document.getElementById('modalBody').innerHTML = messagesHtml || `
           <div class="empty-state">
-            <div class="empty-state-icon">💭</div>
-            <div class="empty-state-text">No hay mensajes aún</div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <div class="empty-state-title">Sin mensajes</div>
+            <div class="empty-state-text">No hay mensajes en esta conversación</div>
           </div>
         `;
         
         document.getElementById('modalOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
       } catch (error) {
-        alert('Error cargando conversación');
+        alert('Error al cargar la conversación');
       }
     }
 
     function closeModal() {
       document.getElementById('modalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
     }
 
-    // Close modal on outside click
     document.getElementById('modalOverlay').addEventListener('click', function(e) {
       if (e.target === this) {
         closeModal();
       }
     });
 
-    // Close modal on escape key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         closeModal();
       }
     });
 
-    // Initial load
     loadStats();
     loadConversations();
     
-    // Refresh every 15 seconds
     setInterval(() => {
       loadStats();
       loadConversations();
