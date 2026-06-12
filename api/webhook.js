@@ -108,7 +108,7 @@ Mientras tanto, puedo seguir respondiendo tus preguntas.`;
   }
   
   if (lower.includes('fecha') || lower.includes('cuando') || lower.includes('evento')) {
-    return `*📆 Acceso y Eventos*
+    return `*📆 Acceso y Horario*
 
 *🕗 Horario:*
 365 días del año
@@ -118,17 +118,10 @@ Mientras tanto, puedo seguir respondiendo tus preguntas.`;
 • Certificado de *Miembro Fundador*
 • Primer pago de mantenimiento: *enero 2027*
 
-*📅 Próximos Eventos Confirmados:*
+*🍽️ Inauguración del Restaurante:*
+30 de mayo de 2026
 
-*30 de mayo de 2026*
-🍽️ Inauguración oficial del Restaurante
-
-*8 y 9 de agosto de 2026*
-🏕️ Gran Campamento Familiar
-Dos días de aventura en el bosque
-*⚠️ Cupo limitado*
-
-¿Te gustaría reservar tu lugar?`;
+¿Te gustaría recibir más información?`;
   }
   
   if (lower.includes('seguridad')) {
