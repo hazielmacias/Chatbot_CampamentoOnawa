@@ -1,4 +1,4 @@
-import db from '../../src/lib/db.js';
+import pool from '../../src/lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -6,90 +6,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const weekAgo = new Date(today);
-    weekAgo.setDate(weekAgo.getDate() - 7);
+    const totalConversations = (await pool.query('SELECT COUNT(*) FROM onawa_contacts')).rows[0].count;
+    const totalMessages = (await pool.query('SELECT COUNT(*) FROM onawa_messages')).rows[0].count;
+    const escalatedCount = (await pool.query('SELECT COUNT(*) FROM onawa_contacts WHERE is_escalated = true')).rows[0].count;
+    const interestedCount = (await pool.query('SELECT COUNT(*) FROM onawa_contacts WHERE is_interested = true')).rows[0].count;
 
-    const totalConversations = await db.contact.count();
-    const totalMessages = await db.message.count();
-    const escalatedCount = await db.contact.count({
-      where: { isEscalated: true }
-    });
-    const interestedCount = await db.contact.count({
-      where: { isInterested: true }
-    });
-
-    const messagesToday = await db.message.count({
-      where: {
-        timestamp: { gte: today }
-      }
-    });
-
-    const newConversationsToday = await db.contact.count({
-      where: {
-        firstContactAt: { gte: today }
-      }
-    });
-
-    const escalationsThisWeek = await db.escalation.count({
-      where: {
-        escalatedAt: { gte: weekAgo }
-      }
-    });
-
-    const recentConversations = await db.contact.findMany({
-      orderBy: { lastMessageAt: 'desc' },
-      take: 10,
-      include: {
-        _count: {
-          select: { messages: true }
-        }
-      }
-    });
-
-    const dailyStats = [];
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      const nextDate = new Date(date);
-      nextDate.setDate(nextDate.getDate() + 1);
-      
-      const count = await db.contact.count({
-        where: {
-          firstContactAt: {
-            gte: date,
-            lt: nextDate
-          }
-        }
-      });
-      
-      dailyStats.push({
-        date: date.toISOString().split('T')[0],
-        conversations: count
-      });
-    }
+    const recentConversations = (await pool.query(
+      `SELECT c.*, COUNT(m.id) as message_count 
+       FROM onawa_contacts c 
+       LEFT JOIN onawa_messages m ON c.id = m.contact_id 
+       GROUP BY c.id 
+       ORDER BY c.last_message_at DESC 
+       LIMIT 10`
+    )).rows;
 
     return res.status(200).json({
       stats: {
-        totalConversations,
-        totalMessages,
-        escalatedCount,
-        interestedCount,
-        messagesToday,
-        newConversationsToday,
-        escalationsThisWeek
+        totalConversations: parseInt(totalConversations),
+        totalMessages: parseInt(totalMessages),
+        escalatedCount: parseInt(escalatedCount),
+        interestedCount: parseInt(interestedCount)
       },
-      recentConversations,
-      dailyStats
+      recentConversations
     });
   } catch (error) {
-    console.error('Error getting dashboard stats:', error);
-    return res.status(500).json({ 
-      error: 'Internal server error',
-      message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    });
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Database error', message: error.message });
   }
 }

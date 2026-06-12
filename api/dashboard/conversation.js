@@ -1,38 +1,33 @@
-import db from '../../src/lib/db.js';
+import pool from '../../src/lib/db.js';
 
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const { id } = req.query;
-    
     if (!id) {
       return res.status(400).json({ error: 'ID is required' });
     }
 
-    const contact = await db.contact.findUnique({
-      where: { id },
-      include: {
-        messages: {
-          orderBy: { timestamp: 'asc' }
-        },
-        escalations: {
-          orderBy: { escalatedAt: 'desc' }
-        }
-      }
-    });
+    const contact = (await pool.query(
+      'SELECT * FROM onawa_contacts WHERE id = $1',
+      [id]
+    )).rows[0];
 
     if (!contact) {
       return res.status(404).json({ error: 'Contact not found' });
     }
 
-    return res.status(200).json({ contact });
-  } catch (error) {
-    console.error('Error getting conversation details:', error);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-};
+    const messages = (await pool.query(
+      `SELECT * FROM onawa_messages WHERE contact_id = $1 ORDER BY timestamp ASC`,
+      [id]
+    )).rows;
 
-export default handler;
+    return res.status(200).json({ contact: { ...contact, messages } });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Database error', message: error.message });
+  }
+}

@@ -1,58 +1,40 @@
-import db from '../../src/lib/db.js';
+import pool from '../../src/lib/db.js';
 
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { search, status, page = '1', limit = '50' } = req.query;
-    const pageNum = parseInt(page);
-    const limitNum = parseInt(limit);
-    const skip = (pageNum - 1) * limitNum;
-
-    const where = {};
+    const { search, status } = req.query;
+    let where = 'WHERE 1=1';
     
     if (search) {
-      where.OR = [
-        { phone: { contains: search } },
-        { name: { contains: search } }
-      ];
+      where += ` AND (phone ILIKE '%${search}%' OR name ILIKE '%${search}%')`;
     }
     
     if (status === 'escalated') {
-      where.isEscalated = true;
+      where += ' AND is_escalated = true';
     } else if (status === 'interested') {
-      where.isInterested = true;
-    } else if (status === 'active') {
-      where.isEscalated = false;
+      where += ' AND is_interested = true';
     }
 
-    const [conversations, total] = await Promise.all([
-      db.contact.findMany({
-        where,
-        orderBy: { lastMessageAt: 'desc' },
-        skip,
-        take: limitNum,
-        include: {
-          _count: {
-            select: { messages: true }
-          }
-        }
-      }),
-      db.contact.count({ where })
-    ]);
+    const result = await pool.query(
+      `SELECT c.*, COUNT(m.id) as message_count 
+       FROM onawa_contacts c 
+       LEFT JOIN onawa_messages m ON c.id = m.contact_id 
+       ${where}
+       GROUP BY c.id 
+       ORDER BY c.last_message_at DESC 
+       LIMIT 50`
+    );
 
     return res.status(200).json({
-      conversations,
-      total,
-      page: pageNum,
-      pages: Math.ceil(total / limitNum)
+      conversations: result.rows,
+      total: result.rows.length
     });
   } catch (error) {
-    console.error('Error getting conversations:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Database error', message: error.message });
   }
-};
-
-export default handler;
+}

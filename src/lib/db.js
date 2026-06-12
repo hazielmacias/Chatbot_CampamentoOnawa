@@ -1,18 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import pg from 'pg';
+const { Pool } = pg;
 
-let prisma;
-
-if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient({
-    log: ['error'],
-  });
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient({
-      log: ['query', 'error', 'warn'],
-    });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
   }
-  prisma = global.prisma;
-}
+});
 
-export default prisma;
+export default pool;
