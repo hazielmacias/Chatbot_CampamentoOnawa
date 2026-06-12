@@ -1,4 +1,4 @@
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
   if (req.method === 'GET') {
@@ -27,7 +27,6 @@ const handler = async (req, res) => {
       const phone = message.from;
       const text = message.text?.body || '';
       const messageId = message.id;
-      const timestamp = parseInt(message.timestamp);
 
       console.log(`Received message from ${phone}: ${text}`);
 
@@ -42,6 +41,4 @@ const handler = async (req, res) => {
   }
 
   return res.status(405).send('Method Not Allowed');
-};
-
-export default handler;
+}
