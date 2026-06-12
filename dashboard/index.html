@@ -4,87 +4,699 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campamento Onawa - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-    .header { background: #2d6a4f; color: white; padding: 20px; text-align: center; }
-    .header h1 { font-size: 24px; margin-bottom: 5px; }
-    .header p { opacity: 0.9; font-size: 14px; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
-    .stat-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .stat-card h3 { font-size: 13px; color: #666; margin-bottom: 10px; text-transform: uppercase; }
-    .stat-card .value { font-size: 32px; font-weight: bold; color: #2d6a4f; }
-    .stat-card .label { font-size: 12px; color: #999; margin-top: 5px; }
-    .filters { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .filters input, .filters select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px; font-size: 14px; }
-    .filters button { background: #2d6a4f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px; }
-    .filters button:hover { background: #1b5a3f; }
-    .conversations { background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; }
-    .conversation-row { padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; }
-    .conversation-row:hover { background: #f9f9f9; }
-    .conversation-row:last-child { border-bottom: none; }
-    .phone { font-weight: bold; color: #333; margin-bottom: 5px; }
-    .meta { display: flex; gap: 15px; font-size: 13px; color: #666; }
-    .badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
-    .badge-escalated { background: #ffebee; color: #c62828; }
-    .badge-interested { background: #e8f5e9; color: #2e7d32; }
-    .badge-active { background: #e3f2fd; color: #1565c0; }
-    .loading { text-align: center; padding: 40px; color: #666; }
-    .error { text-align: center; padding: 40px; color: #c62828; }
-    .pagination { display: flex; justify-content: center; gap: 10px; padding: 20px; }
-    .pagination button { padding: 8px 16px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 5px; }
-    .pagination button.active { background: #2d6a4f; color: white; border-color: #2d6a4f; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
-    .modal-content { background: white; width: 90%; max-width: 600px; margin: 50px auto; border-radius: 10px; max-height: 80vh; overflow-y: auto; }
-    .modal-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .modal-body { padding: 20px; }
-    .message { margin-bottom: 15px; padding: 10px; border-radius: 8px; max-width: 80%; }
-    .message-inbound { background: #e3f2fd; margin-left: 0; }
-    .message-outbound { background: #e8f5e9; margin-left: auto; }
-    .message-time { font-size: 11px; color: #999; margin-top: 5px; }
-    .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+    :root {
+      --forest: #1a3a2a;
+      --forest-light: #2d5a3d;
+      --forest-dark: #0f2a1a;
+      --sage: #8fb98f;
+      --sage-light: #c4e0c4;
+      --sand: #f5f0e8;
+      --sand-dark: #e8e0d0;
+      --coral: #d4735e;
+      --coral-light: #e8a090;
+      --earth: #8b6f47;
+      --text: #2c3e2c;
+      --text-light: #5a6b5a;
+      --text-muted: #8a9a8a;
+      --white: #ffffff;
+      --shadow: rgba(26, 58, 42, 0.08);
+      --shadow-lg: rgba(26, 58, 42, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Nature Background Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(ellipse at 20% 80%, rgba(143, 185, 143, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(212, 115, 94, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    .header {
+      background: var(--forest);
+      color: var(--white);
+      padding: 2rem 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px var(--shadow-lg);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--sand);
+      clip-path: ellipse(60% 100% at 50% 100%);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      font-size: 2.5rem;
+      animation: sway 3s ease-in-out infinite;
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .logo-subtitle {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      font-weight: 400;
+      margin-top: 0.2rem;
+    }
+
+    .header-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--sage);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--sand-dark);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px var(--shadow-lg);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--sage);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .stat-card.conversations::before { background: var(--sage); }
+    .stat-card.messages::before { background: var(--coral); }
+    .stat-card.escalated::before { background: var(--earth); }
+    .stat-card.interested::before { background: var(--forest-light); }
+
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--forest);
+      line-height: 1;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .stat-trend {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--forest);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title .icon {
+      font-size: 1.2rem;
+    }
+
+    /* Filters */
+    .filters {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px var(--shadow);
+      border: 1px solid var(--sand-dark);
+    }
+
+    .filters input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--sand-dark);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+      background: var(--sand);
+    }
+
+    .filters input:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: var(--white);
+    }
+
+    .filters select {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--sand-dark);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: var(--sand);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filters select:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: var(--white);
+    }
+
+    .filters button {
+      padding: 0.75rem 1.5rem;
+      background: var(--forest);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filters button:hover {
+      background: var(--forest-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 58, 42, 0.2);
+    }
+
+    /* Conversations Table */
+    .conversations-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px var(--shadow);
+      border: 1px solid var(--sand-dark);
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      padding: 1rem 1.5rem;
+      background: var(--sand);
+      border-bottom: 2px solid var(--sand-dark);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .conversation-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--sand-dark);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      align-items: center;
+    }
+
+    .conversation-row:hover {
+      background: var(--sand);
+      transform: translateX(5px);
+    }
+
+    .conversation-row:last-child {
+      border-bottom: none;
+    }
+
+    .phone-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .phone-number {
+      font-weight: 600;
+      color: var(--forest);
+      font-size: 1rem;
+    }
+
+    .phone-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-escalated {
+      background: rgba(212, 115, 94, 0.15);
+      color: var(--coral);
+    }
+
+    .badge-interested {
+      background: rgba(26, 58, 42, 0.1);
+      color: var(--forest);
+    }
+
+    .badge-active {
+      background: rgba(143, 185, 143, 0.2);
+      color: var(--forest-light);
+    }
+
+    .message-count {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .date-cell {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 58, 42, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(26, 58, 42, 0.3);
+      animation: slideUp 0.3s ease;
+      border: 1px solid var(--sand-dark);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid var(--sand-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--sand);
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--forest);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: var(--coral);
+      background: rgba(212, 115, 94, 0.1);
+    }
+
+    .modal-body {
+      padding: 2rem;
+      overflow-y: auto;
+      max-height: 60vh;
+    }
+
+    .message {
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.25rem;
+      border-radius: 16px;
+      max-width: 85%;
+      position: relative;
+      animation: messageIn 0.3s ease;
+    }
+
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.inbound {
+      background: var(--sand);
+      margin-left: 0;
+      border-left: 4px solid var(--sage);
+    }
+
+    .message.outbound {
+      background: var(--forest);
+      color: var(--white);
+      margin-left: auto;
+      border-right: 4px solid var(--sage-light);
+    }
+
+    .message-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
+    }
+
+    .message-content {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--sand-dark);
+      border-top-color: var(--forest);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-      .container { padding: 10px; }
-      .filters input, .filters select { width: 100%; margin-bottom: 10px; }
+      .header {
+        padding: 1.5rem 1rem;
+      }
+      
+      .header-inner {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .logo-text {
+        font-size: 1.5rem;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      
+      .stat-value {
+        font-size: 2rem;
+      }
+      
+      .table-header,
+      .conversation-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      
+      .table-header {
+        display: none;
+      }
+      
+      .conversation-row {
+        padding: 1rem;
+      }
+      
+      .filters {
+        flex-direction: column;
+      }
+      
+      .filters input {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🏕️ Campamento Onawa</h1>
-    <p>Panel de Monitoreo de Conversaciones</p>
-  </div>
-
-  <div class="container">
-    <div class="stats-grid" id="stats">
-      <div class="loading">Cargando estadísticas...</div>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🏕️</span>
+        <div>
+          <div class="logo-text">Campamento Onawa</div>
+          <div class="logo-subtitle">Panel de Monitoreo</div>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="live-dot"></span>
+        <span>En vivo</span>
+      </div>
     </div>
+  </header>
+
+  <main class="container">
+    <div class="stats-grid" id="stats">
+      <div class="loading">
+        <div class="spinner"></div>
+        <span>Cargando estadísticas...</span>
+      </div>
+    </div>
+
+    <h2 class="section-title">
+      <span class="icon">💬</span>
+      Conversaciones
+    </h2>
 
     <div class="filters">
       <input type="text" id="search" placeholder="Buscar por teléfono...">
       <select id="status">
-        <option value="">Todos los estados</option>
+        <option value="">Todos</option>
         <option value="escalated">Escalados</option>
         <option value="interested">Interesados</option>
-        <option value="active">Activos</option>
       </select>
-      <button onclick="loadConversations()">Filtrar</button>
+      <button onclick="loadConversations()">
+        <span>🔍</span>
+        Filtrar
+      </button>
     </div>
 
-    <div class="conversations" id="conversations">
-      <div class="loading">Cargando conversaciones...</div>
+    <div class="conversations-card">
+      <div class="table-header">
+        <div>Teléfono</div>
+        <div>Estado</div>
+        <div>Mensajes</div>
+        <div>Fecha</div>
+      </div>
+      <div id="conversations">
+        <div class="loading">
+          <div class="spinner"></div>
+          <span>Cargando conversaciones...</span>
+        </div>
+      </div>
     </div>
+  </main>
 
-    <div class="pagination" id="pagination"></div>
-  </div>
-
-  <div class="modal" id="modal">
-    <div class="modal-content">
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
       <div class="modal-header">
-        <h2 id="modalTitle">Detalle de Conversación</h2>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <h2 class="modal-title" id="modalTitle">Conversación</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
@@ -92,8 +704,6 @@
 
   <script>
     const API_URL = '/api/dashboard';
-    let currentPage = 1;
-    let totalPages = 1;
 
     async function loadStats() {
       try {
@@ -101,27 +711,40 @@
         const data = await response.json();
         
         const statsHtml = `
-          <div class="stat-card">
-            <h3>Total Conversaciones</h3>
-            <div class="value">${data.stats.totalConversations}</div>
+          <div class="stat-card conversations">
+            <div class="stat-icon">📞</div>
+            <div class="stat-label">Conversaciones</div>
+            <div class="stat-value">${data.stats.totalConversations}</div>
+            <div class="stat-trend">📈 Total acumulado</div>
           </div>
-          <div class="stat-card">
-            <h3>Total Mensajes</h3>
-            <div class="value">${data.stats.totalMessages}</div>
+          <div class="stat-card messages">
+            <div class="stat-icon">💬</div>
+            <div class="stat-label">Mensajes</div>
+            <div class="stat-value">${data.stats.totalMessages}</div>
+            <div class="stat-trend">📈 Interacciones totales</div>
           </div>
-          <div class="stat-card">
-            <h3>Escalados</h3>
-            <div class="value">${data.stats.escalatedCount}</div>
+          <div class="stat-card escalated">
+            <div class="stat-icon">🔔</div>
+            <div class="stat-label">Escalados</div>
+            <div class="stat-value">${data.stats.escalatedCount}</div>
+            <div class="stat-trend">📈 Derivados a asesor</div>
           </div>
-          <div class="stat-card">
-            <h3>Interesados</h3>
-            <div class="value">${data.stats.interestedCount}</div>
+          <div class="stat-card interested">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-label">Interesados</div>
+            <div class="stat-value">${data.stats.interestedCount}</div>
+            <div class="stat-trend">📈 Potenciales clientes</div>
           </div>
         `;
         
         document.getElementById('stats').innerHTML = statsHtml;
       } catch (error) {
-        document.getElementById('stats').innerHTML = '<div class="error">Error cargando estadísticas</div>';
+        document.getElementById('stats').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⚠️</div>
+            <div class="empty-state-text">Error cargando estadísticas</div>
+          </div>
+        `;
       }
     }
 
@@ -130,14 +753,25 @@
       const status = document.getElementById('status').value;
       
       try {
-        const params = new URLSearchParams({ page: currentPage, limit: 50 });
+        const params = new URLSearchParams();
         if (search) params.append('search', search);
         if (status) params.append('status', status);
         
         const response = await fetch(`${API_URL}/conversations?${params}`);
         const data = await response.json();
         
-        totalPages = data.pages;
+        if (data.conversations.length === 0) {
+          document.getElementById('conversations').innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🌿</div>
+              <div class="empty-state-text">No hay conversaciones aún</div>
+              <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                Cuando alguien escriba al bot, aparecerá aquí
+              </div>
+            </div>
+          `;
+          return;
+        }
         
         const conversationsHtml = data.conversations.map(conv => {
           const badgeClass = conv.isEscalated ? 'badge-escalated' : 
@@ -147,32 +781,38 @@
           
           return `
             <div class="conversation-row" onclick="showConversation('${conv.phone}')">
-              <div class="phone">${conv.phone}</div>
-              <div class="meta">
+              <div class="phone-cell">
+                <div class="phone-number">${conv.phone}</div>
+                <div class="phone-meta">${conv.messages.length} mensajes</div>
+              </div>
+              <div>
                 <span class="badge ${badgeClass}">${badgeText}</span>
-                <span>${conv.message_count} mensajes</span>
-                <span>${new Date(conv.createdAt).toLocaleString('es-MX')}</span>
+              </div>
+              <div class="message-count">
+                <span>💬</span>
+                <span>${conv.message_count}</span>
+              </div>
+              <div class="date-cell">
+                ${new Date(conv.createdAt).toLocaleDateString('es-MX', {
+                  day: 'numeric',
+                  month: 'short',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
               </div>
             </div>
           `;
         }).join('');
         
-        document.getElementById('conversations').innerHTML = conversationsHtml || '<div class="loading">No hay conversaciones</div>';
-        
-        // Pagination
-        let paginationHtml = '';
-        for (let i = 1; i <= totalPages; i++) {
-          paginationHtml += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-        }
-        document.getElementById('pagination').innerHTML = paginationHtml;
+        document.getElementById('conversations').innerHTML = conversationsHtml;
       } catch (error) {
-        document.getElementById('conversations').innerHTML = '<div class="error">Error cargando conversaciones</div>';
+        document.getElementById('conversations').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⚠️</div>
+            <div class="empty-state-text">Error cargando conversaciones</div>
+          </div>
+        `;
       }
-    }
-
-    function goToPage(page) {
-      currentPage = page;
-      loadConversations();
     }
 
     async function showConversation(phone) {
@@ -180,49 +820,68 @@
         const response = await fetch(`${API_URL}/conversation?phone=${phone}`);
         const data = await response.json();
         
-        document.getElementById('modalTitle').innerText = `Conversación: ${phone}`;
+        document.getElementById('modalTitle').innerText = `📱 ${phone}`;
         
         const messagesHtml = data.contact.messages.map(msg => {
-          const direction = msg.direction === 'inbound' ? 'message-inbound' : 'message-outbound';
+          const direction = msg.direction === 'inbound' ? 'inbound' : 'outbound';
           const label = msg.direction === 'inbound' ? '👤 Usuario' : '🤖 Bot';
           
           return `
             <div class="message ${direction}">
-              <div><strong>${label}</strong></div>
-              <div>${msg.content}</div>
-              <div class="message-time">${new Date(msg.timestamp).toLocaleString('es-MX')}</div>
+              <div class="message-label">${label}</div>
+              <div class="message-content">${msg.content}</div>
+              <div class="message-time">
+                ${new Date(msg.timestamp).toLocaleString('es-MX', {
+                  day: 'numeric',
+                  month: 'short',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </div>
             </div>
           `;
         }).join('');
         
-        document.getElementById('modalBody').innerHTML = messagesHtml || '<div class="loading">No hay mensajes</div>';
-        document.getElementById('modal').style.display = 'block';
+        document.getElementById('modalBody').innerHTML = messagesHtml || `
+          <div class="empty-state">
+            <div class="empty-state-icon">💭</div>
+            <div class="empty-state-text">No hay mensajes aún</div>
+          </div>
+        `;
+        
+        document.getElementById('modalOverlay').classList.add('active');
       } catch (error) {
         alert('Error cargando conversación');
       }
     }
 
     function closeModal() {
-      document.getElementById('modal').style.display = 'none';
+      document.getElementById('modalOverlay').classList.remove('active');
     }
 
     // Close modal on outside click
-    window.onclick = function(event) {
-      const modal = document.getElementById('modal');
-      if (event.target === modal) {
-        modal.style.display = 'none';
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
       }
-    }
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
 
     // Initial load
     loadStats();
     loadConversations();
     
-    // Refresh every 30 seconds
+    // Refresh every 15 seconds
     setInterval(() => {
       loadStats();
       loadConversations();
-    }, 30000);
+    }, 15000);
   </script>
 </body>
 </html>
