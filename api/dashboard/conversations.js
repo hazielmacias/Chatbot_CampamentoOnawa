@@ -7,31 +7,39 @@ export default async function handler(req, res) {
 
   try {
     const { search, status } = req.query;
-    let contacts = getAllContacts();
-    
+    let contacts = await getAllContacts();
+
     if (search) {
       const lowerSearch = search.toLowerCase();
-      contacts = contacts.filter(c => 
+      contacts = contacts.filter(c =>
         c.phone.toLowerCase().includes(lowerSearch)
       );
     }
-    
+
     if (status === 'escalated') {
       contacts = contacts.filter(c => c.isEscalated);
     } else if (status === 'interested') {
       contacts = contacts.filter(c => c.isInterested);
     }
 
-    contacts = contacts
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .map(c => ({
-        ...c,
-        message_count: c.messages.length
-      }));
+    const conversations = contacts.map(c => ({
+      id: c.id,
+      phone: c.phone,
+      name: c.name,
+      status: c.status,
+      isEscalated: c.isEscalated,
+      isInterested: c.isInterested,
+      createdAt: c.createdAt,
+      lastMessageAt: c.lastMessageAt,
+      message_count: c.messages.length,
+      last_message: c.messages.length > 0
+        ? c.messages[c.messages.length - 1].content.slice(0, 100)
+        : null
+    }));
 
     return res.status(200).json({
-      conversations: contacts,
-      total: contacts.length
+      conversations,
+      total: conversations.length
     });
   } catch (error) {
     console.error('Error:', error);

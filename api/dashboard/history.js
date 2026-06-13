@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   try {
     const { days = 30 } = req.query;
-    const contacts = getAllContacts();
+    const contacts = await getAllContacts();
     const daysInt = parseInt(days);
     
     // Generate date range

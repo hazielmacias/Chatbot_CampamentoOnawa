@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id             String            @id @default(uuid()) @db.Uuid
+  phone          String            @unique
+  name           String?
+  firstContactAt DateTime          @default(now()) @map("first_contact_at") @db.Timestamptz
+  lastMessageAt  DateTime          @default(now()) @map("last_message_at") @db.Timestamptz
+  status         String            @default("active")
+  isEscalated    Boolean           @default(false) @map("is_escalated")
+  isInterested   Boolean           @default(false) @map("is_interested")
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  messages       OnawaMessage[]
+  escalations    OnawaEscalation[]
+
+  @@map("onawa_contacts")
+}
+
+model OnawaMessage {
+  id          String   @id @default(uuid()) @db.Uuid
+  contactId   String   @map("contact_id") @db.Uuid
+  direction   String
+  content     String
+  messageType String   @default("text") @map("message_type")
+  timestamp   DateTime @default(now()) @db.Timestamptz
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@map("onawa_messages")
+}
+
+model OnawaEscalation {
+  id              String   @id @default(uuid()) @db.Uuid
+  contactId       String   @map("contact_id") @db.Uuid
+  reason          String
+  escalatedAt     DateTime @default(now()) @map("escalated_at") @db.Timestamptz
+  advisorNotified Boolean  @default(false) @map("advisor_notified")
+  advisorPhone    String?  @map("advisor_phone")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
+  contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@map("onawa_escalations")
+}

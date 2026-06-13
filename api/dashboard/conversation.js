@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Phone is required' });
     }
 
-    const contact = getContact(phone);
+    const contact = await getContact(phone);
     if (!contact) {
       return res.status(404).json({ error: 'Contact not found' });
     }

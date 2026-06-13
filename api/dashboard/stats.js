@@ -6,18 +6,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    const contacts = getAllContacts();
-    
+    const contacts = await getAllContacts();
+
     const totalConversations = contacts.length;
     const totalMessages = contacts.reduce((acc, c) => acc + c.messages.length, 0);
     const escalatedCount = contacts.filter(c => c.isEscalated).length;
     const interestedCount = contacts.filter(c => c.isInterested).length;
 
     const recentConversations = contacts
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 10)
       .map(c => ({
-        ...c,
+        id: c.id,
+        phone: c.phone,
+        name: c.name,
+        status: c.status,
+        isEscalated: c.isEscalated,
+        isInterested: c.isInterested,
+        createdAt: c.createdAt,
+        lastMessageAt: c.lastMessageAt,
         message_count: c.messages.length
       }));
 

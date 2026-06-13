@@ -1,10 +1,10 @@
 import { getAllContacts } from '../../src/lib/db.js';
 
 // Generate alerts automatically based on conversations
-function generateAlerts() {
-  const contacts = getAllContacts();
+async function generateAlerts() {
+  const contacts = await getAllContacts();
   const alerts = [];
-  
+
   contacts.forEach(contact => {
     // Alert for new conversation
     if (contact.messages.length === 1) {
@@ -19,7 +19,7 @@ function generateAlerts() {
         severity: 'info'
       });
     }
-    
+
     // Alert for escalated conversation
     if (contact.isEscalated) {
       const lastMsg = contact.messages[contact.messages.length - 1];
@@ -34,7 +34,7 @@ function generateAlerts() {
         severity: 'high'
       });
     }
-    
+
     // Alert for interested user
     if (contact.isInterested && !contact.isEscalated) {
       const lastMsg = contact.messages[contact.messages.length - 1];
@@ -49,7 +49,7 @@ function generateAlerts() {
         severity: 'medium'
       });
     }
-    
+
     // Alert for many messages (high engagement)
     if (contact.messages.length >= 5 && !contact.isEscalated) {
       const lastMsg = contact.messages[contact.messages.length - 1];
@@ -65,7 +65,7 @@ function generateAlerts() {
       });
     }
   });
-  
+
   // Sort by timestamp desc
   return alerts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 }
@@ -74,17 +74,17 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const { type, read } = req.query;
-      let alerts = generateAlerts();
-      
+      let alerts = await generateAlerts();
+
       if (type) {
         alerts = alerts.filter(a => a.type === type);
       }
-      
+
       if (read !== undefined) {
         const isRead = read === 'true';
         alerts = alerts.filter(a => a.read === isRead);
       }
-      
+
       return res.status(200).json({
         alerts,
         total: alerts.length,

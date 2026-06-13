@@ -319,23 +319,23 @@ export default async function handler(req, res) {
       const profileName = value?.contacts?.[0]?.profile?.name || null;
       const messageType = message.type;
       
-      getOrCreateContact(phone, profileName);
+      await getOrCreateContact(phone, profileName);
       
       if (messageType !== 'text') {
         const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*. 
 
 Escribe *menú* para ver las opciones o cuéntame tu pregunta con palabras y te ayudo.`;
         await sendMessage(phone, fallback);
-        saveMessage(phone, 'outbound', fallback);
+        await saveMessage(phone, 'outbound', fallback, 'text');
         return res.status(200).send('OK');
       }
       
       const text = message.text?.body || '';
-      saveMessage(phone, 'inbound', text);
+      await saveMessage(phone, 'inbound', text, 'text');
       
       const response = getResponse(text);
       await sendMessage(phone, response);
-      saveMessage(phone, 'outbound', response);
+      await saveMessage(phone, 'outbound', response, 'text');
       
       const lower = text.toLowerCase();
       if (lower.includes('inscribir') || 
@@ -344,8 +344,8 @@ Escribe *menú* para ver las opciones o cuéntame tu pregunta con palabras y te 
           lower.includes('quiero') ||
           lower.includes('asesor') ||
           lower.includes('hablar con')) {
-        markEscalated(phone);
         const advisorPhone = process.env.ADVISOR_PHONE;
+        await markEscalated(phone, `Palabra clave detectada: "${text.slice(0, 50)}"`, advisorPhone);
         if (advisorPhone) {
           await sendMessage(advisorPhone, 
             `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n👤 ${profileName || 'Sin nombre'}\n💬 ${text}\n\nContactar urgente.`
