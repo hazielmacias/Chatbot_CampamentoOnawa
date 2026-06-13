@@ -1231,7 +1231,8 @@
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-          throw new Error(data.error || data.message || `HTTP ${response.status}`);
+          const detail = data.meta ? JSON.stringify(data.meta) : '';
+          throw new Error(detail || data.message || data.error || `HTTP ${response.status}`);
         }
 
         if (contact) {
@@ -1246,7 +1247,7 @@
           if (msg) msg.failed = true;
           renderMessages(contact);
         }
-        alert('❌ No se pudo enviar el mensaje: ' + error.message);
+        alert('❌ No se pudo enviar:\n' + error.message);
       } finally {
         input.disabled = false;
         sendBtn.disabled = false;

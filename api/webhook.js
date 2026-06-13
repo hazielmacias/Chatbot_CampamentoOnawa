@@ -316,10 +316,20 @@ export default async function handler(req, res) {
         if (!phone || !text) {
           return res.status(400).json({ error: 'phone y message requeridos' });
         }
-        await getOrCreateContact(phone);
-        await sendMessage(phone, text);
-        await saveMessage(phone, 'outbound', text, 'text');
-        return res.status(200).json({ ok: true, sent: text });
+        try {
+          await getOrCreateContact(phone);
+          await sendMessage(phone, text);
+          await saveMessage(phone, 'outbound', text, 'text');
+          return res.status(200).json({ ok: true, sent: text });
+        } catch (sendErr) {
+          const metaError = sendErr.response?.data || null;
+          console.error('Meta sendMessage error:', metaError || sendErr.message);
+          return res.status(500).json({
+            error: 'Error enviando mensaje',
+            message: sendErr.message,
+            meta: metaError
+          });
+        }
       }
 
       const value = req.body.entry?.[0]?.changes?.[0]?.value;
