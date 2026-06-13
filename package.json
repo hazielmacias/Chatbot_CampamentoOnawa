@@ -6,8 +6,7 @@
   "main": "api/webhook.js",
   "scripts": {
     "dev": "nodemon api/webhook.js",
-    "start": "node api/webhook.js",
-    "postinstall": "prisma generate"
+    "start": "node api/webhook.js"
   },
   "keywords": [
     "whatsapp",
@@ -21,9 +20,8 @@
     "vercel": "^54.12.2"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
-    "prisma": "^5.22.0"
+    "pg": "^8.21.0"
   }
 }
