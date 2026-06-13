@@ -1,5 +1,18 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "chatbot-campamento-onawa.vercel.app"
+        }
+      ],
+      "destination": "https://chatbot-campamento-onawa-ly3i.vercel.app/$1",
+      "statusCode": 301
+    }
+  ],
   "builds": [
     {
       "src": "api/**/*.js",
