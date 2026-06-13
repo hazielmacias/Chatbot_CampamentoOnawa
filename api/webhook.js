@@ -311,29 +311,44 @@ export default async function handler(req, res) {
   
   if (req.method === 'POST') {
     try {
-      const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+      const value = req.body.entry?.[0]?.changes?.[0]?.value;
+      const message = value?.messages?.[0];
       if (!message) return res.status(200).send('OK');
       
       const phone = message.from;
-      const text = message.text?.body || '';
+      const profileName = value?.contacts?.[0]?.profile?.name || null;
+      const messageType = message.type;
       
-      getOrCreateContact(phone);
+      getOrCreateContact(phone, profileName);
+      
+      if (messageType !== 'text') {
+        const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*. 
+
+Escribe *menú* para ver las opciones o cuéntame tu pregunta con palabras y te ayudo.`;
+        await sendMessage(phone, fallback);
+        saveMessage(phone, 'outbound', fallback);
+        return res.status(200).send('OK');
+      }
+      
+      const text = message.text?.body || '';
       saveMessage(phone, 'inbound', text);
       
       const response = getResponse(text);
       await sendMessage(phone, response);
       saveMessage(phone, 'outbound', response);
       
-      if (text.toLowerCase().includes('inscribir') || 
-          text.toLowerCase().includes('reservar') || 
-          text.toLowerCase().includes('interesa') ||
-          text.toLowerCase().includes('quiero') ||
-          text.toLowerCase().includes('asesor')) {
+      const lower = text.toLowerCase();
+      if (lower.includes('inscribir') || 
+          lower.includes('reservar') || 
+          lower.includes('interesa') ||
+          lower.includes('quiero') ||
+          lower.includes('asesor') ||
+          lower.includes('hablar con')) {
         markEscalated(phone);
         const advisorPhone = process.env.ADVISOR_PHONE;
         if (advisorPhone) {
           await sendMessage(advisorPhone, 
-            `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n💬 ${text}\n\nContactar urgente.`
+            `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n👤 ${profileName || 'Sin nombre'}\n💬 ${text}\n\nContactar urgente.`
           );
         }
       }

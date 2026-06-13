@@ -1,14 +1,18 @@
 const conversations = new Map();
 
-export function getOrCreateContact(phone) {
+export function getOrCreateContact(phone, name = null) {
   if (!conversations.has(phone)) {
     conversations.set(phone, {
       phone,
+      name,
       messages: [],
       isEscalated: false,
       isInterested: false,
       createdAt: new Date().toISOString()
     });
+  } else if (name) {
+    const contact = conversations.get(phone);
+    if (!contact.name) contact.name = name;
   }
   return conversations.get(phone);
 }
