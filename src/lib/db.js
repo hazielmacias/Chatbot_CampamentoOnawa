@@ -1,14 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://oqhoebtjqvbgwhdxszmk.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xaG9lYnRqcXZiZ3doZHhzem1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MDIxMDQsImV4cCI6MjA5NjM3ODEwNH0.nb-jzuCTV4p-G7LccFnUoZNkyaOHmLExT7inoISKfJY';
 
-const globalForSupabase = globalThis;
-const supabase = globalForSupabase.supabase || createClient(SUPABASE_URL, SUPABASE_KEY);
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForSupabase.supabase = supabase;
-}
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 function toCamel(obj) {
   if (!obj) return obj;
