@@ -1055,14 +1055,17 @@
     async function loadContacts() {
       try {
         const response = await fetch(`${API_URL}/conversations`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        allContacts = data.conversations || [];
+        if (!Array.isArray(data.conversations)) throw new Error('Respuesta inválida');
+        allContacts = data.conversations;
         renderChatList(allContacts);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error cargando conversaciones:', error);
         document.getElementById('chatList').innerHTML = `
           <div class="wa-empty-chat" style="padding: 20px;">
             <div class="wa-empty-chat-text">Error cargando conversaciones</div>
+            <div class="wa-empty-chat-text" style="font-size: 12px; margin-top: 8px; color: #888;">${error.message}</div>
           </div>
         `;
       }
@@ -1070,8 +1073,8 @@
 
     function renderChatList(contacts) {
       const chatList = document.getElementById('chatList');
-      
-      if (contacts.length === 0) {
+
+      if (!contacts || contacts.length === 0) {
         chatList.innerHTML = `
           <div class="wa-empty-chat" style="padding: 40px 20px;">
             <div class="wa-empty-chat-text">No hay conversaciones</div>
@@ -1082,9 +1085,14 @@
       }
 
       chatList.innerHTML = contacts.map(contact => {
-        const lastMessage = contact.messages[contact.messages.length - 1];
-        const lastText = lastMessage ? lastMessage.content.substring(0, 30) + (lastMessage.content.length > 30 ? '...' : '') : 'Sin mensajes';
-        const lastTime = lastMessage ? new Date(lastMessage.timestamp).toLocaleTimeString('es-MX', {hour: '2-digit', minute:'2-digit'}) : '';
+        const msgs = Array.isArray(contact.messages) ? contact.messages : [];
+        const lastMessage = msgs.length > 0 ? msgs[msgs.length - 1] : null;
+        const lastText = lastMessage && lastMessage.content
+          ? (lastMessage.content.length > 30 ? lastMessage.content.substring(0, 30) + '...' : lastMessage.content)
+          : 'Sin mensajes';
+        const lastTime = lastMessage && lastMessage.timestamp
+          ? new Date(lastMessage.timestamp).toLocaleTimeString('es-MX', {hour: '2-digit', minute:'2-digit'})
+          : '';
         
         const badgeClass = contact.isEscalated ? 'escalated' : contact.isInterested ? 'interested' : '';
         const badgeText = contact.isEscalated ? 'Escalado' : contact.isInterested ? 'Interesado' : '';
