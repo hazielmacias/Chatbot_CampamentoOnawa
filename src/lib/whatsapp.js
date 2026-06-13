@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const WHATSAPP_API_URL = 'https://graph.facebook.com/v19.0';
 
-const PHONE_ID = process.env.WHATSAPP_PHONE_ID;
-const ACCESS_TOKEN = process.env.WHATSAPP_TOKEN;
+const PHONE_ID = process.env.WHATSAPP_PHONE_ID || '1094504630420929';
+const ACCESS_TOKEN = process.env.WHATSAPP_TOKEN || 'EAASnIkaGKMsBRgoHt3iHq9gZCQweZBDJl3lB2ou21JA9UTrv0KZAZCuQlOnuyhxKxZCZCwZBpLlYFwS8i1Aqt7GafdrW3eC6Tg024cZClxsE0jMh8cpp1vVGBboDJXY8uaAKnahRj3uOFrz7h55qeyBG5JKtbhGRjxmY0GynmWR023AwO3DvrS7qQXRb9zSxBQZDZD';
 
 export async function sendMessage(to, text) {
   const url = `${WHATSAPP_API_URL}/${PHONE_ID}/messages`;
