@@ -1,15 +1,13 @@
-import pg from 'pg';
-const { Pool } = pg;
+import { createClient } from '@supabase/supabase-js';
 
-const globalForPool = globalThis;
-const pool = globalForPool.pgPool || new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 1
-});
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://oqhoebtjqvbgwhdxszmk.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+
+const globalForSupabase = globalThis;
+const supabase = globalForSupabase.supabase || createClient(SUPABASE_URL, SUPABASE_KEY);
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPool.pgPool = pool;
+  globalForSupabase.supabase = supabase;
 }
 
 function toCamel(obj) {
@@ -22,84 +20,121 @@ function toCamel(obj) {
   return out;
 }
 
-async function query(text, params) {
-  const result = await pool.query(text, params);
-  return result.rows.map(toCamel);
-}
-
 export async function getOrCreateContact(phone, name = null) {
-  const existing = await query('SELECT * FROM onawa_contacts WHERE phone = $1', [phone]);
-  if (existing.length > 0) {
-    const contact = existing[0];
-    if (name && !contact.name) {
-      const updated = await query(
-        'UPDATE onawa_contacts SET name = $1, updated_at = now() WHERE id = $2 RETURNING *',
-        [name, contact.id]
-      );
-      return updated[0];
+  const { data: existing, error: findErr } = await supabase
+    .from('onawa_contacts')
+    .select('*')
+    .eq('phone', phone)
+    .maybeSingle();
+
+  if (findErr) throw findErr;
+
+  if (existing) {
+    const c = toCamel(existing);
+    if (name && !c.name) {
+      const { data, error } = await supabase
+        .from('onawa_contacts')
+        .update({ name })
+        .eq('id', c.id)
+        .select()
+        .single();
+      if (error) throw error;
+      return toCamel(data);
     }
-    return contact;
+    return c;
   }
-  const created = await query(
-    'INSERT INTO onawa_contacts (phone, name) VALUES ($1, $2) RETURNING *',
-    [phone, name]
-  );
-  return created[0];
+
+  const { data, error } = await supabase
+    .from('onawa_contacts')
+    .insert({ phone, name })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return toCamel(data);
 }
 
 export async function saveMessage(phone, direction, content, messageType = 'text') {
   const contact = await getOrCreateContact(phone);
-  const message = await query(
-    `INSERT INTO onawa_messages (contact_id, direction, content, message_type)
-     VALUES ($1, $2, $3, $4) RETURNING *`,
-    [contact.id, direction, content, messageType]
-  );
-  await query(
-    'UPDATE onawa_contacts SET last_message_at = now(), updated_at = now() WHERE id = $1',
-    [contact.id]
-  );
-  return message[0];
+  const { data, error } = await supabase
+    .from('onawa_messages')
+    .insert({
+      contact_id: contact.id,
+      direction,
+      content,
+      message_type: messageType
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  await supabase
+    .from('onawa_contacts')
+    .update({ last_message_at: new Date().toISOString() })
+    .eq('id', contact.id);
+
+  return toCamel(data);
 }
 
 export async function getAllContacts() {
-  const contacts = await query(
-    'SELECT * FROM onawa_contacts ORDER BY last_message_at DESC'
-  );
-  for (const contact of contacts) {
-    contact.messages = await query(
-      'SELECT * FROM onawa_messages WHERE contact_id = $1 ORDER BY timestamp ASC',
-      [contact.id]
-    );
-  }
-  return contacts;
+  const { data, error } = await supabase
+    .from('onawa_contacts')
+    .select('*, onawa_messages(*)')
+    .order('last_message_at', { ascending: false });
+
+  if (error) throw error;
+
+  return (data || []).map(c => {
+    const camel = toCamel(c);
+    camel.messages = (c.onawa_messages || [])
+      .map(toCamel)
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    return camel;
+  });
 }
 
 export async function getContact(phone) {
-  const contacts = await query('SELECT * FROM onawa_contacts WHERE phone = $1', [phone]);
-  if (contacts.length === 0) return null;
-  const contact = contacts[0];
-  contact.messages = await query(
-    'SELECT * FROM onawa_messages WHERE contact_id = $1 ORDER BY timestamp ASC',
-    [contact.id]
-  );
-  return contact;
+  const { data, error } = await supabase
+    .from('onawa_contacts')
+    .select('*, onawa_messages(*)')
+    .eq('phone', phone)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  const camel = toCamel(data);
+  camel.messages = (data.onawa_messages || [])
+    .map(toCamel)
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  return camel;
 }
 
 export async function markEscalated(phone, reason = 'Interest detected', advisorPhone = null) {
-  const contact = await query(
-    `UPDATE onawa_contacts
-     SET is_escalated = true, is_interested = true, status = 'escalated', updated_at = now()
-     WHERE phone = $1 RETURNING *`,
-    [phone]
-  );
-  if (contact.length > 0) {
-    await query(
-      `INSERT INTO onawa_escalations (contact_id, reason, advisor_notified, advisor_phone)
-       VALUES ($1, $2, $3, $4)`,
-      [contact[0].id, reason, !!advisorPhone, advisorPhone]
-    );
+  const { data, error } = await supabase
+    .from('onawa_contacts')
+    .update({
+      is_escalated: true,
+      is_interested: true,
+      status: 'escalated'
+    })
+    .eq('phone', phone)
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  if (data) {
+    await supabase.from('onawa_escalations').insert({
+      contact_id: data.id,
+      reason,
+      advisor_notified: !!advisorPhone,
+      advisor_phone: advisorPhone
+    });
   }
-  return contact[0];
+
+  return toCamel(data);
 }
 
 export default {
