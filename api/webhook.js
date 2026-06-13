@@ -311,35 +311,46 @@ export default async function handler(req, res) {
   
   if (req.method === 'POST') {
     try {
+      if (req.body?.type === 'manual_reply') {
+        const { phone, message: text } = req.body;
+        if (!phone || !text) {
+          return res.status(400).json({ error: 'phone y message requeridos' });
+        }
+        await getOrCreateContact(phone);
+        await sendMessage(phone, text);
+        await saveMessage(phone, 'outbound', text, 'text');
+        return res.status(200).json({ ok: true, sent: text });
+      }
+
       const value = req.body.entry?.[0]?.changes?.[0]?.value;
       const message = value?.messages?.[0];
       if (!message) return res.status(200).send('OK');
-      
+
       const phone = message.from;
       const profileName = value?.contacts?.[0]?.profile?.name || null;
       const messageType = message.type;
-      
+
       await getOrCreateContact(phone, profileName);
-      
+
       if (messageType !== 'text') {
-        const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*. 
+        const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*.
 
 Escribe *menú* para ver las opciones o cuéntame tu pregunta con palabras y te ayudo.`;
         await sendMessage(phone, fallback);
         await saveMessage(phone, 'outbound', fallback, 'text');
         return res.status(200).send('OK');
       }
-      
+
       const text = message.text?.body || '';
       await saveMessage(phone, 'inbound', text, 'text');
-      
+
       const response = getResponse(text);
       await sendMessage(phone, response);
       await saveMessage(phone, 'outbound', response, 'text');
-      
+
       const lower = text.toLowerCase();
-      if (lower.includes('inscribir') || 
-          lower.includes('reservar') || 
+      if (lower.includes('inscribir') ||
+          lower.includes('reservar') ||
           lower.includes('interesa') ||
           lower.includes('quiero') ||
           lower.includes('asesor') ||
@@ -347,15 +358,18 @@ Escribe *menú* para ver las opciones o cuéntame tu pregunta con palabras y te 
         const advisorPhone = process.env.ADVISOR_PHONE;
         await markEscalated(phone, `Palabra clave detectada: "${text.slice(0, 50)}"`, advisorPhone);
         if (advisorPhone) {
-          await sendMessage(advisorPhone, 
+          await sendMessage(advisorPhone,
             `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n👤 ${profileName || 'Sin nombre'}\n💬 ${text}\n\nContactar urgente.`
           );
         }
       }
-      
+
       return res.status(200).send('OK');
     } catch (error) {
       console.error('Error:', error);
+      if (req.body?.type === 'manual_reply') {
+        return res.status(500).json({ error: 'Error enviando mensaje', message: error.message });
+      }
       return res.status(200).send('OK');
     }
   }

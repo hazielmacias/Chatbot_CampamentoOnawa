@@ -1194,33 +1194,64 @@
 
     async function sendMessage() {
       const input = document.getElementById('messageInput');
+      const sendBtn = document.getElementById('sendBtn');
       const text = input.value.trim();
-      
+
       if (!text || !currentPhone) return;
-      
-      // Add message to UI
+
+      input.disabled = true;
+      sendBtn.disabled = true;
+
       const contact = allContacts.find(c => c.phone === currentPhone);
+      const tempId = 'temp_' + Date.now();
       if (contact) {
         contact.messages.push({
+          id: tempId,
           direction: 'outbound',
           content: text,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          messageType: 'text',
+          pending: true
         });
         renderMessages(contact);
         renderChatList(allContacts);
       }
-
-      fetch('/api/webhook', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'manual_reply',
-          phone: currentPhone,
-          message: text
-        })
-      }).catch(err => console.error('Error sending:', err));
-      
       input.value = '';
+
+      try {
+        const response = await fetch('/api/webhook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'manual_reply',
+            phone: currentPhone,
+            message: text
+          })
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data.error || data.message || `HTTP ${response.status}`);
+        }
+
+        if (contact) {
+          const msg = contact.messages.find(m => m.id === tempId);
+          if (msg) delete msg.pending;
+          renderMessages(contact);
+        }
+      } catch (error) {
+        console.error('Error enviando:', error);
+        if (contact) {
+          const msg = contact.messages.find(m => m.id === tempId);
+          if (msg) msg.failed = true;
+          renderMessages(contact);
+        }
+        alert('❌ No se pudo enviar el mensaje: ' + error.message);
+      } finally {
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+      }
     }
 
     async function refreshData() {
