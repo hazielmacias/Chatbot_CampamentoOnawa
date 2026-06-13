@@ -34,7 +34,14 @@ export default async function handler(req, res) {
       message_count: c.messages.length,
       last_message: c.messages.length > 0
         ? c.messages[c.messages.length - 1].content.slice(0, 100)
-        : null
+        : null,
+      messages: c.messages.map(m => ({
+        id: m.id,
+        direction: m.direction,
+        content: m.content,
+        timestamp: m.timestamp,
+        messageType: m.messageType
+      }))
     }));
 
     return res.status(200).json({
