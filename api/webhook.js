@@ -3,17 +3,15 @@ import { getOrCreateContact, saveMessage, markEscalated } from '../src/lib/db.js
 
 const FOOTER = `\n━━━━━━━━━━━━━━━\n0️⃣ Volver al menú principal\n💬 O escribe tu pregunta con tus palabras`;
 
-const BIENVENIDA = `🌲 *CAMPAMENTO ONAWA* 🌲
-
-¡Hola! 👋 Bienvenido
+const BIENVENIDA = `¡Hola! 👋 Bienvenido a *Campamento Onawa* 🌲
 Soy tu asistente virtual y estoy aquí para ayudarte.
 
 *¿Qué te gustaría conocer?*
-1️⃣ *Preventa y Beneficios* — Membresías y precios
-2️⃣ *Actividades* — Lo que puedes hacer
-3️⃣ *Instalaciones* — Lo que ya tenemos listo
-4️⃣ *Próximos Eventos* — Fechas importantes
-5️⃣ *Hablar con un Asesor* — Atención personalizada
+1️⃣ *Preventa y Beneficios*
+2️⃣ *Actividades*
+3️⃣ *Instalaciones*
+4️⃣ *Próximos Eventos*
+5️⃣ *Hablar con un Asesor*
 
 💡 Escribe el número de la opción`;
 
