@@ -15,7 +15,7 @@ Soy tu asistente virtual y estoy aquí para ayudarte.
 4️⃣ *Próximos Eventos* — Fechas importantes
 5️⃣ *Hablar con un Asesor* — Atención personalizada
 
-💡 Escribe el número o cuéntame con tus palabras`;
+💡 Escribe el número de la opción`;
 
 const MEMBRESIAS = `*💰 Preventa y Beneficios*
 Nuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.
