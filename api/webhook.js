@@ -1,7 +1,7 @@
 import { sendMessage } from '../src/lib/whatsapp.js';
 import { getOrCreateContact, saveMessage, markEscalated } from '../src/lib/db.js';
 
-const FOOTER = `\n\n━━━━━━━━━━━━━━━\n0️⃣ Volver al menú principal\n💬 O escribe tu pregunta con tus palabras`;
+const FOOTER = `\n━━━━━━━━━━━━━━━\n0️⃣ Volver al menú principal\n💬 O escribe tu pregunta con tus palabras`;
 
 const BIENVENIDA = `🌲 *CAMPAMENTO ONAWA* 🌲
 
@@ -9,54 +9,33 @@ const BIENVENIDA = `🌲 *CAMPAMENTO ONAWA* 🌲
 Soy tu asistente virtual y estoy aquí para ayudarte.
 
 *¿Qué te gustaría conocer?*
-
-1️⃣ *Preventa y Beneficios*
-   Membresías y precios
-
-2️⃣ *Actividades*
-   Lo que puedes hacer
-
-3️⃣ *Instalaciones*
-   Lo que ya tenemos listo
-
-4️⃣ *Próximos Eventos*
-   Fechas importantes
-
-5️⃣ *Hablar con un Asesor*
-   Atención personalizada
+1️⃣ *Preventa y Beneficios* — Membresías y precios
+2️⃣ *Actividades* — Lo que puedes hacer
+3️⃣ *Instalaciones* — Lo que ya tenemos listo
+4️⃣ *Próximos Eventos* — Fechas importantes
+5️⃣ *Hablar con un Asesor* — Atención personalizada
 
 💡 Escribe el número o cuéntame con tus palabras`;
 
 const MEMBRESIAS = `*💰 Preventa y Beneficios*
-
 Nuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.
 
 *📋 Niveles disponibles:*
-
-🥈 *Nivel Plata*
-   $14,950 · 10 años · 10% descuento
-
-🥇 *Nivel Oro*
-   $29,560 · 25 años · 15% descuento
-
-🏆 *Nivel Platino*
-   $58,200 · 50 años · 20% descuento
-
-💎 *Nivel Diamante*
-   $117,640 · 100 años · 25% descuento
+🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento
+🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento
+🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento
+💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento
 
 *📌 Incluye:*
 • Cuota de mantenimiento: $600/beneficiario, $300/familiar
 • Membresía transferible, vendible y heredable
 • Certificado de *Miembro Fundador*
 • Primer pago de mantenimiento: *enero 2027*
-
 *✅ El descuento aplica en:* Consumo, atracciones, servicios y promociones
 
 ¿Te gustaría que un asesor te contacte?`;
 
 const ACTIVIDADES = `*🏃 Actividades Disponibles*
-
 *🎯 Deportes y Aventura:*
 • Exatlón (campo de obstáculos)
 • Tiro con arco y tiro con hacha
@@ -82,13 +61,11 @@ const ACTIVIDADES = `*🏃 Actividades Disponibles*
 • Restaurante y Salón de Eventos (50% capacidad)
 • Estacionamiento y sanitarios
 
-*🔜 Próximamente:*
-Tirolesas, muro de escalar, pádel, tenis, tren, ciclismo y albercas
+*🔜 Próximamente:* Tirolesas, muro de escalar, pádel, tenis, tren, ciclismo y albercas
 
 ¿Te interesa alguna actividad en especial?`;
 
 const INSTALACIONES = `*🏡 Instalaciones*
-
 *✅ Lo que ya tenemos listo:*
 • Restaurante y Salón de Eventos
 • Área de campamentos en el bosque
@@ -100,36 +77,24 @@ const INSTALACIONES = `*🏡 Instalaciones*
 • Estacionamiento
 • Sanitarios
 
-*🔨 Próximas etapas:*
-• Cabañas
-• Albercas
+*🔨 Próximas etapas:* Cabañas · Albercas
 
-*📍 Ubicación:*
-Bosque de Villa del Carbón, Estado de México
+*📍 Ubicación:* Bosque de Villa del Carbón, Estado de México
 A 2 km del centro del pueblo mágico
 
 ¿Te gustaría agendar una visita?`;
 
 const EVENTOS = `*📆 Próximos Eventos*
-
-*👨 Día del Padre*
-   📅 Domingo 21 de junio
-   🎤 Show en vivo
-
-*🎤 Sábados de Karaoke*
-   🕛 12:00 pm – 3:00 pm
-   🍹 Micheladas
-   🍹 Mezcladas 2x1
+*👨 Día del Padre* — Domingo 21 de junio · 🎤 Show en vivo
+*🎤 Sábados de Karaoke* — 12:00 pm a 3:00 pm · 🍹 Micheladas y 🍹 Mezcladas 2x1
 
 ¿Te gustaría asistir a alguno?`;
 
 const HORARIO = `*🕗 Horario de Atención*
-
 *📅 Días:* 365 días del año
-*⏰ Horario:* 8:00 am – 6:00 pm
+*⏰ Horario:* 8:00 am a 6:00 pm
 
-*📍 Ubicación:*
-Bosque de Villa del Carbón, Estado de México
+*📍 Ubicación:* Bosque de Villa del Carbón, Estado de México
 A 2 km del centro del pueblo mágico
 
 💡 _Te recomendamos llegar antes de las 5:00 pm para aprovechar al máximo tu visita_
@@ -137,7 +102,6 @@ A 2 km del centro del pueblo mágico
 ¿Te gustaría agendar tu visita?`;
 
 const ASESOR = `*🎉 ¡Excelente elección!*
-
 Para finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te conecto con nuestro Coordinador de Atención Personalizada.
 
 *👤 Contacto directo:* https://wa.me/525530086410
@@ -148,57 +112,34 @@ Para finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te co
 Mientras tanto, puedo seguir respondiendo tus preguntas.`;
 
 const SEGURIDAD = `*🛡️ Seguridad y Compromiso*
-
 En Campamento Onawa diseñamos un espacio *sano y seguro* para que toda la familia disfrute de actividades al aire libre.
 
-*🎯 Nuestra Visión:*
-Ser reconocidos como el mejor espacio de la zona por nuestro compromiso con la seguridad y el medio ambiente.
+*🎯 Nuestra Visión:* Ser reconocidos como el mejor espacio de la zona por nuestro compromiso con la seguridad y el medio ambiente.
 
-*🏥 Próximas Mejoras:*
-Etapa 2 de construcción (2026-2027): Integración de enfermería permanente
+*🏥 Próximas Mejoras:* Etapa 2 de construcción (2026-2027): Integración de enfermería permanente
 
 ¿Tienes alguna preocupación específica?`;
 
 const REQUISITOS = `*📄 Requisitos para Acceder*
+*✅ Edad:* Sin límite de edad. Somos un *club deportivo familiar* diseñado para todos.
 
-*✅ Edad:*
-Sin límite de edad. Somos un *club deportivo familiar* diseñado para todos.
+*📋 Único requisito:* Adquirir una membresía a largo plazo: 🥈 Plata · 🥇 Oro · 🏆 Platino · 💎 Diamante
 
-*📋 Único requisito:*
-Adquirir una membresía a largo plazo:
-• 🥈 Plata
-• 🥇 Oro
-• 🏆 Platino
-• 💎 Diamante
-
-*👨‍👩‍👧‍👦 Incluye:*
-Registro de familiares en tu membresía
-
-*💰 Adicional:*
-Cuota de mantenimiento anual por beneficiario y familiar registrado
+*👨‍👩‍👧‍👦 Incluye:* Registro de familiares en tu membresía
+*💰 Adicional:* Cuota de mantenimiento anual por beneficiario y familiar registrado
 
 ¿Te gustaría conocer los detalles de cada membresía?`;
 
 const UBICACION = `*📍 Ubicación*
-
-*Campamento Onawa*
-Residencial Campestre y Club Deportivo
-Estado de México, México
-
+*Campamento Onawa* — Residencial Campestre y Club Deportivo, Estado de México, México
 *🗺️ Coordenadas:* 19.726313, -99.437399
 *🕗 Horario:* Lunes a domingo, 8:00 am a 6:00 pm
 *📱 Contacto:* 55 3008 6410`;
 
 const DESPEDIDA = `*🙏 ¡Gracias por tu interés!*
-
 Recuerda que estamos en etapa de *preventa* y es el mejor momento para asegurar tus beneficios de *Miembro Fundador*.
 
-*📅 Cuándo quieras:*
-• Agendar una visita familiar
-• Hablar con un asesor
-• Conocer más detalles
-
-Aquí estaré para ayudarte.
+*📅 Cuándo quieras:* agendar una visita familiar, hablar con un asesor o conocer más detalles. Aquí estaré para ayudarte.
 
 *🌲 Campamento Onawa* — Tu espacio en armonía con la naturaleza
 ¡Que tengas un excelente día! ☀️`;
@@ -258,9 +199,8 @@ function getResponse(text) {
   }
 
   if (
-    lower.includes('horario') || lower.includes('hora') || lower.includes('abren') ||
-    lower.includes('abierto') || lower.includes('abren') || lower.includes('abre') ||
-    lower.includes('cuando abren') || lower.includes('a qué hora')
+    lower.includes('horario') || lower.includes('hora') ||
+    lower.includes('abren') || lower.includes('abierto') || lower.includes('abre')
   ) {
     return withFooter(HORARIO);
   }
@@ -356,9 +296,7 @@ export default async function handler(req, res) {
       await getOrCreateContact(phone, profileName);
 
       if (messageType !== 'text') {
-        const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*.
-
-${BIENVENIDA}`;
+        const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*.\n\n${BIENVENIDA}`;
         await sendMessage(phone, fallback);
         await saveMessage(phone, 'outbound', fallback, 'text');
         return res.status(200).send('OK');
