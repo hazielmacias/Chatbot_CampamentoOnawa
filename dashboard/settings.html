@@ -51,86 +51,131 @@
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--forest); }
     .menu-toggle svg { width: 24px; height: 24px; }
 
-    .content { padding: 2rem; max-width: 1000px; flex: 1; width: 100%; }
+    .content { padding: 2rem; max-width: 1400px; flex: 1; width: 100%; }
 
-    .live-status { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--white); border: 1px solid var(--sand-dark); border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-light); box-shadow: 0 2px 8px var(--shadow); }
-    .live-status .pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); animation: pulse 1.6s ease-in-out infinite; }
-    .live-status .meta { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin-left: auto; }
+    /* ── Cómo funciona (expandible) ── */
+    .how-it-works { background: linear-gradient(135deg, var(--gold-light), #f4ecd8); border: 1px solid var(--gold); border-radius: 16px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px var(--shadow); }
+    .how-it-works summary { cursor: pointer; font-weight: 700; color: var(--forest-dark); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; list-style: none; }
+    .how-it-works summary::-webkit-details-marker { display: none; }
+    .how-it-works summary::before { content: '💡'; font-size: 1.2rem; }
+    .how-it-works[open] summary::before { content: '📖'; }
+    .how-it-works-body { margin-top: 1rem; color: var(--text); font-size: 0.95rem; line-height: 1.6; }
+    .how-it-works-body p { margin-bottom: 0.5rem; }
+    .how-it-works-body code { background: rgba(255,255,255,0.6); padding: 0.1rem 0.4rem; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--forest-dark); }
+    .how-it-works-body strong { color: var(--forest-dark); }
+    .how-it-works-body ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    .how-it-works-body li { margin-bottom: 0.3rem; }
+    .how-example { background: rgba(255,255,255,0.55); border-radius: 10px; padding: 0.6rem 0.85rem; margin: 0.5rem 0; font-size: 0.88rem; }
+    .how-example .from { color: var(--coral); font-weight: 600; }
+    .how-example .arrow { color: var(--text-muted); margin: 0 0.5rem; }
+    .how-example .to { color: var(--forest); font-weight: 600; }
 
-    .card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px var(--shadow); border: 1px solid var(--sand-dark); margin-bottom: 1.25rem; }
-    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: var(--sand); border-bottom: 1px solid var(--sand-dark); }
-    .card-header-left { display: flex; align-items: center; gap: 0.75rem; }
-    .card-header svg { width: 22px; height: 22px; color: var(--gold); }
-    .card-title { font-family: 'Montserrat', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); }
-    .card-key { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; padding: 0.2rem 0.55rem; background: rgba(200, 164, 92, 0.18); color: var(--earth); border-radius: 50px; font-weight: 600; }
-    .card-body { padding: 1.25rem; }
-    .card-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.5; }
+    /* ── Layout 2 columnas ── */
+    .layout-2col { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; align-items: start; }
+    @media (max-width: 1100px) { .layout-2col { grid-template-columns: 1fr; } }
 
-    textarea.msg-editor { width: 100%; min-height: 180px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.55; background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 10px; color: var(--text); resize: vertical; transition: all 0.2s ease; }
-    textarea.msg-editor:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
+    .panel { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px var(--shadow); border: 1px solid var(--sand-dark); }
+    .panel-header { padding: 1rem 1.25rem; background: var(--sand); border-bottom: 1px solid var(--sand-dark); display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+    .panel-title { font-family: 'Montserrat', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); display: flex; align-items: center; gap: 0.5rem; }
+    .panel-title svg { width: 22px; height: 22px; color: var(--gold); }
+    .panel-body { padding: 1rem 1.25rem; }
 
-    .card-actions { display: flex; gap: 0.5rem; margin-top: 0.85rem; flex-wrap: wrap; align-items: center; }
-    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 9px; font-family: 'Source Sans 3', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
-    .btn svg { width: 14px; height: 14px; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
+    .btn svg { width: 16px; height: 16px; }
     .btn-primary { background: var(--forest); color: var(--white); }
     .btn-primary:hover { background: var(--forest-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .btn-secondary { background: var(--sand); color: var(--text); border: 1px solid var(--sand-dark); }
     .btn-secondary:hover { background: var(--sand-dark); }
+    .btn-ghost { background: transparent; color: var(--text-light); border: 1px solid var(--sand-dark); }
+    .btn-ghost:hover { background: var(--sand); color: var(--forest); }
     .btn-danger { background: rgba(212, 115, 94, 0.12); color: var(--coral); border: 1px solid rgba(212, 115, 94, 0.3); }
     .btn-danger:hover { background: var(--coral); color: var(--white); }
-    .btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-danger:disabled:hover { background: rgba(212, 115, 94, 0.12); color: var(--coral); transform: none; box-shadow: none; }
+
+    /* ── Tarjetas de mensajes ── */
+    .msg-list { display: flex; flex-direction: column; gap: 0.85rem; }
+    .msg-card { background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 14px; padding: 1rem 1.15rem; transition: all 0.2s ease; }
+    .msg-card:hover { border-color: var(--sage); box-shadow: 0 2px 10px var(--shadow); }
+    .msg-card.protected { background: rgba(200, 164, 92, 0.08); border-color: rgba(200, 164, 92, 0.4); }
+    .msg-card-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+    .msg-card-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--forest); display: flex; align-items: center; gap: 0.5rem; }
+    .msg-card-title .system-badge { font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.55rem; background: rgba(200, 164, 92, 0.2); color: var(--earth); border-radius: 50px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .msg-card-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .msg-card-triggers { margin-top: 0.7rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+    .msg-card-triggers .label { font-size: 0.78rem; color: var(--text-light); font-weight: 600; }
+    .trigger-chip { display: inline-flex; align-items: center; background: rgba(122, 158, 126, 0.18); color: var(--forest); border: 1px solid rgba(122, 158, 126, 0.35); padding: 0.18rem 0.55rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+    .trigger-chip.interest { background: rgba(200, 164, 92, 0.2); color: var(--earth); border-color: rgba(200, 164, 92, 0.4); }
+    .trigger-empty { font-size: 0.8rem; color: var(--coral); font-style: italic; font-weight: 600; }
+    .msg-card-preview { margin-top: 0.7rem; padding: 0.6rem 0.75rem; background: var(--wa-bg); border-radius: 8px; font-size: 0.88rem; color: var(--text); white-space: pre-wrap; line-height: 1.45; max-height: 120px; overflow: hidden; position: relative; }
+    .msg-card-preview strong { font-weight: 700; }
+    .msg-card-preview em { font-style: italic; }
+    .msg-card-actions { margin-top: 0.75rem; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+    .msg-card-actions .status { margin-left: auto; font-size: 0.78rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    .add-card { background: var(--sand); border: 2px dashed var(--sand-dark); border-radius: 14px; padding: 1.1rem; text-align: center; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; }
+    .add-card:hover { background: rgba(122, 158, 126, 0.12); border-color: var(--sage); color: var(--forest); }
+    .add-card .plus { font-size: 1.7rem; display: block; margin-bottom: 0.2rem; }
+    .add-card-text { font-weight: 600; font-size: 0.95rem; }
+    .add-card-sub { font-size: 0.8rem; margin-top: 0.2rem; opacity: 0.85; }
+
+    /* ── Panel de vista previa ── */
+    .preview-box { background: var(--wa-bg); border-radius: 12px; padding: 1.25rem; min-height: 220px; }
+    .preview-bubble { background: var(--wa-bubble-out); padding: 0.7rem 0.85rem; border-radius: 8px; max-width: 92%; margin-left: auto; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
+    .preview-bubble strong { font-weight: 700; }
+    .preview-bubble em { font-style: italic; }
+    .preview-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; font-weight: 600; }
+    .preview-empty { color: var(--text-muted); font-size: 0.88rem; text-align: center; padding: 2rem 0; font-style: italic; }
+    .preview-tip { margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+    .preview-tip strong { color: var(--text-light); }
+
+    /* ── Modal ── */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(26, 58, 42, 0.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 1rem; }
+    .modal-backdrop.show { display: flex; }
+    .modal { background: var(--white); border-radius: 18px; max-width: 620px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--white); z-index: 1; }
+    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--forest); }
+    .modal-close { background: none; border: none; cursor: pointer; padding: 0.3rem; color: var(--text-muted); border-radius: 6px; }
+    .modal-close:hover { background: var(--sand); color: var(--text); }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
+    .modal-footer { display: flex; gap: 0.6rem; justify-content: flex-end; padding: 1rem 1.5rem; border-top: 1px solid var(--sand-dark); position: sticky; bottom: 0; background: var(--white); }
+
+    .step { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.9rem 1rem; background: var(--sand); border-radius: 12px; border-left: 4px solid var(--gold); }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--forest); color: var(--white); border-radius: 50%; font-size: 0.78rem; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+    .step-head { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--forest); font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .step-body { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field-help { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; }
+    .field-help code { background: rgba(122, 158, 126, 0.12); color: var(--forest-dark); padding: 0.05rem 0.4rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+    .field-help.examples { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
+    .field-help .example-chip { display: inline-block; background: rgba(122, 158, 126, 0.12); color: var(--forest); padding: 0.1rem 0.5rem; border-radius: 50px; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+    .field-help .example-chip:hover { background: rgba(122, 158, 126, 0.25); border-color: var(--sage); }
+
+    .field input, .field textarea { padding: 0.65rem 0.8rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.95rem; font-family: 'Source Sans 3', sans-serif; background: var(--white); color: var(--text); transition: all 0.2s ease; width: 100%; }
+    .field textarea { font-family: 'JetBrains Mono', monospace; line-height: 1.5; min-height: 110px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
+    .field.error input, .field.error textarea { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(212, 115, 94, 0.15); }
+    .err-msg { font-size: 0.75rem; color: var(--coral); font-weight: 600; display: none; }
+    .field.error .err-msg { display: block; }
+
+    .modal-preview { background: var(--wa-bg); border-radius: 10px; padding: 0.75rem; min-height: 60px; }
+    .modal-preview-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; font-weight: 600; }
+    .modal-preview-bubble { background: var(--wa-bubble-out); padding: 0.6rem 0.8rem; border-radius: 8px; max-width: 95%; margin-left: auto; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.45; min-height: 24px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
+    .modal-preview-bubble strong { font-weight: 700; }
+    .modal-preview-bubble em { font-style: italic; }
+    .modal-preview-bubble.empty { color: var(--text-muted); font-style: italic; }
+
+    .modal-test { margin-top: 0.5rem; display: flex; gap: 0.4rem; align-items: center; }
+    .modal-test input { flex: 1; padding: 0.5rem 0.7rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; background: var(--white); }
+    .modal-test input:focus { outline: none; border-color: var(--sage); }
 
     .toast { position: fixed; bottom: 24px; right: 24px; padding: 0.9rem 1.25rem; border-radius: 12px; font-weight: 600; font-size: 0.9rem; color: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.2); z-index: 2000; transform: translateY(20px); opacity: 0; pointer-events: none; transition: all 0.3s ease; }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.success { background: var(--forest); }
     .toast.error { background: var(--coral); }
 
-    .wa-preview { background: var(--wa-bg); border-radius: 10px; padding: 1rem; max-height: 320px; overflow-y: auto; margin-top: 0.85rem; display: none; }
-    .wa-preview.show { display: block; }
-    .wa-bubble { background: var(--wa-bubble-out); padding: 0.6rem 0.75rem; border-radius: 8px; max-width: 90%; margin-left: auto; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.4; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
-    .wa-bubble strong { font-weight: 700; }
-    .wa-bubble em { font-style: italic; }
-
-    .kw-block { margin-top: 0.85rem; padding: 0.75rem; background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 10px; }
-    .kw-block-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
-    .kw-block-label .lbl { font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: 0.05em; }
-    .kw-block-label .count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
-    .kw-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; min-height: 28px; align-items: center; }
-    .kw-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(122, 158, 126, 0.18); color: var(--forest); border: 1px solid rgba(122, 158, 126, 0.35); padding: 0.25rem 0.6rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
-    .kw-chip.interest { background: rgba(200, 164, 92, 0.2); color: var(--earth); border-color: rgba(200, 164, 92, 0.4); }
-    .kw-chip .x { cursor: pointer; opacity: 0.6; font-weight: 700; padding: 0 0.1rem; border-radius: 50%; transition: all 0.15s; }
-    .kw-chip .x:hover { opacity: 1; background: rgba(0,0,0,0.1); }
-    .kw-empty { font-size: 0.82rem; color: var(--coral); font-weight: 600; font-style: italic; }
-    .kw-input-row { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
-    .kw-input { flex: 1; padding: 0.5rem 0.7rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; background: var(--white); }
-    .kw-input:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
-    .kw-help { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.4; }
-
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(26, 58, 42, 0.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 1rem; }
-    .modal-backdrop.show { display: flex; }
-    .modal { background: var(--white); border-radius: 18px; max-width: 640px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
-    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--white); z-index: 1; }
-    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--forest); }
-    .modal-close { background: none; border: none; cursor: pointer; padding: 0.3rem; color: var(--text-muted); border-radius: 6px; }
-    .modal-close:hover { background: var(--sand); color: var(--text); }
-    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .modal-footer { display: flex; gap: 0.6rem; justify-content: flex-end; padding: 1rem 1.5rem; border-top: 1px solid var(--sand-dark); position: sticky; bottom: 0; background: var(--white); }
-    .field { display: flex; flex-direction: column; gap: 0.35rem; }
-    .field label { font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: 0.05em; }
-    .field input, .field textarea { padding: 0.6rem 0.8rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.9rem; font-family: 'Source Sans 3', sans-serif; background: #fdfcf8; color: var(--text); transition: all 0.2s ease; }
-    .field input { font-family: 'JetBrains Mono', monospace; }
-    .field textarea { min-height: 100px; font-family: 'JetBrains Mono', monospace; line-height: 1.5; resize: vertical; }
-    .field input:focus, .field textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
-    .field .field-help { font-size: 0.75rem; color: var(--text-muted); }
-    .field.error input, .field.error textarea { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(212, 115, 94, 0.15); }
-    .field .err-msg { font-size: 0.75rem; color: var(--coral); font-weight: 600; display: none; }
-    .field.error .err-msg { display: block; }
-
-    .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-muted); }
+    .empty-state { text-align: center; padding: 3rem 1.5rem; color: var(--text-muted); }
     .empty-state .emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
     .empty-state-text { font-size: 1rem; font-weight: 600; color: var(--text-light); }
-    .empty-state-sub { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .empty-state-sub { font-size: 0.88rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.5; }
 
     @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; } .menu-toggle { display: block; } }
     @media (max-width: 768px) { .content { padding: 1rem; } }
@@ -200,7 +245,7 @@
           </button>
           <div class="header-title-group">
             <h1 class="header-title">Mensajes sueltos</h1>
-            <p class="header-subtitle">Los textos que el bot envía cuando reconoce palabras clave</p>
+            <p class="header-subtitle">Las respuestas automáticas cuando el cliente escribe ciertas palabras</p>
           </div>
         </div>
         <div style="display: flex; gap: 0.6rem; align-items: center;">
@@ -212,19 +257,59 @@
       </header>
 
       <main class="content">
-        <div class="live-status">
-          <span class="pulse"></span>
-          <span><strong>Cambios al instante</strong> — lo que guardes se aplica en menos de 10 segundos</span>
-        </div>
+        <details class="how-it-works">
+          <summary>¿Cómo funciona esto?</summary>
+          <div class="how-it-works-body">
+            <p><strong>Los mensajes sueltos</strong> son las respuestas que el bot da automáticamente cuando el cliente escribe ciertas palabras en WhatsApp.</p>
+            <p><strong>Por ejemplo:</strong></p>
+            <div class="how-example"><span class="from">Cliente escribe: "horario"</span><span class="arrow">→</span><span class="to">Bot responde: "Abrimos de 8am a 6pm todos los días"</span></div>
+            <div class="how-example"><span class="from">Cliente escribe: "ubicación"</span><span class="arrow">→</span><span class="to">Bot responde: "Estamos en Valle de Bravo..."</span></div>
+            <div class="how-example"><span class="from">Cliente escribe: "gracias"</span><span class="arrow">→</span><span class="to">Bot responde: "Gracias a ti, ¡que tengas un excelente día!"</span></div>
+            <p><strong>Si el cliente no dice nada que el bot reconozca</strong>, se le muestra el menú principal con las opciones numeradas. Para agregar o cambiar esas opciones, ve a <strong>Menú Principal</strong>.</p>
+            <p>💡 <strong>Tip:</strong> Cada mensaje tiene 3 partes: <strong>el título</strong> (para que tú lo identifiques), <strong>el mensaje al cliente</strong> (lo que ve en WhatsApp) y <strong>las palabras que lo activan</strong> (lo que tiene que escribir el cliente).</p>
+          </div>
+        </details>
 
-        <div class="help-box" style="background: rgba(200, 164, 92, 0.1); border: 1px solid rgba(200, 164, 92, 0.3); border-radius: 10px; padding: 0.75rem 0.9rem; font-size: 0.85rem; color: var(--text); line-height: 1.5; margin-bottom: 1rem;">
-          <strong style="color: var(--forest);">¿Qué es esto?</strong> Aquí editas las respuestas que el bot manda cuando el cliente escribe ciertas palabras (por ejemplo, "horario", "ubicación", "requisitos"). Para agregar o quitar opciones del <strong>menú principal</strong> que ve el cliente al inicio, entra a <strong>Menú Principal</strong>.
-        </div>
+        <div class="layout-2col">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Tus mensajes
+                <span id="msgCount" style="font-size:0.85rem; font-weight:500; color:var(--text-muted); margin-left:0.4rem;"></span>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="messagesContainer">
+                <div class="empty-state">
+                  <div class="emoji">⏳</div>
+                  <div class="empty-state-text">Cargando mensajes…</div>
+                </div>
+              </div>
+              <div class="add-card" style="margin-top: 0.85rem;" onclick="openCreateModal()">
+                <span class="plus">＋</span>
+                <div class="add-card-text">Agregar otro mensaje</div>
+                <div class="add-card-sub">Por ejemplo: respuestas para "promociones", "niños", "mascotas"...</div>
+              </div>
+            </div>
+          </div>
 
-        <div id="messagesContainer">
-          <div class="empty-state">
-            <div class="emoji">⏳</div>
-            <div class="empty-state-text">Cargando mensajes…</div>
+          <div class="panel" style="position: sticky; top: 90px;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                Vista previa
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="preview-label">Así se ve en WhatsApp</div>
+              <div class="preview-box">
+                <div class="preview-bubble" id="previewBubble"><span class="preview-empty">Selecciona un mensaje de la lista para ver cómo se ve en WhatsApp.</span></div>
+              </div>
+              <div class="preview-tip">
+                💡 <strong>Tip:</strong> usa <code>*negrita*</code>, <code>_cursiva_</code> y saltos de línea en tus mensajes. WhatsApp los renderiza tal cual.
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -236,40 +321,143 @@
   <div class="modal-backdrop" id="createModal" onclick="if(event.target===this) closeCreateModal()">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title">Agregar mensaje</div>
+        <div class="modal-title">Agregar un mensaje nuevo</div>
         <button class="modal-close" onclick="closeCreateModal()" aria-label="Cerrar">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
       <div class="modal-body">
-        <div class="field" id="fld-title">
-          <label>Título</label>
-          <input id="newTitle" type="text" placeholder="ej: Beneficios de Junio" autocomplete="off">
-          <span class="field-help">Nombre interno para que lo identifiques. No lo ve el cliente.</span>
-          <span class="err-msg">Escribe un título</span>
+        <p class="field-help" style="margin-bottom: 0.5rem;">Vas a crear una respuesta automática. Sigue los 3 pasos:</p>
+
+        <div class="step">
+          <div class="step-head">
+            <span class="step-num">1</span>
+            Ponle un nombre
+          </div>
+          <div class="step-body">
+            <input id="newTitle" type="text" placeholder="Ej: Horario de atención, Promociones, Requisitos..." style="padding:0.65rem 0.8rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.95rem; background:var(--white);">
+            <div class="field-help">Solo es para que <strong>tú</strong> lo identifiques en la lista. El cliente <strong>no lo ve</strong>.</div>
+            <span id="err-title" class="err-msg" style="display:none; font-size:0.78rem; color:var(--coral); font-weight:600;">⚠ Ponle un nombre para identificar este mensaje</span>
+          </div>
         </div>
-        <div class="field">
-          <label>Descripción interna (opcional)</label>
-          <input id="newDescription" type="text" placeholder="Una nota para tu equipo" autocomplete="off">
+
+        <div class="step">
+          <div class="step-head">
+            <span class="step-num">2</span>
+            Escribe lo que dirá el bot
+          </div>
+          <div class="step-body">
+            <textarea id="newContent" placeholder="Ej: Nuestro horario es de 8am a 6pm todos los días. ¡Te esperamos!" style="padding:0.65rem 0.8rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.95rem; font-family:'JetBrains Mono',monospace; line-height:1.5; min-height:110px; resize:vertical; background:var(--white);"></textarea>
+            <div class="field-help">
+              Es el mensaje que el cliente va a leer en WhatsApp. Puedes usar:
+              <span class="examples">
+                <span class="example-chip" title="Click para pegar" onclick="insertExample('*negrita*', 'newContent')">*negrita*</span>
+                <span class="example-chip" onclick="insertExample('_cursiva_', 'newContent')">_cursiva_</span>
+                <span class="example-chip" onclick="insertExample('emoji', 'newContent')">😊 emoji</span>
+                <span class="example-chip" onclick="insertExample('salto', 'newContent')">salto de línea</span>
+              </span>
+            </div>
+            <div class="modal-preview">
+              <div class="modal-preview-label">Vista previa en vivo</div>
+              <div class="modal-preview-bubble empty" id="livePreview">Empieza a escribir para ver cómo se ve...</div>
+            </div>
+            <span id="err-content" class="err-msg" style="display:none; font-size:0.78rem; color:var(--coral); font-weight:600;">⚠ Escribe el mensaje que verá el cliente</span>
+          </div>
         </div>
-        <div class="field" id="fld-content">
-          <label>Mensaje al cliente</label>
-          <textarea id="newContent" placeholder="Escribe el mensaje. Puedes usar *negrita* y _cursiva_ de WhatsApp."></textarea>
-          <span class="field-help">Es lo que el bot le va a responder al cliente.</span>
-          <span class="err-msg">Escribe el mensaje</span>
+
+        <div class="step">
+          <div class="step-head">
+            <span class="step-num">3</span>
+            <span>¿Cuándo se activa?</span>
+          </div>
+          <div class="step-body">
+            <input id="newKeywords" type="text" placeholder="Ej: horario, hora, abren, abierto" style="padding:0.65rem 0.8rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.95rem; font-family:'JetBrains Mono',monospace; background:var(--white);">
+            <div class="field-help">
+              Escribe las <strong>palabras que el cliente puede usar</strong> para activar este mensaje. Separa con comas.
+              <br><strong>Ejemplos:</strong>
+              <span class="examples">
+                <span class="example-chip" onclick="insertExample('horario, hora, abren, abierto', 'newKeywords')">horario, hora, abren</span>
+                <span class="example-chip" onclick="insertExample('ubicacion, donde, direccion, como llegar', 'newKeywords')">ubicacion, donde, direccion</span>
+                <span class="example-chip" onclick="insertExample('requisitos, edad, menor', 'newKeywords')">requisitos, edad</span>
+                <span class="example-chip" onclick="insertExample('gracias, adios, bye', 'newKeywords')">gracias, adios</span>
+              </span>
+            </div>
+            <div class="field-help" style="margin-top:0.4rem; color:var(--coral); font-weight:600;">💡 Déjalo vacío si este mensaje <strong>solo se usa desde el menú principal</strong> (no por palabras).</div>
+          </div>
         </div>
-        <div class="field" id="fld-keywords">
-          <label>Palabras que activan este mensaje</label>
-          <input id="newKeywords" type="text" placeholder="ej: junio, beneficio, promo, oferta" autocomplete="off" spellcheck="false">
-          <span class="field-help">Si el cliente escribe alguna de estas palabras, el bot responde con este mensaje. Separa con comas. Déjalo vacío si este mensaje solo se usa desde el menú.</span>
-          <span class="err-msg">Revisa el formato</span>
+
+        <div class="step" style="border-left-color: var(--sage); background: rgba(122, 158, 126, 0.08);">
+          <div class="step-head">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--forest)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Pruébalo antes de guardar
+          </div>
+          <div class="step-body">
+            <div class="field-help">Escribe algo como si fueras el cliente y mira qué responde el bot. Si funciona, dale a Guardar.</div>
+            <div class="modal-test">
+              <input id="testInput" type="text" placeholder='Ej: escribe "horario" para probar'>
+              <button class="btn btn-secondary" onclick="testCurrentDraft()">Probar</button>
+            </div>
+            <div id="testResult" style="display:none; margin-top:0.5rem;">
+              <div class="modal-preview">
+                <div class="modal-preview-label">El bot respondería:</div>
+                <div class="modal-preview-bubble" id="testResultBubble"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeCreateModal()">Cancelar</button>
         <button class="btn btn-primary" id="createSubmitBtn" onclick="submitCreate()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Guardar
+          Guardar mensaje
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="editModal" onclick="if(event.target===this) closeEditModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Editar mensaje</div>
+        <button class="modal-close" onclick="closeEditModal()" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="step">
+          <div class="step-head"><span class="step-num">1</span> Nombre interno</div>
+          <div class="step-body">
+            <input id="editTitle" type="text" style="padding:0.65rem 0.8rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.95rem; background:var(--white);">
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-head"><span class="step-num">2</span> Mensaje al cliente</div>
+          <div class="step-body">
+            <textarea id="editContent" style="padding:0.65rem 0.8rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.95rem; font-family:'JetBrains Mono',monospace; line-height:1.5; min-height:140px; resize:vertical; background:var(--white);"></textarea>
+            <div class="modal-preview">
+              <div class="modal-preview-label">Vista previa en vivo</div>
+              <div class="modal-preview-bubble" id="editLivePreview"></div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-head"><span class="step-num">3</span> Palabras que lo activan</div>
+          <div class="step-body">
+            <input id="editKeywords" type="text" placeholder="Separadas por coma" style="padding:0.65rem 0.8rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.95rem; font-family:'JetBrains Mono',monospace; background:var(--white);">
+            <div class="field-help">El cliente puede escribir <strong>cualquiera de estas palabras</strong> (con que coincida una parte, funciona) para activar este mensaje.</div>
+          </div>
+        </div>
+        <div class="field-help">
+          <strong>Descripción interna (opcional):</strong>
+          <input id="editDescription" type="text" placeholder="Una nota para tu equipo" style="margin-top:0.3rem; padding:0.5rem 0.7rem; border:1px solid var(--sand-dark); border-radius:8px; font-size:0.88rem; background:var(--white); width:100%;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
+        <button class="btn btn-primary" id="editSubmitBtn" onclick="submitEdit()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Guardar cambios
         </button>
       </div>
     </div>
@@ -279,18 +467,12 @@
     const API = '/api/dashboard/settings';
     const PROTECTED_KEYS = new Set(['bienvenida', 'footer', 'no_entendido']);
     const INTEREST_KEY = 'asesor';
-    const state = { messages: {}, protectedKeys: Array.from(PROTECTED_KEYS) };
+    const state = { messages: {}, protectedKeys: Array.from(PROTECTED_KEYS), selected: null };
 
     function slugify(s) {
-      return String(s || '')
-        .toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9_]+/g, '_')
-        .replace(/^_+|_+$/g, '')
-        .replace(/_+/g, '_')
-        .slice(0, 40) || 'opcion';
+      return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '').replace(/_+/g, '_').slice(0, 40) || 'opcion';
     }
-
     function generateUniqueKey(title, existing) {
       const base = slugify(title);
       if (!existing[base]) return base;
@@ -322,131 +504,99 @@
     function escapeHtml(s) {
       return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-
-    function renderWaPreview(text) {
-      const html = text
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/\*(.+?)\*/g, '<strong>$1</strong>')
-        .replace(/_(.+?)_/g, '<em>$1</em>');
-      return `<div class="wa-bubble">${html}</div>`;
+    function renderWa(text) {
+      return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*(.+?)\*/g, '<strong>$1</strong>').replace(/_(.+?)_/g, '<em>$1</em>');
     }
 
-    function parseKeywordsInput(s) {
-      return String(s || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
-    }
-
-    function renderKeywordsBlock(key, msg) {
-      const kws = Array.isArray(msg.keywords) ? msg.keywords : [];
-      const isProtected = state.protectedKeys.includes(key);
-      const isInterest = key === INTEREST_KEY;
-      const chips = kws.length === 0
-        ? '<span class="kw-empty">⚠ Nadie activará este mensaje por palabras. Solo se usa desde el menú o al inicio.</span>'
-        : kws.map(k => `<span class="kw-chip${isInterest ? ' interest' : ''}" data-key="${escapeHtml(key)}" data-kw="${escapeHtml(k)}">${escapeHtml(k)}${isProtected ? '' : '<span class="x" data-remove="1" title="Quitar">×</span>'}</span>`).join('');
-      return `
-        <div class="kw-block" data-key="${escapeHtml(key)}">
-          <div class="kw-block-label">
-            <span class="lbl">Palabras que activan este mensaje${isInterest ? ' · 🎯 interés (escala al asesor)' : ''}</span>
-            <span class="count">${kws.length} ${kws.length === 1 ? 'palabra' : 'palabras'}</span>
-          </div>
-          <div class="kw-chips" id="chips-${escapeHtml(key)}">${chips}</div>
-          ${isProtected ? '' : `
-            <div class="kw-input-row">
-              <input class="kw-input" id="kw-input-${escapeHtml(key)}" placeholder="Escribe una palabra y presiona Enter" autocomplete="off" spellcheck="false">
-              <button class="btn btn-secondary" onclick="addKeywordFromInput('${escapeHtml(key)}')">+ Agregar</button>
+    function renderMessages() {
+      const container = document.getElementById('messagesContainer');
+      const keys = Object.keys(state.messages);
+      document.getElementById('msgCount').textContent = keys.length > 0 ? `(${keys.length})` : '';
+      if (keys.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="emoji">📭</div><div class="empty-state-text">Aún no tienes mensajes sueltos.</div><div class="empty-state-sub">Cuando el cliente escriba algo que el bot no reconozca, se le muestra el menú principal.<br>Si quieres que el bot responda automáticamente a ciertas palabras (como "horario", "ubicación"), crea tu primer mensaje aquí.</div></div>';
+        return;
+      }
+      const sorted = keys.map(k => state.messages[k]).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      container.innerHTML = sorted.map(m => {
+        const isProtected = state.protectedKeys.includes(m.key);
+        const isInterest = m.key === INTEREST_KEY;
+        const kws = Array.isArray(m.keywords) ? m.keywords : [];
+        const triggers = kws.length === 0
+          ? '<span class="trigger-empty">⚠ No se activa con palabras (solo desde el menú)</span>'
+          : kws.map(k => `<span class="trigger-chip${isInterest ? ' interest' : ''}">${escapeHtml(k)}</span>`).join('');
+        const preview = String(m.content || '').slice(0, 220);
+        return `
+        <div class="msg-card${isProtected ? ' protected' : ''}" data-key="${escapeHtml(m.key)}">
+          <div class="msg-card-head">
+            <div>
+              <div class="msg-card-title">
+                ${escapeHtml(m.title)}
+                ${isProtected ? '<span class="system-badge">del sistema</span>' : ''}
+              </div>
+              ${m.description ? `<div class="msg-card-desc">${escapeHtml(m.description)}</div>` : ''}
             </div>
-          `}
-          <div class="kw-help">Si el cliente escribe alguna de estas palabras, el bot responde con este mensaje (búsqueda por contiene).</div>
+          </div>
+          <div class="msg-card-triggers">
+            <span class="label">${kws.length === 0 ? '' : 'Se activa cuando escriben:'}</span>
+            ${triggers}
+          </div>
+          <div class="msg-card-preview">${renderWa(preview)}${String(m.content || '').length > 220 ? '…' : ''}</div>
+          <div class="msg-card-actions">
+            <button class="btn btn-secondary" onclick="openEditModal('${escapeHtml(m.key)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Editar
+            </button>
+            <button class="btn btn-ghost" onclick="tryMessage('${escapeHtml(m.key)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Probar
+            </button>
+            <button class="btn btn-danger" onclick="deleteMessage('${escapeHtml(m.key)}')" ${isProtected ? 'disabled title="Mensaje del sistema, no se puede eliminar"' : ''}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              Borrar
+            </button>
+            <span class="status" id="status-${escapeHtml(m.key)}"></span>
+          </div>
         </div>
-      `;
+      `}).join('');
     }
+
+    function updatePreview(key) {
+      const bubble = document.getElementById('previewBubble');
+      const m = state.messages[key];
+      if (!m) {
+        bubble.innerHTML = '<span class="preview-empty">Selecciona un mensaje de la lista para ver cómo se ve en WhatsApp.</span>';
+        return;
+      }
+      state.selected = key;
+      bubble.innerHTML = renderWa(m.content);
+    }
+
+    document.addEventListener('click', e => {
+      const card = e.target.closest('.msg-card');
+      if (!card) return;
+      if (e.target.closest('button')) return;
+      const key = card.dataset.key;
+      if (key) updatePreview(key);
+    });
 
     async function loadAll() {
       try {
         const r = await fetch(API);
         const data = await r.json();
         state.messages = data.messages || {};
-        if (Array.isArray(data.protectedKeys)) {
-          state.protectedKeys = data.protectedKeys;
-        }
+        if (Array.isArray(data.protectedKeys)) state.protectedKeys = data.protectedKeys;
         renderMessages();
       } catch (e) {
         toast('Error cargando: ' + e.message, 'error');
       }
     }
 
-    function renderMessages() {
-      const container = document.getElementById('messagesContainer');
-      const keys = Object.keys(state.messages);
-      if (keys.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="emoji">📭</div><div class="empty-state-text">No hay mensajes.</div><div class="empty-state-sub">El bot usará los valores por defecto hasta que subas uno.</div></div>';
-        return;
-      }
-      const sorted = keys.map(k => state.messages[k]).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-      container.innerHTML = sorted.map(m => {
-        const isProtected = state.protectedKeys.includes(m.key);
-        return `
-        <div class="card" data-key="${escapeHtml(m.key)}">
-          <div class="card-header">
-            <div class="card-header-left">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              <span class="card-title">${escapeHtml(m.title)}</span>
-            </div>
-          </div>
-          <div class="card-body">
-            ${m.description ? `<div class="card-desc">${escapeHtml(m.description)}</div>` : ''}
-            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Mensaje al cliente</div>
-            <textarea class="msg-editor" data-key="${escapeHtml(m.key)}">${escapeHtml(m.content)}</textarea>
-            ${renderKeywordsBlock(m.key, m)}
-            <div class="card-actions">
-              <button class="btn btn-primary" onclick="saveMessage('${escapeHtml(m.key)}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                Guardar
-              </button>
-              <button class="btn btn-secondary" onclick="togglePreview('${escapeHtml(m.key)}')">👁 Vista previa</button>
-              <button class="btn btn-danger" onclick="deleteMessage('${escapeHtml(m.key)}')" ${isProtected ? 'disabled title="Mensaje del sistema, no se puede eliminar"' : ''}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-                Eliminar
-              </button>
-              <span id="status-${escapeHtml(m.key)}" style="margin-left: auto; font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;"></span>
-            </div>
-            <div class="wa-preview" id="preview-${escapeHtml(m.key)}"></div>
-          </div>
-        </div>
-      `}).join('');
-
-      // Wire up Enter-key on keyword inputs
-      sorted.forEach(m => {
-        const inp = document.getElementById('kw-input-' + m.key);
-        if (inp) {
-          inp.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              addKeywordFromInput(m.key);
-            }
-          });
-        }
-      });
-
-      // Event delegation for remove-keyword buttons
-      const chipsContainer = document.getElementById('messagesContainer');
-      if (chipsContainer && !chipsContainer._kwRemoveWired) {
-        chipsContainer._kwRemoveWired = true;
-        chipsContainer.addEventListener('click', e => {
-          const x = e.target.closest('[data-remove]');
-          if (!x) return;
-          const chip = x.closest('.kw-chip');
-          if (!chip) return;
-          const k = chip.dataset.key;
-          const kw = chip.dataset.kw;
-          if (k && kw) removeKeyword(k, kw);
-        });
-      }
-    }
-
     async function saveMessage(key) {
-      const card = document.querySelector(`.card[data-key="${key}"]`);
-      const ta = card.querySelector('textarea.msg-editor');
       const m = state.messages[key];
+      if (!m) return;
+      const ta = document.querySelector(`.msg-card[data-key="${key}"] textarea`);
+      if (!ta) { openEditModal(key); return; }
       const status = document.getElementById('status-' + key);
       status.textContent = 'guardando…';
       try {
@@ -454,18 +604,15 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            key,
-            title: m.title,
-            content: ta.value,
-            sortOrder: m.sortOrder || 0,
-            description: m.description,
-            keywords: Array.isArray(m.keywords) ? m.keywords : []
+            key, title: m.title, content: ta.value, sortOrder: m.sortOrder || 0,
+            description: m.description, keywords: Array.isArray(m.keywords) ? m.keywords : []
           })
         });
         if (!r.ok) throw new Error((await r.json()).message || 'Error');
-        status.textContent = '✓ guardado ' + new Date().toLocaleTimeString('es-MX');
         state.messages[key].content = ta.value;
-        toast('"' + m.title + '" guardado · activo en ≤ 10 s');
+        status.textContent = '✓ guardado ' + new Date().toLocaleTimeString('es-MX');
+        updatePreview(key);
+        toast('"' + m.title + '" guardado · activo en menos de 10 s');
       } catch (e) {
         status.textContent = '✗ error';
         toast('Error: ' + e.message, 'error');
@@ -476,183 +623,231 @@
       const m = state.messages[key];
       if (!m) return;
       if (state.protectedKeys.includes(key)) {
-        toast('Este mensaje está protegido y no se puede eliminar', 'error');
+        toast('Este mensaje es parte del sistema y no se puede eliminar', 'error');
         return;
       }
-      if (!confirm(`¿Eliminar "${m.title}"?\n\nEsta acción no se puede deshacer.`)) return;
+      if (!confirm(`¿Borrar "${m.title}"?\n\nEl cliente ya no recibirá esta respuesta cuando escriba las palabras asociadas.`)) return;
       try {
         const r = await fetch(API + '?key=' + encodeURIComponent(key), { method: 'DELETE' });
         const data = await r.json().catch(() => ({}));
-        if (!r.ok) {
-          if (r.status === 403) throw new Error('Mensaje del sistema, no se puede eliminar');
-          if (r.status === 404) throw new Error('El mensaje ya no existe');
-          throw new Error(data.message || data.error || 'Error');
-        }
+        if (!r.ok) throw new Error(data.message || data.error || 'Error');
         delete state.messages[key];
-        renderMessages();
-        toast(`"${m.title}" eliminado`);
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    }
-
-    function togglePreview(key) {
-      const card = document.querySelector(`.card[data-key="${key}"]`);
-      const ta = card.querySelector('textarea.msg-editor');
-      const preview = document.getElementById('preview-' + key);
-      const isOpen = preview.classList.contains('show');
-      if (isOpen) { preview.classList.remove('show'); return; }
-      preview.innerHTML = renderWaPreview(ta.value);
-      preview.classList.add('show');
-    }
-
-    // ===================== KEYWORDS (inline) =====================
-
-    async function addKeywordFromInput(key) {
-      const inp = document.getElementById('kw-input-' + key);
-      if (!inp) return;
-      const raw = inp.value.trim().toLowerCase();
-      if (!raw) return;
-      const m = state.messages[key];
-      if (!m) return;
-      const kws = Array.isArray(m.keywords) ? [...m.keywords] : [];
-      if (kws.includes(raw)) {
-        toast(`"${raw}" ya está en las keywords`, 'error');
-        return;
-      }
-      kws.push(raw);
-      await persistKeywords(key, kws);
-      inp.value = '';
-    }
-
-    async function removeKeyword(key, kw) {
-      const m = state.messages[key];
-      if (!m) return;
-      const kws = (m.keywords || []).filter(k => k !== kw);
-      await persistKeywords(key, kws);
-    }
-
-    async function persistKeywords(key, kws) {
-      const m = state.messages[key];
-      const status = document.getElementById('status-' + key);
-      if (status) status.textContent = 'guardando keywords…';
-      try {
-        const r = await fetch(API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            key,
-            title: m.title,
-            content: m.content,
-            sortOrder: m.sortOrder || 0,
-            description: m.description,
-            keywords: kws
-          })
-        });
-        if (!r.ok) throw new Error((await r.json()).message || 'Error');
-        state.messages[key].keywords = kws;
-        // Re-render only the chips block to avoid losing focus
-        const card = document.querySelector(`.card[data-key="${key}"]`);
-        if (card) {
-          const oldBlock = card.querySelector('.kw-block');
-          if (oldBlock) {
-            const tmp = document.createElement('div');
-            tmp.innerHTML = renderKeywordsBlock(key, state.messages[key]);
-            oldBlock.replaceWith(tmp.firstElementChild);
-            // Re-wire Enter on the new input
-            const inp = document.getElementById('kw-input-' + key);
-            if (inp) {
-              inp.addEventListener('keydown', e => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  addKeywordFromInput(key);
-                }
-              });
-            }
-          }
+        if (state.selected === key) {
+          state.selected = null;
+          document.getElementById('previewBubble').innerHTML = '<span class="preview-empty">Selecciona un mensaje de la lista para ver cómo se ve en WhatsApp.</span>';
         }
-        if (status) status.textContent = '✓ keywords actualizadas ' + new Date().toLocaleTimeString('es-MX');
-        toast(`Keywords de "${m.title}" actualizadas`);
+        renderMessages();
+        toast('"' + m.title + '" eliminado');
       } catch (e) {
-        if (status) status.textContent = '✗ error';
         toast('Error: ' + e.message, 'error');
       }
     }
 
-    // ===================== CREAR NUEVO MENSAJE =====================
-
+    // ====== Modal Crear ======
     function openCreateModal() {
-      ['fld-title', 'fld-content', 'fld-keywords'].forEach(id => {
-        document.getElementById(id)?.classList.remove('error');
-      });
+      ['err-title', 'err-content'].forEach(id => document.getElementById(id).style.display = 'none');
       document.getElementById('newTitle').value = '';
-      document.getElementById('newDescription').value = '';
       document.getElementById('newContent').value = '';
       document.getElementById('newKeywords').value = '';
+      document.getElementById('livePreview').innerHTML = '<span style="color:var(--text-muted); font-style:italic;">Empieza a escribir para ver cómo se ve...</span>';
+      document.getElementById('livePreview').className = 'modal-preview-bubble empty';
+      document.getElementById('testInput').value = '';
+      document.getElementById('testResult').style.display = 'none';
       document.getElementById('createModal').classList.add('show');
       setTimeout(() => document.getElementById('newTitle').focus(), 50);
     }
-
     function closeCreateModal() {
       document.getElementById('createModal').classList.remove('show');
     }
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && document.getElementById('createModal').classList.contains('show')) {
-        closeCreateModal();
+    document.getElementById('newContent').addEventListener('input', e => {
+      const v = e.target.value;
+      const bubble = document.getElementById('livePreview');
+      if (!v.trim()) {
+        bubble.innerHTML = '<span style="color:var(--text-muted); font-style:italic;">Empieza a escribir para ver cómo se ve...</span>';
+        bubble.className = 'modal-preview-bubble empty';
+      } else {
+        bubble.innerHTML = renderWa(v);
+        bubble.className = 'modal-preview-bubble';
       }
     });
 
-    async function submitCreate() {
-      const title = document.getElementById('newTitle').value.trim();
-      const description = document.getElementById('newDescription').value.trim();
-      const content = document.getElementById('newContent').value;
-      const keywordsRaw = document.getElementById('newKeywords').value;
+    function insertExample(text, targetId) {
+      const el = document.getElementById(targetId);
+      if (text === 'emoji') text = '😊';
+      if (text === 'salto') text = '\n';
+      const start = el.selectionStart, end = el.selectionEnd;
+      const before = el.value.slice(0, start);
+      const after = el.value.slice(end);
+      el.value = before + text + after;
+      el.focus();
+      el.selectionStart = el.selectionEnd = start + text.length;
+      el.dispatchEvent(new Event('input'));
+    }
 
-      const errs = [];
-      if (!title) errs.push('fld-title');
-      if (typeof content !== 'string' || !content) errs.push('fld-content');
-      errs.forEach(id => document.getElementById(id)?.classList.add('error'));
-      if (errs.length > 0) {
-        toast('Completa los campos marcados', 'error');
+    async function testCurrentDraft() {
+      const input = document.getElementById('testInput').value.trim();
+      if (!input) {
+        toast('Escribe algo en el campo de prueba primero', 'error');
         return;
       }
+      const draftKeywords = document.getElementById('newKeywords').value;
+      const draftContent = document.getElementById('newContent').value;
+      const draftTitle = document.getElementById('newTitle').value || 'prueba';
+      const testKey = '__draft_' + slugify(draftTitle);
+      const tmp = { [testKey]: { content: draftContent, keywords: parseKeywordsInput(draftKeywords) } };
+      const cfg = { messages: { ...state.messages, ...tmp }, menuOptions: [] };
+      const lower = input.toLowerCase().trim();
+      let response = '🤔 No identifiqué tu pregunta. (Tu mensaje no coincide con ningún keyword del nuevo mensaje que estás creando.)';
+      const matches = parseKeywordsInput(draftKeywords);
+      const isEmpty = matches.length === 0;
+      if (isEmpty) {
+        response = '⚠ Este mensaje no tiene palabras para activarse. Solo se podría usar desde el menú principal.';
+      } else if (matches.some(k => lower === k || lower.includes(k))) {
+        response = draftContent || '(Aún no escribiste el mensaje)';
+      } else if (Object.keys(state.messages).length > 0) {
+        // Buscar en keywords existentes
+        for (const [k, m] of Object.entries(state.messages)) {
+          if (Array.isArray(m.keywords) && m.keywords.some(kw => lower === kw || lower.includes(kw))) {
+            response = `(Matchearía con "${m.title}" existente):\n\n` + m.content;
+            break;
+          }
+        }
+      }
+      document.getElementById('testResultBubble').innerHTML = renderWa(response);
+      document.getElementById('testResult').style.display = 'block';
+    }
+
+    function parseKeywordsInput(s) {
+      return String(s || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+    }
+
+    async function submitCreate() {
+      const title = document.getElementById('newTitle').value.trim();
+      const content = document.getElementById('newContent').value;
+      const keywordsRaw = document.getElementById('newKeywords').value;
+      let hasError = false;
+      if (!title) { document.getElementById('err-title').style.display = 'block'; hasError = true; }
+      if (!content.trim()) { document.getElementById('err-content').style.display = 'block'; hasError = true; }
+      if (hasError) { toast('Completa los pasos 1 y 2 antes de guardar', 'error'); return; }
 
       const key = generateUniqueKey(title, state.messages);
       const keywords = parseKeywordsInput(keywordsRaw);
-      const sortOrder = 99;
-
       const btn = document.getElementById('createSubmitBtn');
       btn.disabled = true;
-      btn.textContent = 'Guardando…';
+      btn.innerHTML = 'Guardando…';
       try {
         const r = await fetch(API, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key, title, description, content, keywords, sortOrder })
+          body: JSON.stringify({ key, title, content, keywords, sortOrder: 99 })
         });
         const data = await r.json().catch(() => ({}));
-        if (r.status === 409) {
-          throw new Error(`Ya existe un mensaje con la key "${key}"`);
-        }
-        if (!r.ok) {
-          throw new Error(data.message || data.error || 'Error');
-        }
+        if (!r.ok) throw new Error(data.message || data.error || 'Error');
         state.messages[key] = data.message;
         renderMessages();
         closeCreateModal();
-        toast(`"${title}" guardado · activo en menos de 10 s`);
+        toast(`"${title}" creado · activo en menos de 10 s`);
         setTimeout(() => {
-          const newCard = document.querySelector(`.card[data-key="${key}"]`);
-          if (newCard) newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const newCard = document.querySelector(`.msg-card[data-key="${key}"]`);
+          if (newCard) {
+            newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            updatePreview(key);
+          }
         }, 100);
       } catch (e) {
         toast('Error: ' + e.message, 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Guardar';
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Guardar mensaje';
       }
     }
+
+    // ====== Modal Editar ======
+    let editingKey = null;
+    function openEditModal(key) {
+      const m = state.messages[key];
+      if (!m) return;
+      editingKey = key;
+      document.getElementById('editTitle').value = m.title || '';
+      document.getElementById('editContent').value = m.content || '';
+      document.getElementById('editKeywords').value = (m.keywords || []).join(', ');
+      document.getElementById('editDescription').value = m.description || '';
+      updateEditPreview();
+      document.getElementById('editModal').classList.add('show');
+    }
+    function closeEditModal() {
+      document.getElementById('editModal').classList.remove('show');
+      editingKey = null;
+    }
+    function updateEditPreview() {
+      const v = document.getElementById('editContent').value;
+      const bubble = document.getElementById('editLivePreview');
+      if (!v.trim()) {
+        bubble.innerHTML = '<span style="color:var(--text-muted); font-style:italic;">Vacío</span>';
+      } else {
+        bubble.innerHTML = renderWa(v);
+      }
+    }
+    document.getElementById('editContent').addEventListener('input', updateEditPreview);
+
+    async function submitEdit() {
+      if (!editingKey) return;
+      const m = state.messages[editingKey];
+      const title = document.getElementById('editTitle').value.trim();
+      const content = document.getElementById('editContent').value;
+      const keywordsRaw = document.getElementById('editKeywords').value;
+      const description = document.getElementById('editDescription').value.trim();
+      if (!title || !content) { toast('Nombre y mensaje son obligatorios', 'error'); return; }
+      const keywords = parseKeywordsInput(keywordsRaw);
+      const btn = document.getElementById('editSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Guardando…';
+      try {
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            key: editingKey, title, content, description, sortOrder: m.sortOrder || 0, keywords
+          })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.message || data.error || 'Error');
+        state.messages[editingKey] = data.message;
+        renderMessages();
+        updatePreview(editingKey);
+        closeEditModal();
+        toast(`"${title}" guardado`);
+      } catch (e) {
+        toast('Error: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Guardar cambios';
+      }
+    }
+
+    async function tryMessage(key) {
+      const m = state.messages[key];
+      if (!m) return;
+      const r = await fetch('/api/webhook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'preview', text: (m.keywords && m.keywords[0]) || m.title })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (data.response) {
+        updatePreview(key);
+        toast(`Simulando: cliente escribe "${(m.keywords && m.keywords[0]) || m.title}"`);
+      } else {
+        toast('No se pudo probar', 'error');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('createModal').classList.contains('show')) closeCreateModal();
+        if (document.getElementById('editModal').classList.contains('show')) closeEditModal();
+      }
+    });
 
     loadAll();
   </script>

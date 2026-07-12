@@ -53,10 +53,27 @@
 
     .content { padding: 2rem; max-width: 1300px; flex: 1; width: 100%; }
 
-    .live-status { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--white); border: 1px solid var(--sand-dark); border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-light); box-shadow: 0 2px 8px var(--shadow); }
-    .live-status .pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); animation: pulse 1.6s ease-in-out infinite; }
-    .live-status .meta { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin-left: auto; }
+    /* ── Cómo funciona (expandible) ── */
+    .how-it-works { background: linear-gradient(135deg, var(--gold-light), #f4ecd8); border: 1px solid var(--gold); border-radius: 16px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px var(--shadow); }
+    .how-it-works summary { cursor: pointer; font-weight: 700; color: var(--forest-dark); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; list-style: none; }
+    .how-it-works summary::-webkit-details-marker { display: none; }
+    .how-it-works summary::before { content: '💡'; font-size: 1.2rem; }
+    .how-it-works[open] summary::before { content: '📖'; }
+    .how-it-works-body { margin-top: 1rem; color: var(--text); font-size: 0.95rem; line-height: 1.6; }
+    .how-it-works-body p { margin-bottom: 0.5rem; }
+    .how-it-works-body strong { color: var(--forest-dark); }
+    .how-it-works-body code { background: rgba(255,255,255,0.6); padding: 0.1rem 0.4rem; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--forest-dark); }
+    .how-it-works-body ol { margin: 0.5rem 0 0.5rem 1.5rem; }
+    .how-example { background: rgba(255,255,255,0.55); border-radius: 10px; padding: 0.6rem 0.85rem; margin: 0.5rem 0; font-size: 0.88rem; }
+    .how-example .from { color: var(--coral); font-weight: 600; }
+    .how-example .arrow { color: var(--text-muted); margin: 0 0.5rem; }
+    .how-example .to { color: var(--forest); font-weight: 600; }
+    .flow-steps { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0.4rem; align-items: center; margin: 0.75rem 0; font-size: 0.82rem; }
+    .flow-step { background: rgba(255,255,255,0.55); border-radius: 8px; padding: 0.5rem; text-align: center; font-weight: 600; color: var(--forest-dark); }
+    .flow-step .num { display: inline-block; background: var(--forest); color: var(--white); width: 20px; height: 20px; line-height: 20px; border-radius: 50%; margin-right: 0.3rem; font-size: 0.72rem; }
+    .flow-arrow { color: var(--gold); font-size: 1.2rem; font-weight: 700; }
 
+    /* ── Layout ── */
     .layout-2col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: start; }
     @media (max-width: 1100px) { .layout-2col { grid-template-columns: 1fr; } }
 
@@ -67,23 +84,6 @@
     .panel-help { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4; }
     .panel-body { padding: 1rem 1.25rem; }
 
-    .options-list { display: flex; flex-direction: column; gap: 0.75rem; }
-    .option-card { background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 12px; padding: 0.85rem 1rem; display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; align-items: center; transition: all 0.2s ease; }
-    .option-card:hover { border-color: var(--sage); box-shadow: 0 2px 8px var(--shadow); }
-    .option-num { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--gold); background: rgba(200, 164, 92, 0.15); border: 1px solid rgba(200, 164, 92, 0.4); border-radius: 10px; padding: 0.4rem 0.65rem; min-width: 48px; text-align: center; }
-    .option-emoji { font-size: 1.5rem; }
-    .option-body { min-width: 0; }
-    .option-title { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--forest); }
-    .option-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; font-family: 'JetBrains Mono', monospace; }
-    .option-meta.missing { color: var(--coral); font-weight: 600; }
-    .option-actions { display: flex; gap: 0.3rem; align-items: center; }
-    .icon-btn { background: var(--white); border: 1px solid var(--sand-dark); border-radius: 8px; padding: 0.4rem 0.55rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; color: var(--text); }
-    .icon-btn:hover { background: var(--sand); border-color: var(--sage); }
-    .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .icon-btn.danger { color: var(--coral); border-color: rgba(212, 115, 94, 0.3); }
-    .icon-btn.danger:hover { background: var(--coral); color: var(--white); border-color: var(--coral); }
-    .icon-btn svg { width: 16px; height: 16px; }
-
     .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
     .btn svg { width: 16px; height: 16px; }
     .btn-primary { background: var(--forest); color: var(--white); }
@@ -91,52 +91,89 @@
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .btn-secondary { background: var(--sand); color: var(--text); border: 1px solid var(--sand-dark); }
     .btn-secondary:hover { background: var(--sand-dark); }
+    .btn-ghost { background: transparent; color: var(--text-light); border: 1px solid var(--sand-dark); }
+    .btn-ghost:hover { background: var(--sand); color: var(--forest); }
+
+    .options-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .option-card { background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 12px; padding: 0.9rem 1rem; transition: all 0.2s ease; }
+    .option-card:hover { border-color: var(--sage); box-shadow: 0 2px 8px var(--shadow); }
+    .option-card.missing { background: rgba(212, 115, 94, 0.05); border-color: rgba(212, 115, 94, 0.3); }
+    .option-head { display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; align-items: center; }
+    .option-num { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--gold); background: rgba(200, 164, 92, 0.15); border: 1px solid rgba(200, 164, 92, 0.4); border-radius: 10px; padding: 0.4rem 0.65rem; min-width: 48px; text-align: center; }
+    .option-emoji { font-size: 1.5rem; }
+    .option-title { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--forest); }
+    .option-actions { display: flex; gap: 0.3rem; align-items: center; }
+    .icon-btn { background: var(--white); border: 1px solid var(--sand-dark); border-radius: 8px; padding: 0.4rem 0.55rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; color: var(--text); }
+    .icon-btn:hover { background: var(--sand); border-color: var(--sage); }
+    .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .icon-btn.danger { color: var(--coral); border-color: rgba(212, 115, 94, 0.3); }
+    .icon-btn.danger:hover { background: var(--coral); color: var(--white); border-color: var(--coral); }
+    .icon-btn svg { width: 16px; height: 16px; }
+    .option-snippet { margin-top: 0.6rem; padding: 0.5rem 0.7rem; background: var(--wa-bg); border-radius: 8px; font-size: 0.83rem; color: var(--text-light); white-space: pre-wrap; line-height: 1.45; max-height: 90px; overflow: hidden; position: relative; }
+    .option-snippet strong { font-weight: 700; }
+    .option-snippet em { font-style: italic; }
+    .option-snippet.empty { background: rgba(212, 115, 94, 0.08); color: var(--coral); font-style: italic; font-weight: 600; }
+    .option-snippet-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; align-items: center; font-size: 0.78rem; }
 
     .add-card { background: var(--sand); border: 2px dashed var(--sand-dark); border-radius: 12px; padding: 1rem; text-align: center; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; }
     .add-card:hover { background: rgba(122, 158, 126, 0.12); border-color: var(--sage); color: var(--forest); }
     .add-card .plus { font-size: 1.5rem; display: block; margin-bottom: 0.2rem; }
+    .add-card-text { font-weight: 600; font-size: 0.95rem; }
+    .add-card-sub { font-size: 0.8rem; margin-top: 0.2rem; opacity: 0.85; }
 
-    .preview-box { background: var(--wa-bg); border-radius: 12px; padding: 1.25rem; min-height: 320px; }
+    .preview-box { background: var(--wa-bg); border-radius: 12px; padding: 1.25rem; min-height: 280px; }
     .preview-bubble { background: var(--wa-bubble-out); padding: 0.7rem 0.85rem; border-radius: 8px; max-width: 92%; margin-left: auto; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); margin-bottom: 0.5rem; }
     .preview-bubble strong { font-weight: 700; }
     .preview-bubble em { font-style: italic; }
-    .preview-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; font-weight: 600; }
+    .preview-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; font-weight: 600; }
+    .preview-tip { margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+    .preview-tip strong { color: var(--text-light); }
 
+    /* ── Modal ── */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(26, 58, 42, 0.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 1rem; }
     .modal-backdrop.show { display: flex; }
-    .modal { background: var(--white); border-radius: 18px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal { background: var(--white); border-radius: 18px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
     .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--white); z-index: 1; }
-    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--forest); }
+    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--forest); }
     .modal-close { background: none; border: none; cursor: pointer; padding: 0.3rem; color: var(--text-muted); border-radius: 6px; }
     .modal-close:hover { background: var(--sand); color: var(--text); }
-    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
     .modal-footer { display: flex; gap: 0.6rem; justify-content: flex-end; padding: 1rem 1.5rem; border-top: 1px solid var(--sand-dark); position: sticky; bottom: 0; background: var(--white); }
-    .field { display: flex; flex-direction: column; gap: 0.35rem; }
-    .field label { font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: 0.05em; }
-    .field input, .field textarea { padding: 0.6rem 0.8rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.95rem; font-family: 'Source Sans 3', sans-serif; background: #fdfcf8; color: var(--text); transition: all 0.2s ease; }
-    .field input { font-family: 'JetBrains Mono', monospace; }
-    .field input:focus, .field textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
-    .field .field-help { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
-    .field.error input { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(212, 115, 94, 0.15); }
-    .field .err-msg { font-size: 0.75rem; color: var(--coral); font-weight: 600; display: none; }
-    .field.error .err-msg { display: block; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .emoji-input { font-size: 1.4rem !important; text-align: center; }
+
+    .step { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.85rem 1rem; background: var(--sand); border-radius: 12px; border-left: 4px solid var(--gold); }
+    .step-head { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--forest); font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--forest); color: var(--white); border-radius: 50%; font-size: 0.78rem; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+    .step-body { display: flex; flex-direction: column; gap: 0.4rem; }
+    .step-body input, .step-body textarea { padding: 0.65rem 0.8rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.95rem; font-family: 'Source Sans 3', sans-serif; background: var(--white); color: var(--text); transition: all 0.2s ease; width: 100%; }
+    .step-body input:focus, .step-body textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
+    .step-body input.emoji { font-size: 1.4rem; text-align: center; }
+    .step-body input.identificador { font-family: 'JetBrains Mono', monospace; }
+    .step-body .err-msg { font-size: 0.78rem; color: var(--coral); font-weight: 600; display: none; }
+    .step-body.error .err-msg { display: block; }
+    .step-body.error input, .step-body.error textarea { border-color: var(--coral); }
+    .field-help { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; }
+    .field-help code { background: rgba(122, 158, 126, 0.12); color: var(--forest-dark); padding: 0.05rem 0.4rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+    .emoji-picker { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
+    .emoji-pick { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; background: var(--white); border: 1px solid var(--sand-dark); border-radius: 8px; cursor: pointer; font-size: 1.2rem; transition: all 0.15s; }
+    .emoji-pick:hover { background: var(--sand); border-color: var(--sage); transform: scale(1.1); }
+
+    /* ── Plantillas ── */
+    .templates-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+    .template-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(122, 158, 126, 0.12); color: var(--forest); border: 1px solid rgba(122, 158, 126, 0.3); padding: 0.3rem 0.7rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .template-chip:hover { background: var(--sage); color: var(--white); border-color: var(--sage); }
 
     .toast { position: fixed; bottom: 24px; right: 24px; padding: 0.9rem 1.25rem; border-radius: 12px; font-weight: 600; font-size: 0.9rem; color: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.2); z-index: 2000; transform: translateY(20px); opacity: 0; pointer-events: none; transition: all 0.3s ease; }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.success { background: var(--forest); }
     .toast.error { background: var(--coral); }
 
-    .empty-state { text-align: center; padding: 2rem 1.5rem; color: var(--text-muted); }
-    .empty-state .emoji { font-size: 2.2rem; margin-bottom: 0.5rem; }
-    .empty-state-text { font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
-
-    .help-box { background: rgba(122, 158, 126, 0.1); border: 1px solid rgba(122, 158, 126, 0.3); border-radius: 10px; padding: 0.75rem 0.9rem; font-size: 0.82rem; color: var(--forest); line-height: 1.5; margin-bottom: 1rem; }
-    .help-box strong { color: var(--forest-dark); }
+    .empty-state { text-align: center; padding: 2.5rem 1.5rem; color: var(--text-muted); }
+    .empty-state .emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .empty-state-text { font-size: 1rem; font-weight: 600; color: var(--text-light); }
+    .empty-state-sub { font-size: 0.88rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.5; }
 
     @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; } .menu-toggle { display: block; } }
-    @media (max-width: 768px) { .content { padding: 1rem; } .field-row { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .content { padding: 1rem; } .flow-steps { grid-template-columns: 1fr; } .flow-arrow { transform: rotate(90deg); } }
   </style>
 </head>
 <body>
@@ -203,7 +240,7 @@
           </button>
           <div class="header-title-group">
             <h1 class="header-title">Menú Principal</h1>
-            <p class="header-subtitle">Las opciones que el bot muestra al cliente al inicio y cuando no entiende algo</p>
+            <p class="header-subtitle">Las opciones numeradas que el cliente ve al inicio o cuando no entiende algo</p>
           </div>
         </div>
         <div style="display: flex; gap: 0.6rem; align-items: center;">
@@ -215,14 +252,23 @@
       </header>
 
       <main class="content">
-        <div class="live-status">
-          <span class="pulse"></span>
-          <span><strong>Cambios al instante</strong> — lo que guardes se aplica en menos de 10 segundos</span>
-        </div>
-
-        <div class="help-box">
-          <strong>¿Cómo funciona?</strong> Cada opción del menú es lo que el cliente ve al escribir <em>"hola"</em> o cuando el bot no entiende su mensaje. Solo agrega, edita o reordena opciones aquí. <strong>El número y el orden se asignan automáticamente.</strong> Para cambiar el mensaje que el bot responde cuando el cliente elige una opción, entra a <strong>Mensajes sueltos</strong>.
-        </div>
+        <details class="how-it-works" open>
+          <summary>¿Cómo funciona esto?</summary>
+          <div class="how-it-works-body">
+            <p>El <strong>Menú Principal</strong> es lo primero que el cliente ve cuando escribe <em>"hola"</em>, y también lo que aparece cuando el bot no entiende su mensaje. Es una lista numerada de opciones para que el cliente elija qué quiere saber.</p>
+            <div class="how-example"><span class="from">Cliente escribe: "hola"</span><span class="arrow">→</span><span class="to">Bot muestra: 1️⃣ Preventa · 2️⃣ Actividades · 3️⃣ Instalaciones ...</span></div>
+            <p><strong>¿Cómo fluye la conversación?</strong></p>
+            <div class="flow-steps">
+              <div class="flow-step"><span class="num">1</span>Cliente escribe</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><span class="num">2</span>Bot muestra menú</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><span class="num">3</span>Cliente elige opción</div>
+            </div>
+            <p>Cada opción tiene un <strong>número</strong> y un <strong>título</strong>. El cliente puede responder con el número (<code>1</code>) o con palabras del título (<code>Actividades</code>). Cuando elige una opción, el bot responde con el mensaje que tú configures en <strong>Mensajes sueltos</strong>.</p>
+            <p>💡 <strong>Tip:</strong> aquí solo agregas, reordenas o borras opciones del menú. La respuesta que el bot da para cada opción se edita en <strong>Mensajes sueltos</strong>.</p>
+          </div>
+        </details>
 
         <div class="layout-2col">
           <div class="panel">
@@ -231,6 +277,7 @@
                 <div class="panel-title">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                   Tus opciones
+                  <span id="optCount" style="font-size:0.85rem; font-weight:500; color:var(--text-muted); margin-left:0.4rem;"></span>
                 </div>
                 <div class="panel-help">Usa las flechas ↑ ↓ para cambiar el orden. El número se asigna en automático.</div>
               </div>
@@ -239,14 +286,15 @@
               <div id="optionsList" class="options-list">
                 <div class="empty-state"><div class="emoji">⏳</div><div class="empty-state-text">Cargando…</div></div>
               </div>
-              <div class="add-card" style="margin-top: 0.75rem;" onclick="openCreateModal()">
+              <div class="add-card" style="margin-top: 0.85rem;" onclick="openCreateModal()">
                 <span class="plus">＋</span>
-                <div style="font-weight: 600; font-size: 0.95rem;">Agregar otra opción al menú</div>
+                <div class="add-card-text">Agregar otra opción al menú</div>
+                <div class="add-card-sub">Por ejemplo: Promociones, Galería, Contacto, Reservar visita…</div>
               </div>
             </div>
           </div>
 
-          <div class="panel">
+          <div class="panel" style="position: sticky; top: 90px;">
             <div class="panel-header">
               <div class="panel-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
@@ -254,12 +302,12 @@
               </div>
             </div>
             <div class="panel-body">
-              <div class="preview-label">Así lo verá el cliente en WhatsApp</div>
+              <div class="preview-label">Así se ve el menú en WhatsApp</div>
               <div class="preview-box">
                 <div class="preview-bubble" id="previewBubble">Cargando…</div>
               </div>
-              <div style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-                <strong style="color: var(--text-light);">Tip:</strong> cada opción se activa cuando el cliente escribe el número (ej. "1") o una palabra que coincida con el título (ej. "Actividades").
+              <div class="preview-tip">
+                💡 <strong>Tip:</strong> cada opción se activa cuando el cliente escribe el número (ej. <code>1</code>) o palabras del título (ej. <code>Actividades</code>).
               </div>
             </div>
           </div>
@@ -279,26 +327,67 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="field-row">
-          <div class="field" id="fld-num">
-            <label>Número</label>
-            <input id="fNumber" type="number" min="1" max="99" placeholder="Auto" disabled>
-            <span class="field-help">Se asigna solo (siguiente libre)</span>
+        <div class="step" id="step-template" style="display: none;">
+          <div class="step-head">
+            <span class="step-num">⚡</span>
+            ¿Quieres empezar de una plantilla?
           </div>
-          <div class="field">
-            <label>Emoji (opcional)</label>
-            <input id="fEmoji" type="text" class="emoji-input" placeholder="🌲" maxlength="4">
-            <span class="field-help">Aparece antes del título. Si lo dejas vacío se usa el número.</span>
+          <div class="step-body">
+            <div class="field-help">Estas son opciones comunes que mucha gente usa. Click en una para agregarla con un solo paso:</div>
+            <div class="templates-row" id="templateRow"></div>
           </div>
         </div>
-        <div class="field" id="fld-title">
-          <label>Título de la opción</label>
-          <input id="fTitle" type="text" placeholder="Ej. Promociones de Verano" maxlength="80" autocomplete="off">
-          <span class="field-help">Es lo que el cliente verá en el menú (ej. <em>1️⃣ Promociones de Verano</em>).</span>
-          <span class="err-msg">Escribe un título para la opción</span>
+
+        <div class="step">
+          <div class="step-head">
+            <span class="step-num">1</span>
+            Ponle un título a la opción
+          </div>
+          <div class="step-body" id="fld-title">
+            <input id="fTitle" type="text" placeholder="Ej: Promociones de Verano" maxlength="80" autocomplete="off">
+            <div class="field-help">Es el texto que el cliente va a leer en el menú. <strong>Sé breve</strong> (máx. 80 caracteres).</div>
+            <span class="err-msg">⚠ Ponle un título para identificar la opción</span>
+          </div>
         </div>
-        <div class="help-box" style="margin: 0;">
-          Después de guardar, entra a <strong>Mensajes sueltos</strong> para escribir la respuesta que el bot dará cuando el cliente elija esta opción.
+
+        <div class="step">
+          <div class="step-head">
+            <span class="step-num">2</span>
+            Elige un emoji (opcional)
+          </div>
+          <div class="step-body">
+            <input id="fEmoji" type="text" class="emoji" placeholder="🌲" maxlength="4">
+            <div class="field-help">Si no eliges uno, se usa el número automáticamente.</div>
+            <div class="emoji-picker">
+              <span class="emoji-pick" onclick="pickEmoji('💰')">💰</span>
+              <span class="emoji-pick" onclick="pickEmoji('🎉')">🎉</span>
+              <span class="emoji-pick" onclick="pickEmoji('📍')">📍</span>
+              <span class="emoji-pick" onclick="pickEmoji('📅')">📅</span>
+              <span class="emoji-pick" onclick="pickEmoji('📞')">📞</span>
+              <span class="emoji-pick" onclick="pickEmoji('🏠')">🏠</span>
+              <span class="emoji-pick" onclick="pickEmoji('🎯')">🎯</span>
+              <span class="emoji-pick" onclick="pickEmoji('⭐')">⭐</span>
+              <span class="emoji-pick" onclick="pickEmoji('🎁')">🎁</span>
+              <span class="emoji-pick" onclick="pickEmoji('📸')">📸</span>
+              <span class="emoji-pick" onclick="pickEmoji('🍔')">🍔</span>
+              <span class="emoji-pick" onclick="pickEmoji('💼')">💼</span>
+              <span class="emoji-pick" onclick="pickEmoji('❓')">❓</span>
+              <span class="emoji-pick" onclick="pickEmoji('💬')">💬</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" style="border-left-color: var(--sage); background: rgba(122, 158, 126, 0.08);">
+          <div class="step-head">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--forest)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            ¿Y la respuesta del bot?
+          </div>
+          <div class="step-body">
+            <div class="field-help">
+              Después de guardar, ve a <strong>Mensajes sueltos</strong> para escribir el mensaje que el bot responderá cuando el cliente elija esta opción.
+              <br>💡 O déjalo para después — la opción se crea con un texto genérico que puedes editar luego.
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -313,7 +402,19 @@
 
   <script>
     const API = '/api/dashboard/menu';
-    const state = { options: [], editingNumber: null };
+    const SETTINGS_API = '/api/dashboard/settings';
+    const state = { options: [], editingNumber: null, messagesCache: null };
+
+    const TEMPLATES = [
+      { emoji: '🎁', title: 'Promociones' },
+      { emoji: '📸', title: 'Galería de fotos' },
+      { emoji: '📞', title: 'Contacto' },
+      { emoji: '📅', title: 'Reservar visita' },
+      { emoji: '🍔', title: 'Menú del restaurante' },
+      { emoji: '🏊', title: 'Alberca' },
+      { emoji: '🎂', title: 'Eventos privados' },
+      { emoji: '👨‍👩‍👧', title: 'Para familias' }
+    ];
 
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
@@ -338,51 +439,67 @@
     function escapeHtml(s) {
       return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-
     function renderPreview(text) {
-      const html = String(text || '')
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/\*(.+?)\*/g, '<strong>$1</strong>')
-        .replace(/_(.+?)_/g, '<em>$1</em>');
-      return html;
+      return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*(.+?)\*/g, '<strong>$1</strong>').replace(/_(.+?)_/g, '<em>$1</em>');
+    }
+
+    async function loadMessages() {
+      if (state.messagesCache) return state.messagesCache;
+      try {
+        const r = await fetch(SETTINGS_API);
+        const data = await r.json();
+        state.messagesCache = data.messages || {};
+      } catch (e) {
+        state.messagesCache = {};
+      }
+      return state.messagesCache;
     }
 
     function renderList() {
       const container = document.getElementById('optionsList');
       const opts = state.options.slice().sort((a, b) => a.number - b.number);
+      document.getElementById('optCount').textContent = opts.length > 0 ? `(${opts.length})` : '';
       if (opts.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="emoji">📋</div><div class="empty-state-text">No hay opciones todavía.</div><div style="margin-top: 0.4rem; font-size: 0.85rem;">Agrega la primera con el botón de arriba.</div></div>';
+        container.innerHTML = '<div class="empty-state"><div class="emoji">📋</div><div class="empty-state-text">Aún no tienes opciones en el menú.</div><div class="empty-state-sub">Agrega la primera con el botón <strong>Agregar opción</strong> de arriba.<br>Por ejemplo: Preventa, Actividades, Instalaciones, Eventos, Contacto…</div></div>';
         return;
       }
       container.innerHTML = opts.map((o, i) => {
         const hasMessage = !!o.messageKey;
-        const meta = hasMessage
-          ? `Mensaje: ${escapeHtml(o.messageKey)}`
-          : '⚠ Aún no tiene respuesta. Edítala en Mensajes sueltos.';
+        const msg = hasMessage ? (state.messagesCache && state.messagesCache[o.messageKey]) : null;
+        const snippet = msg ? String(msg.content || '').slice(0, 180) : '';
         return `
-        <div class="option-card" data-num="${o.number}">
-          <div class="option-num">${o.number}</div>
-          <div>
-            <div style="display:flex; align-items:center; gap:0.5rem;">
-              <span class="option-emoji">${escapeHtml(o.emoji || (o.number + '️⃣'))}</span>
-              <span class="option-title">${escapeHtml(o.title)}</span>
+        <div class="option-card ${hasMessage && !snippet ? 'missing' : ''}" data-num="${o.number}">
+          <div class="option-head">
+            <div class="option-num">${o.number}</div>
+            <div>
+              <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span class="option-emoji">${escapeHtml(o.emoji || (o.number + '️⃣'))}</span>
+                <span class="option-title">${escapeHtml(o.title)}</span>
+              </div>
             </div>
-            <div class="option-meta ${hasMessage ? '' : 'missing'}">${meta}</div>
+            <div class="option-actions">
+              <button class="icon-btn" onclick="moveOption(${o.number}, -1)" ${i === 0 ? 'disabled' : ''} title="Subir (ahora es la opción ${i})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              </button>
+              <button class="icon-btn" onclick="moveOption(${o.number}, 1)" ${i === opts.length - 1 ? 'disabled' : ''} title="Bajar (ahora es la opción ${i + 2})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button class="icon-btn" onclick="openEditModal(${o.number})" title="Editar nombre y emoji">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="icon-btn danger" onclick="deleteOption(${o.number})" title="Eliminar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              </button>
+            </div>
           </div>
-          <div class="option-actions">
-            <button class="icon-btn" onclick="moveOption(${o.number}, -1)" ${i === 0 ? 'disabled' : ''} title="Subir">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            </button>
-            <button class="icon-btn" onclick="moveOption(${o.number}, 1)" ${i === opts.length - 1 ? 'disabled' : ''} title="Bajar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <button class="icon-btn" onclick="openEditModal(${o.number})" title="Editar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="icon-btn danger" onclick="deleteOption(${o.number})" title="Eliminar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-            </button>
+          <div class="option-snippet-actions">
+            <span style="color: var(--text-muted); font-size: 0.78rem;">
+              ${hasMessage && snippet ? '🤖 Respuesta:' : hasMessage ? '⚠ Aún no tiene respuesta escrita' : '⚠ Falta configurar la respuesta'}
+            </span>
+            ${hasMessage ? `<a href="settings.html" style="margin-left: auto; color: var(--forest); font-weight: 600; font-size: 0.78rem; text-decoration: none;">${snippet ? 'Editar respuesta →' : 'Escribir respuesta →'}</a>` : ''}
           </div>
+          ${hasMessage && snippet ? `<div class="option-snippet">${renderPreview(snippet)}${String(msg.content).length > 180 ? '…' : ''}</div>` : (hasMessage ? '<div class="option-snippet empty">Esta opción aún no tiene un mensaje escrito. Ve a Mensajes sueltos para escribirlo.</div>' : '')}
         </div>
       `;
       }).join('');
@@ -404,6 +521,7 @@
         const r = await fetch(API);
         const data = await r.json();
         state.options = data.options || [];
+        await loadMessages();
         renderList();
         updatePreview();
       } catch (e) {
@@ -428,12 +546,32 @@
     function openCreateModal() {
       state.editingNumber = null;
       document.getElementById('modalTitle').textContent = 'Agregar opción al menú';
-      document.getElementById('fld-num').style.display = 'none';
       document.getElementById('fEmoji').value = '';
       document.getElementById('fTitle').value = '';
       document.getElementById('fld-title').classList.remove('error');
+      // Mostrar plantillas solo al crear
+      document.getElementById('step-template').style.display = '';
+      renderTemplateRow();
       document.getElementById('optionModal').classList.add('show');
       setTimeout(() => document.getElementById('fTitle').focus(), 50);
+    }
+
+    function renderTemplateRow() {
+      const row = document.getElementById('templateRow');
+      row.innerHTML = TEMPLATES.map(t =>
+        `<span class="template-chip" onclick="useTemplate('${escapeHtml(t.emoji)}','${escapeHtml(t.title)}')">${t.emoji} ${escapeHtml(t.title)}</span>`
+      ).join('');
+    }
+
+    function useTemplate(emoji, title) {
+      document.getElementById('fEmoji').value = emoji;
+      document.getElementById('fTitle').value = title;
+      document.getElementById('fld-title').classList.remove('error');
+      document.getElementById('fTitle').focus();
+    }
+
+    function pickEmoji(emoji) {
+      document.getElementById('fEmoji').value = emoji;
     }
 
     function openEditModal(number) {
@@ -441,11 +579,10 @@
       if (!opt) return;
       state.editingNumber = number;
       document.getElementById('modalTitle').textContent = `Editar opción ${number}`;
-      document.getElementById('fld-num').style.display = '';
-      document.getElementById('fNumber').value = number;
       document.getElementById('fEmoji').value = opt.emoji || '';
       document.getElementById('fTitle').value = opt.title || '';
       document.getElementById('fld-title').classList.remove('error');
+      document.getElementById('step-template').style.display = 'none';
       document.getElementById('optionModal').classList.add('show');
       setTimeout(() => document.getElementById('fTitle').focus(), 50);
     }
@@ -466,7 +603,7 @@
       const emoji = document.getElementById('fEmoji').value.trim();
       if (!title) {
         document.getElementById('fld-title').classList.add('error');
-        toast('Escribe un título para la opción', 'error');
+        toast('Ponle un título a la opción', 'error');
         return;
       }
       const btn = document.getElementById('saveBtn');
@@ -474,7 +611,6 @@
       btn.textContent = 'Guardando…';
       try {
         if (state.editingNumber == null) {
-          // Crear
           const r = await fetch(API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -483,11 +619,12 @@
           const data = await r.json();
           if (!r.ok) throw new Error(data.message || data.error || 'Error');
           state.options = data.options || [];
+          state.messagesCache = null;
+          await loadMessages();
           renderList();
           updatePreview();
           toast('Opción agregada · activa en menos de 10 s');
         } else {
-          // Editar
           const r = await fetch(API, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -512,15 +649,17 @@
     async function deleteOption(number) {
       const opt = state.options.find(o => o.number === number);
       if (!opt) return;
-      if (!confirm(`¿Eliminar la opción ${number} (${opt.title})?\n\nEl cliente ya no la verá en el menú.`)) return;
+      if (!confirm(`¿Eliminar la opción "${opt.title}"?\n\nEl cliente ya no la verá en el menú.\n(El mensaje que tenía asociado también se borrará.)`)) return;
       try {
         const r = await fetch(API + '?number=' + encodeURIComponent(number), { method: 'DELETE' });
         const data = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(data.message || data.error || 'Error');
         state.options = data.options || [];
+        state.messagesCache = null;
+        await loadMessages();
         renderList();
         updatePreview();
-        toast(`Opción ${number} eliminada`);
+        toast(`Opción eliminada`);
       } catch (e) {
         toast('Error: ' + e.message, 'error');
       }
@@ -534,7 +673,6 @@
       const tmp = sorted[idx];
       sorted[idx] = sorted[newIdx];
       sorted[newIdx] = tmp;
-      // Reasignar números 1..N según el nuevo orden
       const renumbered = sorted.map((o, i) => ({ ...o, number: i + 1 }));
       try {
         await persistList(renumbered);
