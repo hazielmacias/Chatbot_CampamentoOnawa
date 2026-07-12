@@ -71,27 +71,30 @@ function getResponse(text, cfg) {
   let key = null;
   let matchedBy = 'none';
 
-  // 1) Keywords de los mensajes (compatibilidad con horario, ubicacion, etc.)
-  for (const entry of keywordMap) {
+  // 1) PRIORIDAD: menú principal. El menú es la fuente de verdad
+  //    para los números (1, 2, 3...) y los títulos de las opciones.
+  //    Si el cliente escribe algo que matchea una opción, gana ella.
+  for (const entry of menuMap) {
     if (entry.match.some(kw => lower === kw || lower.includes(kw))) {
       key = entry.messageKey;
-      matchedBy = 'msg-keywords';
+      matchedBy = 'menu-keywords';
       break;
     }
   }
 
-  // 2) Keywords del menú (número / título desde menuOptions)
+  // 2) Mensajes sueltos: horario, ubicacion, despedida, etc.
+  //    Solo si no se matcheó una opción del menú.
   if (!key) {
-    for (const entry of menuMap) {
+    for (const entry of keywordMap) {
       if (entry.match.some(kw => lower === kw || lower.includes(kw))) {
         key = entry.messageKey;
-        matchedBy = 'menu-keywords';
+        matchedBy = 'msg-keywords';
         break;
       }
     }
   }
 
-  // 3) FALLBACK NUCLEAR: número directo del menú
+  // 3) FALLBACK NUCLEAR: número directo del menú (1, 2, 3...)
   if (!key) {
     const nk = matchByNumberOnly(text, cfg.menuOptions);
     if (nk) {

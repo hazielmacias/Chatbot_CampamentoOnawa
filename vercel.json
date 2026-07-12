@@ -14,6 +14,7 @@
     { "src": "/api/dashboard/settings", "dest": "/api/dashboard/settings.js" },
     { "src": "/api/dashboard/history", "dest": "/api/dashboard/history.js" },
     { "src": "/api/dashboard/menu", "dest": "/api/dashboard/menu.js" },
+    { "src": "/api/dashboard/reset-menu", "dest": "/api/dashboard/reset-menu.js" },
     { "src": "/api/webhook", "dest": "/api/webhook.js" },
     { "src": "/dashboard", "dest": "/dashboard/index.html" },
     { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
