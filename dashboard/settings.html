@@ -3,51 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuración - Campamento Onawa</title>
+  <title>Mensajes sueltos - Campamento Onawa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --forest: #1a4d2e;
-      --forest-light: #2d6a4f;
-      --forest-dark: #0f3d2e;
-      --gold: #c8a45c;
-      --gold-light: #e8d5a3;
-      --sage: #7a9e7e;
-      --sage-light: #b8d4ba;
-      --sand: #f5f0e8;
-      --sand-dark: #e8e0d0;
-      --coral: #d4735e;
-      --coral-light: #e8a090;
+      --forest: #1a4d2e; --forest-light: #2d6a4f; --forest-dark: #0f3d2e;
+      --gold: #c8a45c; --gold-light: #e8d5a3;
+      --sage: #7a9e7e; --sage-light: #b8d4ba;
+      --sand: #f5f0e8; --sand-dark: #e8e0d0;
+      --coral: #d4735e; --coral-light: #e8a090;
       --earth: #8b6f47;
-      --text: #2c3e2c;
-      --text-light: #5a6b5a;
-      --text-muted: #8a9a8a;
+      --text: #2c3e2c; --text-light: #5a6b5a; --text-muted: #8a9a8a;
       --white: #ffffff;
-      --shadow: rgba(26, 58, 42, 0.08);
-      --shadow-lg: rgba(26, 58, 42, 0.15);
+      --shadow: rgba(26, 58, 42, 0.08); --shadow-lg: rgba(26, 58, 42, 0.15);
+      --wa-bg: #efeae2; --wa-bubble-out: #d9fdd3;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--sand);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
+    body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; overflow-x: hidden; }
     .app-layout { display: flex; min-height: 100vh; }
 
-    /* Sidebar */
-    .sidebar {
-      width: 280px; min-width: 280px; background: var(--forest); color: var(--white);
-      display: flex; flex-direction: column; position: fixed; height: 100vh;
-      left: 0; top: 0; z-index: 100; box-shadow: 4px 0 20px var(--shadow-lg);
-      transition: transform 0.3s ease;
-    }
+    .sidebar { width: 280px; min-width: 280px; background: var(--forest); color: var(--white); display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; box-shadow: 4px 0 20px var(--shadow-lg); transition: transform 0.3s ease; }
     .sidebar-header { padding: 2rem 1.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .sidebar-logo { display: flex; align-items: center; gap: 1rem; }
     .sidebar-logo img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: var(--white); }
@@ -74,62 +51,93 @@
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--forest); }
     .menu-toggle svg { width: 24px; height: 24px; }
 
-    .content { padding: 2rem; max-width: 900px; flex: 1; }
+    .content { padding: 2rem; max-width: 1000px; flex: 1; width: 100%; }
 
-    /* Cards */
-    .settings-card {
-      background: var(--white); border-radius: 16px; overflow: hidden;
-      box-shadow: 0 2px 10px var(--shadow); border: 1px solid var(--sand-dark);
-      margin-bottom: 1.5rem;
-    }
-    .card-header {
-      display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem 1.5rem;
-      background: var(--sand); border-bottom: 1px solid var(--sand-dark);
-    }
-    .card-header svg { width: 24px; height: 24px; color: var(--gold); }
-    .card-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--forest); }
-    .card-body { padding: 1.5rem; }
+    .live-status { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--white); border: 1px solid var(--sand-dark); border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-light); box-shadow: 0 2px 8px var(--shadow); }
+    .live-status .pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); animation: pulse 1.6s ease-in-out infinite; }
+    .live-status .meta { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin-left: auto; }
 
-    /* Info Grid */
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-    .info-item { display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem; background: var(--sand); border-radius: 10px; border: 1px solid var(--sand-dark); }
-    .info-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .info-value { font-size: 1rem; font-weight: 700; color: var(--forest); }
-    .info-value.price { color: var(--forest); font-size: 1.1rem; }
-    .info-value.price span { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-    .info-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+    .card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px var(--shadow); border: 1px solid var(--sand-dark); margin-bottom: 1.25rem; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: var(--sand); border-bottom: 1px solid var(--sand-dark); }
+    .card-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .card-header svg { width: 22px; height: 22px; color: var(--gold); }
+    .card-title { font-family: 'Montserrat', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); }
+    .card-key { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; padding: 0.2rem 0.55rem; background: rgba(200, 164, 92, 0.18); color: var(--earth); border-radius: 50px; font-weight: 600; }
+    .card-body { padding: 1.25rem; }
+    .card-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.5; }
 
-    /* List Items */
-    .list-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--sand-dark); }
-    .list-item:last-child { border-bottom: none; }
-    .list-bullet { width: 8px; height: 8px; background: var(--sage); border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
-    .list-text { font-size: 0.95rem; color: var(--text); line-height: 1.5; }
-    .list-text strong { color: var(--forest); font-weight: 700; }
+    textarea.msg-editor { width: 100%; min-height: 180px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.55; background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 10px; color: var(--text); resize: vertical; transition: all 0.2s ease; }
+    textarea.msg-editor:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
 
-    /* Status Badges */
-    .badge { display: inline-block; padding: 0.3rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .badge-active { background: rgba(122, 158, 126, 0.15); color: var(--forest-light); }
-    .badge-inactive { background: var(--sand-dark); color: var(--text-muted); }
+    .card-actions { display: flex; gap: 0.5rem; margin-top: 0.85rem; flex-wrap: wrap; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 9px; font-family: 'Source Sans 3', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
+    .btn svg { width: 14px; height: 14px; }
+    .btn-primary { background: var(--forest); color: var(--white); }
+    .btn-primary:hover { background: var(--forest-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3); }
+    .btn-secondary { background: var(--sand); color: var(--text); border: 1px solid var(--sand-dark); }
+    .btn-secondary:hover { background: var(--sand-dark); }
+    .btn-danger { background: rgba(212, 115, 94, 0.12); color: var(--coral); border: 1px solid rgba(212, 115, 94, 0.3); }
+    .btn-danger:hover { background: var(--coral); color: var(--white); }
+    .btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-danger:disabled:hover { background: rgba(212, 115, 94, 0.12); color: var(--coral); transform: none; box-shadow: none; }
 
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .main-content { margin-left: 0; }
-      .menu-toggle { display: block; }
-      .info-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-      .content { padding: 1rem; }
-      .header-title { font-size: 1.25rem; }
-      .card-body { padding: 1rem; }
-      .info-item { padding: 0.75rem; }
-    }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 0.9rem 1.25rem; border-radius: 12px; font-weight: 600; font-size: 0.9rem; color: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.2); z-index: 2000; transform: translateY(20px); opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--forest); }
+    .toast.error { background: var(--coral); }
+
+    .wa-preview { background: var(--wa-bg); border-radius: 10px; padding: 1rem; max-height: 320px; overflow-y: auto; margin-top: 0.85rem; display: none; }
+    .wa-preview.show { display: block; }
+    .wa-bubble { background: var(--wa-bubble-out); padding: 0.6rem 0.75rem; border-radius: 8px; max-width: 90%; margin-left: auto; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.4; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); }
+    .wa-bubble strong { font-weight: 700; }
+    .wa-bubble em { font-style: italic; }
+
+    .kw-block { margin-top: 0.85rem; padding: 0.75rem; background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 10px; }
+    .kw-block-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+    .kw-block-label .lbl { font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: 0.05em; }
+    .kw-block-label .count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+    .kw-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; min-height: 28px; align-items: center; }
+    .kw-chip { display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(122, 158, 126, 0.18); color: var(--forest); border: 1px solid rgba(122, 158, 126, 0.35); padding: 0.25rem 0.6rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+    .kw-chip.interest { background: rgba(200, 164, 92, 0.2); color: var(--earth); border-color: rgba(200, 164, 92, 0.4); }
+    .kw-chip .x { cursor: pointer; opacity: 0.6; font-weight: 700; padding: 0 0.1rem; border-radius: 50%; transition: all 0.15s; }
+    .kw-chip .x:hover { opacity: 1; background: rgba(0,0,0,0.1); }
+    .kw-empty { font-size: 0.82rem; color: var(--coral); font-weight: 600; font-style: italic; }
+    .kw-input-row { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+    .kw-input { flex: 1; padding: 0.5rem 0.7rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; background: var(--white); }
+    .kw-input:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
+    .kw-help { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.4; }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(26, 58, 42, 0.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 1rem; }
+    .modal-backdrop.show { display: flex; }
+    .modal { background: var(--white); border-radius: 18px; max-width: 640px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--white); z-index: 1; }
+    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--forest); }
+    .modal-close { background: none; border: none; cursor: pointer; padding: 0.3rem; color: var(--text-muted); border-radius: 6px; }
+    .modal-close:hover { background: var(--sand); color: var(--text); }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .modal-footer { display: flex; gap: 0.6rem; justify-content: flex-end; padding: 1rem 1.5rem; border-top: 1px solid var(--sand-dark); position: sticky; bottom: 0; background: var(--white); }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field label { font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: 0.05em; }
+    .field input, .field textarea { padding: 0.6rem 0.8rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.9rem; font-family: 'Source Sans 3', sans-serif; background: #fdfcf8; color: var(--text); transition: all 0.2s ease; }
+    .field input { font-family: 'JetBrains Mono', monospace; }
+    .field textarea { min-height: 100px; font-family: 'JetBrains Mono', monospace; line-height: 1.5; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
+    .field .field-help { font-size: 0.75rem; color: var(--text-muted); }
+    .field.error input, .field.error textarea { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(212, 115, 94, 0.15); }
+    .field .err-msg { font-size: 0.75rem; color: var(--coral); font-weight: 600; display: none; }
+    .field.error .err-msg { display: block; }
+
+    .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-muted); }
+    .empty-state .emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .empty-state-text { font-size: 1rem; font-weight: 600; color: var(--text-light); }
+    .empty-state-sub { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+    @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; } .menu-toggle { display: block; } }
+    @media (max-width: 768px) { .content { padding: 1rem; } }
   </style>
 </head>
 <body>
   <div class="app-layout">
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
@@ -144,274 +152,509 @@
         <div class="nav-section">
           <div class="nav-section-title">Principal</div>
           <a href="index.html" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-            </svg>
-            Dashboard
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Panel
           </a>
           <a href="chats.html" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
             Conversaciones
           </a>
         </div>
         <div class="nav-section">
           <div class="nav-section-title">Monitoreo</div>
           <a href="stats.html" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 20v-6M6 20V10M18 20V4"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
             Estadísticas
           </a>
           <a href="alerts.html" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             Alertas
           </a>
         </div>
         <div class="nav-section">
           <div class="nav-section-title">Configuración</div>
+          <a href="menu.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Menú Principal
+          </a>
           <a href="settings.html" class="nav-item active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            Ajustes
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Mensajes sueltos
           </a>
           <a href="test.html" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
             Simulador
           </a>
         </div>
       </nav>
       <div class="sidebar-footer">
-        <div class="live-badge">
-          <span class="live-dot"></span>
-          <span>Bot en vivo</span>
-        </div>
+        <div class="live-badge"><span class="live-dot"></span><span>Bot en vivo</span></div>
       </div>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
       <header class="top-header">
         <div style="display: flex; align-items: center; gap: 1rem;">
           <button class="menu-toggle" onclick="toggleSidebar()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
           <div class="header-title-group">
-            <h1 class="header-title">Configuración del Bot</h1>
-            <p class="header-subtitle">Información y configuración actual de Campamento Onawa</p>
+            <h1 class="header-title">Mensajes sueltos</h1>
+            <p class="header-subtitle">Los textos que el bot envía cuando reconoce palabras clave</p>
           </div>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center;">
+          <button class="btn btn-primary" onclick="openCreateModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar mensaje
+          </button>
         </div>
       </header>
 
       <main class="content">
-        <!-- Memberships -->
-        <div class="settings-card">
-          <div class="card-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
-            <span class="card-title">Membresías</span>
-          </div>
-          <div class="card-body">
-            <div class="info-grid">
-              <div class="info-item">
-                <div class="info-label">Nivel Plata</div>
-                <div class="info-value price">$14,950 <span>MXN</span></div>
-                <div class="info-desc">10 años de acceso | 10% descuento base</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Nivel Oro</div>
-                <div class="info-value price">$29,560 <span>MXN</span></div>
-                <div class="info-desc">25 años de acceso | 15% descuento base</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Nivel Platino</div>
-                <div class="info-value price">$58,200 <span>MXN</span></div>
-                <div class="info-desc">50 años de acceso | 20% descuento base</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Nivel Diamante</div>
-                <div class="info-value price">$117,640 <span>MXN</span></div>
-                <div class="info-desc">100 años de acceso | 25% descuento base</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Mantenimiento</div>
-                <div class="info-value">$600 / $300</div>
-                <div class="info-desc">Por beneficiario / por familiar</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Beneficios</div>
-                <div class="info-value">Transferible</div>
-                <div class="info-desc">Vendible, heredable, Miembro Fundador</div>
-              </div>
-            </div>
-          </div>
+        <div class="live-status">
+          <span class="pulse"></span>
+          <span><strong>Cambios al instante</strong> — lo que guardes se aplica en menos de 10 segundos</span>
         </div>
 
-        <!-- Activities -->
-        <div class="settings-card">
-          <div class="card-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-            <span class="card-title">Actividades Disponibles</span>
-          </div>
-          <div class="card-body">
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text"><strong>Deportes y Aventura:</strong> Exatlón, tiro con arco, tiro con hacha, gotcha, cancha de fútbol, senderismo</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text"><strong>Naturaleza:</strong> Área de campamentos, lago natural, granja didáctica, paseo a caballo</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text"><strong>Juegos:</strong> Minigolf, juegos gigantes, Aqua Esferas, área infantil, brincolines, hamacas</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text"><strong>Próximamente:</strong> Tirolesas, muro de escalar, pádel, tenis, tren, ciclismo, albercas</div>
-            </div>
-          </div>
+        <div class="help-box" style="background: rgba(200, 164, 92, 0.1); border: 1px solid rgba(200, 164, 92, 0.3); border-radius: 10px; padding: 0.75rem 0.9rem; font-size: 0.85rem; color: var(--text); line-height: 1.5; margin-bottom: 1rem;">
+          <strong style="color: var(--forest);">¿Qué es esto?</strong> Aquí editas las respuestas que el bot manda cuando el cliente escribe ciertas palabras (por ejemplo, "horario", "ubicación", "requisitos"). Para agregar o quitar opciones del <strong>menú principal</strong> que ve el cliente al inicio, entra a <strong>Menú Principal</strong>.
         </div>
 
-        <!-- Facilities -->
-        <div class="settings-card">
-          <div class="card-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            <span class="card-title">Instalaciones</span>
-          </div>
-          <div class="card-body">
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text">Restaurante y Salón de Eventos</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text">Área de campamentos en el bosque</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text">Lago natural, Granja didáctica</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text">Cancha de fútbol, Minigolf, Exatlón</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text">Estacionamiento, Sanitarios</div>
-            </div>
-            <div class="list-item">
-              <div class="list-bullet"></div>
-              <div class="list-text"><strong>Próximas:</strong> Cabañas, Albercas</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- General Info -->
-        <div class="settings-card">
-          <div class="card-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-            <span class="card-title">Información General</span>
-          </div>
-          <div class="card-body">
-            <div class="info-grid">
-              <div class="info-item">
-                <div class="info-label">Ubicación</div>
-                <div class="info-value">Bosque de Villa del Carbón</div>
-                <div class="info-desc">Estado de México, México</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Horario</div>
-                <div class="info-value">365 días/año</div>
-                <div class="info-desc">8:00 am - 6:00 pm</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Contacto</div>
-                <div class="info-value">55 3008 6410</div>
-                <div class="info-desc">Coordinador de Atención</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Edades</div>
-                <div class="info-value">Sin límite</div>
-                <div class="info-desc">Club deportivo familiar</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Evento</div>
-                <div class="info-value">30 Mayo 2026</div>
-                <div class="info-desc">Inauguración del Restaurante</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Próximas Mejoras</div>
-                <div class="info-value">2026-2027</div>
-                <div class="info-desc">Enfermería, Etapa 2</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- System Info -->
-        <div class="settings-card">
-          <div class="card-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-            </svg>
-            <span class="card-title">Información del Sistema</span>
-          </div>
-          <div class="card-body">
-            <div class="info-grid">
-              <div class="info-item">
-                <div class="info-label">Estado</div>
-                <div class="info-value"><span class="badge badge-active">Activo</span></div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Versión</div>
-                <div class="info-value">1.0.0</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Webhook</div>
-                <div class="info-value" style="font-size:0.85rem;">/api/webhook</div>
-              </div>
-              <div class="info-item">
-                <div class="info-label">Almacenamiento</div>
-                <div class="info-value">En memoria</div>
-                <div class="info-desc">Se reinicia al desplegar</div>
-              </div>
-            </div>
+        <div id="messagesContainer">
+          <div class="empty-state">
+            <div class="emoji">⏳</div>
+            <div class="empty-state-text">Cargando mensajes…</div>
           </div>
         </div>
       </main>
     </div>
   </div>
 
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="createModal" onclick="if(event.target===this) closeCreateModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Agregar mensaje</div>
+        <button class="modal-close" onclick="closeCreateModal()" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="field" id="fld-title">
+          <label>Título</label>
+          <input id="newTitle" type="text" placeholder="ej: Beneficios de Junio" autocomplete="off">
+          <span class="field-help">Nombre interno para que lo identifiques. No lo ve el cliente.</span>
+          <span class="err-msg">Escribe un título</span>
+        </div>
+        <div class="field">
+          <label>Descripción interna (opcional)</label>
+          <input id="newDescription" type="text" placeholder="Una nota para tu equipo" autocomplete="off">
+        </div>
+        <div class="field" id="fld-content">
+          <label>Mensaje al cliente</label>
+          <textarea id="newContent" placeholder="Escribe el mensaje. Puedes usar *negrita* y _cursiva_ de WhatsApp."></textarea>
+          <span class="field-help">Es lo que el bot le va a responder al cliente.</span>
+          <span class="err-msg">Escribe el mensaje</span>
+        </div>
+        <div class="field" id="fld-keywords">
+          <label>Palabras que activan este mensaje</label>
+          <input id="newKeywords" type="text" placeholder="ej: junio, beneficio, promo, oferta" autocomplete="off" spellcheck="false">
+          <span class="field-help">Si el cliente escribe alguna de estas palabras, el bot responde con este mensaje. Separa con comas. Déjalo vacío si este mensaje solo se usa desde el menú.</span>
+          <span class="err-msg">Revisa el formato</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeCreateModal()">Cancelar</button>
+        <button class="btn btn-primary" id="createSubmitBtn" onclick="submitCreate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    const API = '/api/dashboard/settings';
+    const PROTECTED_KEYS = new Set(['bienvenida', 'footer', 'no_entendido']);
+    const INTEREST_KEY = 'asesor';
+    const state = { messages: {}, protectedKeys: Array.from(PROTECTED_KEYS) };
+
+    function slugify(s) {
+      return String(s || '')
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9_]+/g, '_')
+        .replace(/^_+|_+$/g, '')
+        .replace(/_+/g, '_')
+        .slice(0, 40) || 'opcion';
+    }
+
+    function generateUniqueKey(title, existing) {
+      const base = slugify(title);
+      if (!existing[base]) return base;
+      let n = 2;
+      while (existing[base + '_' + n]) n++;
+      return base + '_' + n;
+    }
+
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
     }
-
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', e => {
       const sidebar = document.getElementById('sidebar');
       const menuToggle = document.querySelector('.menu-toggle');
       if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
         sidebar.classList.remove('open');
       }
     });
+
+    let toastTimer;
+    function toast(msg, type = 'success') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast show ' + type;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderWaPreview(text) {
+      const html = text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*(.+?)\*/g, '<strong>$1</strong>')
+        .replace(/_(.+?)_/g, '<em>$1</em>');
+      return `<div class="wa-bubble">${html}</div>`;
+    }
+
+    function parseKeywordsInput(s) {
+      return String(s || '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+    }
+
+    function renderKeywordsBlock(key, msg) {
+      const kws = Array.isArray(msg.keywords) ? msg.keywords : [];
+      const isProtected = state.protectedKeys.includes(key);
+      const isInterest = key === INTEREST_KEY;
+      const chips = kws.length === 0
+        ? '<span class="kw-empty">⚠ Nadie activará este mensaje por palabras. Solo se usa desde el menú o al inicio.</span>'
+        : kws.map(k => `<span class="kw-chip${isInterest ? ' interest' : ''}" data-key="${escapeHtml(key)}" data-kw="${escapeHtml(k)}">${escapeHtml(k)}${isProtected ? '' : '<span class="x" data-remove="1" title="Quitar">×</span>'}</span>`).join('');
+      return `
+        <div class="kw-block" data-key="${escapeHtml(key)}">
+          <div class="kw-block-label">
+            <span class="lbl">Palabras que activan este mensaje${isInterest ? ' · 🎯 interés (escala al asesor)' : ''}</span>
+            <span class="count">${kws.length} ${kws.length === 1 ? 'palabra' : 'palabras'}</span>
+          </div>
+          <div class="kw-chips" id="chips-${escapeHtml(key)}">${chips}</div>
+          ${isProtected ? '' : `
+            <div class="kw-input-row">
+              <input class="kw-input" id="kw-input-${escapeHtml(key)}" placeholder="Escribe una palabra y presiona Enter" autocomplete="off" spellcheck="false">
+              <button class="btn btn-secondary" onclick="addKeywordFromInput('${escapeHtml(key)}')">+ Agregar</button>
+            </div>
+          `}
+          <div class="kw-help">Si el cliente escribe alguna de estas palabras, el bot responde con este mensaje (búsqueda por contiene).</div>
+        </div>
+      `;
+    }
+
+    async function loadAll() {
+      try {
+        const r = await fetch(API);
+        const data = await r.json();
+        state.messages = data.messages || {};
+        if (Array.isArray(data.protectedKeys)) {
+          state.protectedKeys = data.protectedKeys;
+        }
+        renderMessages();
+      } catch (e) {
+        toast('Error cargando: ' + e.message, 'error');
+      }
+    }
+
+    function renderMessages() {
+      const container = document.getElementById('messagesContainer');
+      const keys = Object.keys(state.messages);
+      if (keys.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="emoji">📭</div><div class="empty-state-text">No hay mensajes.</div><div class="empty-state-sub">El bot usará los valores por defecto hasta que subas uno.</div></div>';
+        return;
+      }
+      const sorted = keys.map(k => state.messages[k]).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      container.innerHTML = sorted.map(m => {
+        const isProtected = state.protectedKeys.includes(m.key);
+        return `
+        <div class="card" data-key="${escapeHtml(m.key)}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="card-title">${escapeHtml(m.title)}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            ${m.description ? `<div class="card-desc">${escapeHtml(m.description)}</div>` : ''}
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Mensaje al cliente</div>
+            <textarea class="msg-editor" data-key="${escapeHtml(m.key)}">${escapeHtml(m.content)}</textarea>
+            ${renderKeywordsBlock(m.key, m)}
+            <div class="card-actions">
+              <button class="btn btn-primary" onclick="saveMessage('${escapeHtml(m.key)}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Guardar
+              </button>
+              <button class="btn btn-secondary" onclick="togglePreview('${escapeHtml(m.key)}')">👁 Vista previa</button>
+              <button class="btn btn-danger" onclick="deleteMessage('${escapeHtml(m.key)}')" ${isProtected ? 'disabled title="Mensaje del sistema, no se puede eliminar"' : ''}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                Eliminar
+              </button>
+              <span id="status-${escapeHtml(m.key)}" style="margin-left: auto; font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;"></span>
+            </div>
+            <div class="wa-preview" id="preview-${escapeHtml(m.key)}"></div>
+          </div>
+        </div>
+      `}).join('');
+
+      // Wire up Enter-key on keyword inputs
+      sorted.forEach(m => {
+        const inp = document.getElementById('kw-input-' + m.key);
+        if (inp) {
+          inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              addKeywordFromInput(m.key);
+            }
+          });
+        }
+      });
+
+      // Event delegation for remove-keyword buttons
+      const chipsContainer = document.getElementById('messagesContainer');
+      if (chipsContainer && !chipsContainer._kwRemoveWired) {
+        chipsContainer._kwRemoveWired = true;
+        chipsContainer.addEventListener('click', e => {
+          const x = e.target.closest('[data-remove]');
+          if (!x) return;
+          const chip = x.closest('.kw-chip');
+          if (!chip) return;
+          const k = chip.dataset.key;
+          const kw = chip.dataset.kw;
+          if (k && kw) removeKeyword(k, kw);
+        });
+      }
+    }
+
+    async function saveMessage(key) {
+      const card = document.querySelector(`.card[data-key="${key}"]`);
+      const ta = card.querySelector('textarea.msg-editor');
+      const m = state.messages[key];
+      const status = document.getElementById('status-' + key);
+      status.textContent = 'guardando…';
+      try {
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            key,
+            title: m.title,
+            content: ta.value,
+            sortOrder: m.sortOrder || 0,
+            description: m.description,
+            keywords: Array.isArray(m.keywords) ? m.keywords : []
+          })
+        });
+        if (!r.ok) throw new Error((await r.json()).message || 'Error');
+        status.textContent = '✓ guardado ' + new Date().toLocaleTimeString('es-MX');
+        state.messages[key].content = ta.value;
+        toast('"' + m.title + '" guardado · activo en ≤ 10 s');
+      } catch (e) {
+        status.textContent = '✗ error';
+        toast('Error: ' + e.message, 'error');
+      }
+    }
+
+    async function deleteMessage(key) {
+      const m = state.messages[key];
+      if (!m) return;
+      if (state.protectedKeys.includes(key)) {
+        toast('Este mensaje está protegido y no se puede eliminar', 'error');
+        return;
+      }
+      if (!confirm(`¿Eliminar "${m.title}"?\n\nEsta acción no se puede deshacer.`)) return;
+      try {
+        const r = await fetch(API + '?key=' + encodeURIComponent(key), { method: 'DELETE' });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          if (r.status === 403) throw new Error('Mensaje del sistema, no se puede eliminar');
+          if (r.status === 404) throw new Error('El mensaje ya no existe');
+          throw new Error(data.message || data.error || 'Error');
+        }
+        delete state.messages[key];
+        renderMessages();
+        toast(`"${m.title}" eliminado`);
+      } catch (e) {
+        toast('Error: ' + e.message, 'error');
+      }
+    }
+
+    function togglePreview(key) {
+      const card = document.querySelector(`.card[data-key="${key}"]`);
+      const ta = card.querySelector('textarea.msg-editor');
+      const preview = document.getElementById('preview-' + key);
+      const isOpen = preview.classList.contains('show');
+      if (isOpen) { preview.classList.remove('show'); return; }
+      preview.innerHTML = renderWaPreview(ta.value);
+      preview.classList.add('show');
+    }
+
+    // ===================== KEYWORDS (inline) =====================
+
+    async function addKeywordFromInput(key) {
+      const inp = document.getElementById('kw-input-' + key);
+      if (!inp) return;
+      const raw = inp.value.trim().toLowerCase();
+      if (!raw) return;
+      const m = state.messages[key];
+      if (!m) return;
+      const kws = Array.isArray(m.keywords) ? [...m.keywords] : [];
+      if (kws.includes(raw)) {
+        toast(`"${raw}" ya está en las keywords`, 'error');
+        return;
+      }
+      kws.push(raw);
+      await persistKeywords(key, kws);
+      inp.value = '';
+    }
+
+    async function removeKeyword(key, kw) {
+      const m = state.messages[key];
+      if (!m) return;
+      const kws = (m.keywords || []).filter(k => k !== kw);
+      await persistKeywords(key, kws);
+    }
+
+    async function persistKeywords(key, kws) {
+      const m = state.messages[key];
+      const status = document.getElementById('status-' + key);
+      if (status) status.textContent = 'guardando keywords…';
+      try {
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            key,
+            title: m.title,
+            content: m.content,
+            sortOrder: m.sortOrder || 0,
+            description: m.description,
+            keywords: kws
+          })
+        });
+        if (!r.ok) throw new Error((await r.json()).message || 'Error');
+        state.messages[key].keywords = kws;
+        // Re-render only the chips block to avoid losing focus
+        const card = document.querySelector(`.card[data-key="${key}"]`);
+        if (card) {
+          const oldBlock = card.querySelector('.kw-block');
+          if (oldBlock) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = renderKeywordsBlock(key, state.messages[key]);
+            oldBlock.replaceWith(tmp.firstElementChild);
+            // Re-wire Enter on the new input
+            const inp = document.getElementById('kw-input-' + key);
+            if (inp) {
+              inp.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addKeywordFromInput(key);
+                }
+              });
+            }
+          }
+        }
+        if (status) status.textContent = '✓ keywords actualizadas ' + new Date().toLocaleTimeString('es-MX');
+        toast(`Keywords de "${m.title}" actualizadas`);
+      } catch (e) {
+        if (status) status.textContent = '✗ error';
+        toast('Error: ' + e.message, 'error');
+      }
+    }
+
+    // ===================== CREAR NUEVO MENSAJE =====================
+
+    function openCreateModal() {
+      ['fld-title', 'fld-content', 'fld-keywords'].forEach(id => {
+        document.getElementById(id)?.classList.remove('error');
+      });
+      document.getElementById('newTitle').value = '';
+      document.getElementById('newDescription').value = '';
+      document.getElementById('newContent').value = '';
+      document.getElementById('newKeywords').value = '';
+      document.getElementById('createModal').classList.add('show');
+      setTimeout(() => document.getElementById('newTitle').focus(), 50);
+    }
+
+    function closeCreateModal() {
+      document.getElementById('createModal').classList.remove('show');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('createModal').classList.contains('show')) {
+        closeCreateModal();
+      }
+    });
+
+    async function submitCreate() {
+      const title = document.getElementById('newTitle').value.trim();
+      const description = document.getElementById('newDescription').value.trim();
+      const content = document.getElementById('newContent').value;
+      const keywordsRaw = document.getElementById('newKeywords').value;
+
+      const errs = [];
+      if (!title) errs.push('fld-title');
+      if (typeof content !== 'string' || !content) errs.push('fld-content');
+      errs.forEach(id => document.getElementById(id)?.classList.add('error'));
+      if (errs.length > 0) {
+        toast('Completa los campos marcados', 'error');
+        return;
+      }
+
+      const key = generateUniqueKey(title, state.messages);
+      const keywords = parseKeywordsInput(keywordsRaw);
+      const sortOrder = 99;
+
+      const btn = document.getElementById('createSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Guardando…';
+      try {
+        const r = await fetch(API, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key, title, description, content, keywords, sortOrder })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.status === 409) {
+          throw new Error(`Ya existe un mensaje con la key "${key}"`);
+        }
+        if (!r.ok) {
+          throw new Error(data.message || data.error || 'Error');
+        }
+        state.messages[key] = data.message;
+        renderMessages();
+        closeCreateModal();
+        toast(`"${title}" guardado · activo en menos de 10 s`);
+        setTimeout(() => {
+          const newCard = document.querySelector(`.card[data-key="${key}"]`);
+          if (newCard) newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      } catch (e) {
+        toast('Error: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Guardar';
+      }
+    }
+
+    loadAll();
   </script>
 </body>
 </html>

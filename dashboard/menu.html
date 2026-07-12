@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Principal - Campamento Onawa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #1a4d2e; --forest-light: #2d6a4f; --forest-dark: #0f3d2e;
+      --gold: #c8a45c; --gold-light: #e8d5a3;
+      --sage: #7a9e7e; --sage-light: #b8d4ba;
+      --sand: #f5f0e8; --sand-dark: #e8e0d0;
+      --coral: #d4735e; --coral-light: #e8a090;
+      --earth: #8b6f47;
+      --text: #2c3e2c; --text-light: #5a6b5a; --text-muted: #8a9a8a;
+      --white: #ffffff;
+      --shadow: rgba(26, 58, 42, 0.08); --shadow-lg: rgba(26, 58, 42, 0.15);
+      --wa-bg: #efeae2; --wa-bubble-out: #d9fdd3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    .app-layout { display: flex; min-height: 100vh; }
+
+    .sidebar { width: 280px; min-width: 280px; background: var(--forest); color: var(--white); display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; box-shadow: 4px 0 20px var(--shadow-lg); transition: transform 0.3s ease; }
+    .sidebar-header { padding: 2rem 1.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo { display: flex; align-items: center; gap: 1rem; }
+    .sidebar-logo img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: var(--white); }
+    .sidebar-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.2rem; line-height: 1.2; }
+    .sidebar-logo-subtitle { font-size: 0.75rem; opacity: 0.7; font-weight: 500; margin-top: 0.2rem; }
+    .sidebar-nav { flex: 1; padding: 1.5rem 0; overflow-y: auto; }
+    .nav-section { margin-bottom: 1.5rem; }
+    .nav-section-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; padding: 0 1.5rem; margin-bottom: 0.75rem; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.2s ease; border-left: 3px solid transparent; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+    .nav-item.active { background: rgba(255,255,255,0.12); color: var(--white); border-left-color: var(--gold); }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; opacity: 0.7; }
+    .nav-item.active svg { opacity: 1; }
+    .sidebar-footer { padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .live-badge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; padding: 0.75rem 1rem; background: rgba(255,255,255,0.1); border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); }
+    .live-dot { width: 8px; height: 8px; background: var(--sage-light); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+
+    .main-content { flex: 1; margin-left: 280px; min-height: 100vh; display: flex; flex-direction: column; }
+    .top-header { background: var(--white); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 10px var(--shadow); }
+    .header-title-group { display: flex; flex-direction: column; gap: 0.25rem; }
+    .header-title { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--forest); }
+    .header-subtitle { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--forest); }
+    .menu-toggle svg { width: 24px; height: 24px; }
+
+    .content { padding: 2rem; max-width: 1300px; flex: 1; width: 100%; }
+
+    .live-status { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--white); border: 1px solid var(--sand-dark); border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-light); box-shadow: 0 2px 8px var(--shadow); }
+    .live-status .pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); animation: pulse 1.6s ease-in-out infinite; }
+    .live-status .meta { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin-left: auto; }
+
+    .layout-2col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: start; }
+    @media (max-width: 1100px) { .layout-2col { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px var(--shadow); border: 1px solid var(--sand-dark); }
+    .panel-header { padding: 1rem 1.25rem; background: var(--sand); border-bottom: 1px solid var(--sand-dark); display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+    .panel-title { font-family: 'Montserrat', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--forest); display: flex; align-items: center; gap: 0.5rem; }
+    .panel-title svg { width: 22px; height: 22px; color: var(--gold); }
+    .panel-help { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4; }
+    .panel-body { padding: 1rem 1.25rem; }
+
+    .options-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .option-card { background: #fdfcf8; border: 1px solid var(--sand-dark); border-radius: 12px; padding: 0.85rem 1rem; display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; align-items: center; transition: all 0.2s ease; }
+    .option-card:hover { border-color: var(--sage); box-shadow: 0 2px 8px var(--shadow); }
+    .option-num { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--gold); background: rgba(200, 164, 92, 0.15); border: 1px solid rgba(200, 164, 92, 0.4); border-radius: 10px; padding: 0.4rem 0.65rem; min-width: 48px; text-align: center; }
+    .option-emoji { font-size: 1.5rem; }
+    .option-body { min-width: 0; }
+    .option-title { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--forest); }
+    .option-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; font-family: 'JetBrains Mono', monospace; }
+    .option-meta.missing { color: var(--coral); font-weight: 600; }
+    .option-actions { display: flex; gap: 0.3rem; align-items: center; }
+    .icon-btn { background: var(--white); border: 1px solid var(--sand-dark); border-radius: 8px; padding: 0.4rem 0.55rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; color: var(--text); }
+    .icon-btn:hover { background: var(--sand); border-color: var(--sage); }
+    .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .icon-btn.danger { color: var(--coral); border-color: rgba(212, 115, 94, 0.3); }
+    .icon-btn.danger:hover { background: var(--coral); color: var(--white); border-color: var(--coral); }
+    .icon-btn svg { width: 16px; height: 16px; }
+
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary { background: var(--forest); color: var(--white); }
+    .btn-primary:hover { background: var(--forest-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-secondary { background: var(--sand); color: var(--text); border: 1px solid var(--sand-dark); }
+    .btn-secondary:hover { background: var(--sand-dark); }
+
+    .add-card { background: var(--sand); border: 2px dashed var(--sand-dark); border-radius: 12px; padding: 1rem; text-align: center; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; }
+    .add-card:hover { background: rgba(122, 158, 126, 0.12); border-color: var(--sage); color: var(--forest); }
+    .add-card .plus { font-size: 1.5rem; display: block; margin-bottom: 0.2rem; }
+
+    .preview-box { background: var(--wa-bg); border-radius: 12px; padding: 1.25rem; min-height: 320px; }
+    .preview-bubble { background: var(--wa-bubble-out); padding: 0.7rem 0.85rem; border-radius: 8px; max-width: 92%; margin-left: auto; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); margin-bottom: 0.5rem; }
+    .preview-bubble strong { font-weight: 700; }
+    .preview-bubble em { font-style: italic; }
+    .preview-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; font-weight: 600; }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(26, 58, 42, 0.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 1rem; }
+    .modal-backdrop.show { display: flex; }
+    .modal { background: var(--white); border-radius: 18px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--white); z-index: 1; }
+    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--forest); }
+    .modal-close { background: none; border: none; cursor: pointer; padding: 0.3rem; color: var(--text-muted); border-radius: 6px; }
+    .modal-close:hover { background: var(--sand); color: var(--text); }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .modal-footer { display: flex; gap: 0.6rem; justify-content: flex-end; padding: 1rem 1.5rem; border-top: 1px solid var(--sand-dark); position: sticky; bottom: 0; background: var(--white); }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field label { font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--forest); text-transform: uppercase; letter-spacing: 0.05em; }
+    .field input, .field textarea { padding: 0.6rem 0.8rem; border: 1px solid var(--sand-dark); border-radius: 8px; font-size: 0.95rem; font-family: 'Source Sans 3', sans-serif; background: #fdfcf8; color: var(--text); transition: all 0.2s ease; }
+    .field input { font-family: 'JetBrains Mono', monospace; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.18); }
+    .field .field-help { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+    .field.error input { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(212, 115, 94, 0.15); }
+    .field .err-msg { font-size: 0.75rem; color: var(--coral); font-weight: 600; display: none; }
+    .field.error .err-msg { display: block; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .emoji-input { font-size: 1.4rem !important; text-align: center; }
+
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 0.9rem 1.25rem; border-radius: 12px; font-weight: 600; font-size: 0.9rem; color: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.2); z-index: 2000; transform: translateY(20px); opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--forest); }
+    .toast.error { background: var(--coral); }
+
+    .empty-state { text-align: center; padding: 2rem 1.5rem; color: var(--text-muted); }
+    .empty-state .emoji { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .empty-state-text { font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
+
+    .help-box { background: rgba(122, 158, 126, 0.1); border: 1px solid rgba(122, 158, 126, 0.3); border-radius: 10px; padding: 0.75rem 0.9rem; font-size: 0.82rem; color: var(--forest); line-height: 1.5; margin-bottom: 1rem; }
+    .help-box strong { color: var(--forest-dark); }
+
+    @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; } .menu-toggle { display: block; } }
+    @media (max-width: 768px) { .content { padding: 1rem; } .field-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="/assets/logo.png" alt="Campamento Onawa">
+          <div>
+            <div class="sidebar-logo-text">Onawa</div>
+            <div class="sidebar-logo-subtitle">Panel de Control</div>
+          </div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Panel
+          </a>
+          <a href="chats.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            Conversaciones
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Monitoreo</div>
+          <a href="stats.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+            Estadísticas
+          </a>
+          <a href="alerts.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Alertas
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Configuración</div>
+          <a href="menu.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Menú Principal
+          </a>
+          <a href="settings.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Mensajes sueltos
+          </a>
+          <a href="test.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            Simulador
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="live-badge"><span class="live-dot"></span><span>Bot en vivo</span></div>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="menu-toggle" onclick="toggleSidebar()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="header-title-group">
+            <h1 class="header-title">Menú Principal</h1>
+            <p class="header-subtitle">Las opciones que el bot muestra al cliente al inicio y cuando no entiende algo</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center;">
+          <button class="btn btn-primary" onclick="openCreateModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar opción
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="live-status">
+          <span class="pulse"></span>
+          <span><strong>Cambios al instante</strong> — lo que guardes se aplica en menos de 10 segundos</span>
+        </div>
+
+        <div class="help-box">
+          <strong>¿Cómo funciona?</strong> Cada opción del menú es lo que el cliente ve al escribir <em>"hola"</em> o cuando el bot no entiende su mensaje. Solo agrega, edita o reordena opciones aquí. <strong>El número y el orden se asignan automáticamente.</strong> Para cambiar el mensaje que el bot responde cuando el cliente elige una opción, entra a <strong>Mensajes sueltos</strong>.
+        </div>
+
+        <div class="layout-2col">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                  Tus opciones
+                </div>
+                <div class="panel-help">Usa las flechas ↑ ↓ para cambiar el orden. El número se asigna en automático.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="optionsList" class="options-list">
+                <div class="empty-state"><div class="emoji">⏳</div><div class="empty-state-text">Cargando…</div></div>
+              </div>
+              <div class="add-card" style="margin-top: 0.75rem;" onclick="openCreateModal()">
+                <span class="plus">＋</span>
+                <div style="font-weight: 600; font-size: 0.95rem;">Agregar otra opción al menú</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                Vista previa
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="preview-label">Así lo verá el cliente en WhatsApp</div>
+              <div class="preview-box">
+                <div class="preview-bubble" id="previewBubble">Cargando…</div>
+              </div>
+              <div style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+                <strong style="color: var(--text-light);">Tip:</strong> cada opción se activa cuando el cliente escribe el número (ej. "1") o una palabra que coincida con el título (ej. "Actividades").
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="optionModal" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Agregar opción al menú</div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="field-row">
+          <div class="field" id="fld-num">
+            <label>Número</label>
+            <input id="fNumber" type="number" min="1" max="99" placeholder="Auto" disabled>
+            <span class="field-help">Se asigna solo (siguiente libre)</span>
+          </div>
+          <div class="field">
+            <label>Emoji (opcional)</label>
+            <input id="fEmoji" type="text" class="emoji-input" placeholder="🌲" maxlength="4">
+            <span class="field-help">Aparece antes del título. Si lo dejas vacío se usa el número.</span>
+          </div>
+        </div>
+        <div class="field" id="fld-title">
+          <label>Título de la opción</label>
+          <input id="fTitle" type="text" placeholder="Ej. Promociones de Verano" maxlength="80" autocomplete="off">
+          <span class="field-help">Es lo que el cliente verá en el menú (ej. <em>1️⃣ Promociones de Verano</em>).</span>
+          <span class="err-msg">Escribe un título para la opción</span>
+        </div>
+        <div class="help-box" style="margin: 0;">
+          Después de guardar, entra a <strong>Mensajes sueltos</strong> para escribir la respuesta que el bot dará cuando el cliente elija esta opción.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" id="saveBtn" onclick="submitOption()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '/api/dashboard/menu';
+    const state = { options: [], editingNumber: null };
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+    document.addEventListener('click', e => {
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.querySelector('.menu-toggle');
+      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    let toastTimer;
+    function toast(msg, type = 'success') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast show ' + type;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderPreview(text) {
+      const html = String(text || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*(.+?)\*/g, '<strong>$1</strong>')
+        .replace(/_(.+?)_/g, '<em>$1</em>');
+      return html;
+    }
+
+    function renderList() {
+      const container = document.getElementById('optionsList');
+      const opts = state.options.slice().sort((a, b) => a.number - b.number);
+      if (opts.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="emoji">📋</div><div class="empty-state-text">No hay opciones todavía.</div><div style="margin-top: 0.4rem; font-size: 0.85rem;">Agrega la primera con el botón de arriba.</div></div>';
+        return;
+      }
+      container.innerHTML = opts.map((o, i) => {
+        const hasMessage = !!o.messageKey;
+        const meta = hasMessage
+          ? `Mensaje: ${escapeHtml(o.messageKey)}`
+          : '⚠ Aún no tiene respuesta. Edítala en Mensajes sueltos.';
+        return `
+        <div class="option-card" data-num="${o.number}">
+          <div class="option-num">${o.number}</div>
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+              <span class="option-emoji">${escapeHtml(o.emoji || (o.number + '️⃣'))}</span>
+              <span class="option-title">${escapeHtml(o.title)}</span>
+            </div>
+            <div class="option-meta ${hasMessage ? '' : 'missing'}">${meta}</div>
+          </div>
+          <div class="option-actions">
+            <button class="icon-btn" onclick="moveOption(${o.number}, -1)" ${i === 0 ? 'disabled' : ''} title="Subir">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+            </button>
+            <button class="icon-btn" onclick="moveOption(${o.number}, 1)" ${i === opts.length - 1 ? 'disabled' : ''} title="Bajar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <button class="icon-btn" onclick="openEditModal(${o.number})" title="Editar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="icon-btn danger" onclick="deleteOption(${o.number})" title="Eliminar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+      }).join('');
+    }
+
+    function updatePreview() {
+      const sorted = state.options.slice().sort((a, b) => a.number - b.number);
+      if (sorted.length === 0) {
+        document.getElementById('previewBubble').textContent = 'Agrega opciones para ver la vista previa.';
+        return;
+      }
+      const lines = sorted.map(o => `${o.emoji || (o.number + '️⃣')} *${o.title}*`);
+      const preview = `*¿Qué te gustaría conocer?*\n${lines.join('\n')}`;
+      document.getElementById('previewBubble').innerHTML = renderPreview(preview);
+    }
+
+    async function loadAll() {
+      try {
+        const r = await fetch(API);
+        const data = await r.json();
+        state.options = data.options || [];
+        renderList();
+        updatePreview();
+      } catch (e) {
+        toast('Error cargando: ' + e.message, 'error');
+      }
+    }
+
+    async function persistList(newOptions) {
+      const r = await fetch(API, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ options: newOptions })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.message || data.error || 'Error');
+      state.options = data.options || [];
+      renderList();
+      updatePreview();
+      return data;
+    }
+
+    function openCreateModal() {
+      state.editingNumber = null;
+      document.getElementById('modalTitle').textContent = 'Agregar opción al menú';
+      document.getElementById('fld-num').style.display = 'none';
+      document.getElementById('fEmoji').value = '';
+      document.getElementById('fTitle').value = '';
+      document.getElementById('fld-title').classList.remove('error');
+      document.getElementById('optionModal').classList.add('show');
+      setTimeout(() => document.getElementById('fTitle').focus(), 50);
+    }
+
+    function openEditModal(number) {
+      const opt = state.options.find(o => o.number === number);
+      if (!opt) return;
+      state.editingNumber = number;
+      document.getElementById('modalTitle').textContent = `Editar opción ${number}`;
+      document.getElementById('fld-num').style.display = '';
+      document.getElementById('fNumber').value = number;
+      document.getElementById('fEmoji').value = opt.emoji || '';
+      document.getElementById('fTitle').value = opt.title || '';
+      document.getElementById('fld-title').classList.remove('error');
+      document.getElementById('optionModal').classList.add('show');
+      setTimeout(() => document.getElementById('fTitle').focus(), 50);
+    }
+
+    function closeModal() {
+      document.getElementById('optionModal').classList.remove('show');
+      state.editingNumber = null;
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('optionModal').classList.contains('show')) {
+        closeModal();
+      }
+    });
+
+    async function submitOption() {
+      const title = document.getElementById('fTitle').value.trim();
+      const emoji = document.getElementById('fEmoji').value.trim();
+      if (!title) {
+        document.getElementById('fld-title').classList.add('error');
+        toast('Escribe un título para la opción', 'error');
+        return;
+      }
+      const btn = document.getElementById('saveBtn');
+      btn.disabled = true;
+      btn.textContent = 'Guardando…';
+      try {
+        if (state.editingNumber == null) {
+          // Crear
+          const r = await fetch(API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, emoji })
+          });
+          const data = await r.json();
+          if (!r.ok) throw new Error(data.message || data.error || 'Error');
+          state.options = data.options || [];
+          renderList();
+          updatePreview();
+          toast('Opción agregada · activa en menos de 10 s');
+        } else {
+          // Editar
+          const r = await fetch(API, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ number: state.editingNumber, title, emoji })
+          });
+          const data = await r.json();
+          if (!r.ok) throw new Error(data.message || data.error || 'Error');
+          state.options = data.options || [];
+          renderList();
+          updatePreview();
+          toast('Cambios guardados');
+        }
+        closeModal();
+      } catch (e) {
+        toast('Error: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Guardar';
+      }
+    }
+
+    async function deleteOption(number) {
+      const opt = state.options.find(o => o.number === number);
+      if (!opt) return;
+      if (!confirm(`¿Eliminar la opción ${number} (${opt.title})?\n\nEl cliente ya no la verá en el menú.`)) return;
+      try {
+        const r = await fetch(API + '?number=' + encodeURIComponent(number), { method: 'DELETE' });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.message || data.error || 'Error');
+        state.options = data.options || [];
+        renderList();
+        updatePreview();
+        toast(`Opción ${number} eliminada`);
+      } catch (e) {
+        toast('Error: ' + e.message, 'error');
+      }
+    }
+
+    async function moveOption(number, direction) {
+      const sorted = state.options.slice().sort((a, b) => a.number - b.number);
+      const idx = sorted.findIndex(o => o.number === number);
+      const newIdx = idx + direction;
+      if (newIdx < 0 || newIdx >= sorted.length) return;
+      const tmp = sorted[idx];
+      sorted[idx] = sorted[newIdx];
+      sorted[newIdx] = tmp;
+      // Reasignar números 1..N según el nuevo orden
+      const renumbered = sorted.map((o, i) => ({ ...o, number: i + 1 }));
+      try {
+        await persistList(renumbered);
+        toast(direction === -1 ? 'Opción subida' : 'Opción bajada');
+      } catch (e) {
+        toast('Error: ' + e.message, 'error');
+      }
+    }
+
+    loadAll();
+  </script>
+</body>
+</html>

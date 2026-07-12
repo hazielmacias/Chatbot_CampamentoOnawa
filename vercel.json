@@ -1,67 +1,23 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dashboard/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "dashboard/**", "use": "@vercel/static" },
+    { "src": "public/**", "use": "@vercel/static" },
+    { "src": "index.html", "use": "@vercel/static" }
   ],
   "routes": [
-    {
-      "src": "/api/dashboard/stats",
-      "dest": "/api/dashboard/stats.js"
-    },
-    {
-      "src": "/api/dashboard/conversations",
-      "dest": "/api/dashboard/conversations.js"
-    },
-    {
-      "src": "/api/dashboard/conversation",
-      "dest": "/api/dashboard/conversation.js"
-    },
-    {
-      "src": "/api/dashboard/alerts",
-      "dest": "/api/dashboard/alerts.js"
-    },
-    {
-      "src": "/api/dashboard/settings",
-      "dest": "/api/dashboard/settings.js"
-    },
-    {
-      "src": "/api/dashboard/history",
-      "dest": "/api/dashboard/history.js"
-    },
-    {
-      "src": "/api/webhook",
-      "dest": "/api/webhook.js"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/dashboard/index.html"
-    },
-    {
-      "src": "/dashboard/(.*)",
-      "dest": "/dashboard/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/public/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/api/dashboard/stats", "dest": "/api/dashboard/stats.js" },
+    { "src": "/api/dashboard/conversations", "dest": "/api/dashboard/conversations.js" },
+    { "src": "/api/dashboard/conversation", "dest": "/api/dashboard/conversation.js" },
+    { "src": "/api/dashboard/alerts", "dest": "/api/dashboard/alerts.js" },
+    { "src": "/api/dashboard/settings", "dest": "/api/dashboard/settings.js" },
+    { "src": "/api/dashboard/history", "dest": "/api/dashboard/history.js" },
+    { "src": "/api/dashboard/menu", "dest": "/api/dashboard/menu.js" },
+    { "src": "/api/webhook", "dest": "/api/webhook.js" },
+    { "src": "/dashboard", "dest": "/dashboard/index.html" },
+    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
+    { "src": "/assets/(.*)", "dest": "/public/assets/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
