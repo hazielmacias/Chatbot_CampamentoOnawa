@@ -10,11 +10,11 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const DEFAULT_MENU = [
-  { number: 1, emoji: '💰', title: 'Preventa y Beneficios', messageKey: 'membresias' },
+  { number: 1, emoji: '📆', title: 'Próximos Eventos', messageKey: 'eventos' },
   { number: 2, emoji: '🏃', title: 'Actividades', messageKey: 'actividades' },
   { number: 3, emoji: '🏡', title: 'Instalaciones', messageKey: 'instalaciones' },
-  { number: 4, emoji: '📆', title: 'Próximos Eventos', messageKey: 'eventos' },
-  { number: 5, emoji: '🎯', title: 'Hablar con un Asesor', messageKey: 'asesor' }
+  { number: 4, emoji: '💰', title: 'Preventa y Beneficios', messageKey: 'membresias' },
+  { number: 5, emoji: '🙋', title: 'Hablar con un Asesor', messageKey: 'asesor' }
 ];
 
 function loadDefaults() {
@@ -48,14 +48,17 @@ export default async function handler(req, res) {
       }
     }
 
-    // 2) Restaurar keywords de cada mensaje desde los defaults
-    //    (sobrescribe completamente los corruptos)
+    // 2) Restaurar contenido y keywords de cada mensaje desde los defaults
     for (const [key, defMsg] of Object.entries(defaults)) {
       if (key === 'menuOptions') continue;
       if (!messages[key]) continue;
+      // Restaurar contenido si el default tiene contenido
+      if (defMsg.content && messages[key].content !== defMsg.content) {
+        messages[key].content = defMsg.content;
+        restored++;
+      }
+      // Restaurar keywords
       if (Array.isArray(defMsg.keywords)) {
-        // Reemplazar los keywords con los del default + cualquier keyword
-        // extra del usuario que no esté en el default
         const userExtras = (messages[key].keywords || []).filter(
           k => !defMsg.keywords.includes(k) && !String(k).match(/^\d+[️⃣]?$/)
         );

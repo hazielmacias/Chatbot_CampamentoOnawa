@@ -278,27 +278,10 @@ function parseMenuFromBienvenida(text) {
 async function migrateMenuConfig(messages) {
   if (!messages || typeof messages !== 'object') return messages;
 
-  // 1) menuOptions
-  if (!Array.isArray(messages.menuOptions) || messages.menuOptions.length === 0) {
-    const bienvenidaText = messages.bienvenida?.content || '';
-    const parsed = parseMenuFromBienvenida(bienvenidaText);
-    if (parsed && parsed.length > 0) {
-      const known = {
-        'preventa y beneficios': 'membresias',
-        'actividades': 'actividades',
-        'instalaciones': 'instalaciones',
-        'próximos eventos': 'eventos',
-        'hablar con un asesor': 'asesor'
-      };
-      for (const opt of parsed) {
-        const k = known[opt.title.toLowerCase()];
-        if (k) opt.messageKey = k;
-      }
-      messages.menuOptions = parsed;
-    } else {
-      const def = getDefaultMenuOptions();
-      if (def.length > 0) messages.menuOptions = def;
-    }
+  // 1) menuOptions — siempre sincronizar con los defaults para reflejar cambios de orden/título/emoji
+  const defaults = getDefaultMenuOptions();
+  if (defaults.length > 0) {
+    messages.menuOptions = JSON.parse(JSON.stringify(defaults));
   }
 
   // 2) bienvenida / no_entendido al formato {{MENU}}
@@ -384,7 +367,7 @@ export function buildMenuText(menuOptions, opts = {}) {
   const lines = list
     .slice()
     .sort((a, b) => a.number - b.number)
-    .map(o => `${o.emoji || o.number + '️⃣'} *${o.title}*`);
+    .map(o => `${o.number}. ${o.emoji || o.number + '️⃣'} *${o.title}*`);
   return `*${header}*\n${lines.join('\n')}`;
 }
 

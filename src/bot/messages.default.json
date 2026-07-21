@@ -8,26 +8,26 @@
     "sortOrder": 0
   },
   "menuOptions": [
-    { "number": 1, "emoji": "💰", "title": "Preventa y Beneficios", "messageKey": "membresias" },
+    { "number": 1, "emoji": "📆", "title": "Próximos Eventos", "messageKey": "eventos" },
     { "number": 2, "emoji": "🏃", "title": "Actividades", "messageKey": "actividades" },
     { "number": 3, "emoji": "🏡", "title": "Instalaciones", "messageKey": "instalaciones" },
-    { "number": 4, "emoji": "📆", "title": "Próximos Eventos", "messageKey": "eventos" },
-    { "number": 5, "emoji": "🎯", "title": "Hablar con un Asesor", "messageKey": "asesor" }
+    { "number": 4, "emoji": "💰", "title": "Preventa y Beneficios", "messageKey": "membresias" },
+    { "number": 5, "emoji": "🙋", "title": "Hablar con un Asesor", "messageKey": "asesor" }
   ],
   "bienvenida": {
     "key": "bienvenida",
     "title": "Bienvenida",
     "description": "Se muestra al iniciar o al pedir el menú. El listado se arma solo con las opciones del Menú Principal.",
-    "content": "¡Hola! 👋 Bienvenido a *Campamento Onawa* 🌲\nSoy tu asistente virtual y estoy aquí para ayudarte.\n\n{{MENU}}\n\n💡 Escribe el número de la opción",
+    "content": "¡Hola! 👋 Bienvenido a *Campamento Onawa* 🌲\nSoy tu asistente virtual y estoy aquí para ayudarte.\n\n{{MENU}}",
     "keywords": ["hola", "menu", "menú", "inicio", "0", "volver", "regresar", "salir", "buenas", "buenos dias", "buenas tardes"],
     "sortOrder": 1
   },
-  "membresias": {
-    "key": "membresias",
-    "title": "Preventa y Beneficios",
+  "eventos": {
+    "key": "eventos",
+    "title": "Próximos Eventos",
     "description": "Opción 1 del menú principal.",
-    "content": "*💰 Preventa y Beneficios*\nNuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.\n\n*📋 Niveles disponibles:*\n🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento\n🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento\n🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento\n💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento\n\n*📌 Incluye:*\n• Cuota de mantenimiento: $600/beneficiario, $300/familiar\n• Membresía transferible, vendible y heredable\n• Certificado de *Miembro Fundador*\n• Primer pago de mantenimiento: *enero 2027*\n*✅ El descuento aplica en:* Consumo, atracciones, servicios y promociones\n\n¿Te gustaría que un asesor te contacte?",
-    "keywords": ["1", "1️⃣", "precio", "costo", "cuanto", "cuánto", "membresia", "membresía", "plan", "planes", "nivel", "niveles"],
+    "content": "*📆 Próximos Eventos*\n*🎤 Sábados de Karaoke* — Sábados · 1:00 pm a 6:00 pm · 🍹 Micheladas y Mezcladas 2x1\n*🥣 Domingos Pozoleros* — Domingos · Pozole 2x1 y 🎵 Música en vivo\n*🏕️ Campamento de Verano* — 15 y 16 de agosto\n*🇲🇽 Noche Mexicana* — Sábado 12 de septiembre · Cena y baile\n*🪇 Fiesta Patria* — Domingo 13 de septiembre · Música en vivo todo el día\n*🎯 Festival del Tiro Deportivo* — 9, 10 y 11 de octubre\n\n¿Te gustaría asistir a alguno?",
+    "keywords": ["1", "1️⃣", "evento", "eventos", "promocion", "promoción", "karaoke", "michelada", "mezclada", "2x1", "pozole", "pozolero", "pozoleros", "campamento", "verano", "noche mexicana", "fiesta patria", "patria", "festival", "tiro", "deportivo", "septiembre", "octubre", "agosto", "fecha", "fechas", "cuando", "cuándo", "calendario", "baile", "cena", "música", "musica", "show", "vivo"],
     "sortOrder": 2
   },
   "actividades": {
@@ -46,12 +46,12 @@
     "keywords": ["3", "3️⃣", "instalacion", "instalación", "instalaciones", "cabanas", "cabañas", "lago", "alberca"],
     "sortOrder": 4
   },
-  "eventos": {
-    "key": "eventos",
-    "title": "Próximos Eventos",
+  "membresias": {
+    "key": "membresias",
+    "title": "Preventa y Beneficios",
     "description": "Opción 4 del menú principal.",
-    "content": "*📆 Próximos Eventos*\n*👨 Día del Padre* — Domingo 21 de junio · 🎤 Show en vivo\n*🎤 Sábados de Karaoke* — 12:00 pm a 3:00 pm · 🍹 Micheladas y 🍹 Mezcladas 2x1\n\n¿Te gustaría asistir a alguno?",
-    "keywords": ["4", "4️⃣", "evento", "eventos", "promocion", "promoción", "karaoke", "michelada", "padre", "show", "2x1", "mezclada", "fecha", "fechas", "cuando", "cuándo", "calendario"],
+    "content": "*💰 Preventa y Beneficios*\nNuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.\n\n*📋 Niveles disponibles:*\n🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento\n🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento\n🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento\n💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento\n\n*📌 Incluye:*\n• Cuota de mantenimiento: $600/beneficiario, $300/familiar\n• Membresía transferible, vendible y heredable\n• Certificado de *Miembro Fundador*\n• Primer pago de mantenimiento: *enero 2027*\n*✅ El descuento aplica en:* Consumo, atracciones, servicios y promociones\n\n¿Te gustaría que un asesor te contacte?",
+    "keywords": ["4", "4️⃣", "precio", "costo", "cuanto", "cuánto", "membresia", "membresía", "plan", "planes", "nivel", "niveles"],
     "sortOrder": 5
   },
   "horario": {
@@ -106,7 +106,7 @@
     "key": "no_entendido",
     "title": "No entendido (fallback)",
     "description": "Se envía cuando no se reconoce el mensaje. El listado se arma solo con las opciones del Menú Principal.",
-    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}\n\n💡 Escribe el número de la opción",
+    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}",
     "keywords": [],
     "sortOrder": 12
   }

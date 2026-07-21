@@ -1,6 +1,7 @@
 import { sendMessage } from '../src/lib/whatsapp.js';
 import { getOrCreateContact, saveMessage, markEscalated, renderTemplate, fetchBotMessages, getMenuOptions, upsertMessage } from '../src/lib/db.js';
 import { getConfig } from '../src/bot/configCache.js';
+import { responderConIA, isGroqEnabled } from '../src/ai/groq.js';
 
 const FOOTER_SKIP = new Set(['asesor', 'despedida', 'no_entendido']);
 const INTEREST_KEY = 'asesor';
@@ -140,7 +141,21 @@ export default async function handler(req, res) {
       if (req.body?.type === 'preview') {
         const text = req.body?.text || '';
         const cfg = await getConfig();
-        const result = getResponse(text, cfg);
+        let result = getResponse(text, cfg);
+
+        // Si es fallback y Groq está activo, intentar IA
+        if (result.matchedBy === 'fallback' && isGroqEnabled()) {
+          const ia = await responderConIA(text);
+          if (ia.respuesta && !ia.esFallback) {
+            const footer = cfg.messages.footer?.content || '';
+            result = {
+              text: `${ia.respuesta}${footer}`,
+              matchedBy: 'groq-ai',
+              key: 'ia_generativa'
+            };
+          }
+        }
+
         return res.status(200).json({
           ok: true,
           text,
@@ -196,34 +211,12 @@ export default async function handler(req, res) {
       // Endpoint para forzar la migración manualmente
       if (req.body?.type === 'force_migrate') {
         const messages = await fetchBotMessages();
-        // Sincronizar keywords de las opciones del menú con el número
-        let synced = 0;
-        for (const opt of (messages.menuOptions || [])) {
-          if (!opt || !opt.messageKey) continue;
-          const msg = messages[opt.messageKey];
-          if (!msg) continue;
-          const n = Number(opt.number);
-          const kws = Array.isArray(msg.keywords) ? [...msg.keywords] : [];
-          const before = kws.length;
-          if (n > 0) {
-            if (!kws.includes(String(n))) kws.push(String(n));
-            if (!kws.includes(numberEmoji(n))) kws.push(numberEmoji(n));
-          }
-          const titleLower = String(opt.title || '').toLowerCase().trim();
-          if (titleLower && !kws.includes(titleLower)) kws.push(titleLower);
-          if (kws.length !== before) {
-            await upsertMessage({
-              key: msg.key,
-              title: msg.title,
-              content: msg.content,
-              description: msg.description,
-              sortOrder: msg.sortOrder,
-              keywords: kws
-            });
-            synced++;
-          }
-        }
-        return res.status(200).json({ ok: true, synced, menuOptions: messages.menuOptions });
+        return res.status(200).json({
+          ok: true,
+          menuOptions: messages.menuOptions,
+          menuFromDefaults: messages.menuOptions?.map(o => `${o.number}. ${o.emoji} ${o.title}`),
+          version: '2.0'
+        });
       }
 
       const value = req.body.entry?.[0]?.changes?.[0]?.value;
@@ -252,7 +245,25 @@ export default async function handler(req, res) {
       const text = message.text?.body || '';
       await saveMessage(phone, 'inbound', text, 'text');
 
-      const result = getResponse(text, cfg);
+      let result = getResponse(text, cfg);
+
+      // Si es fallback y Groq está activo, intentar IA antes de enviar no_entendido
+      if (result.matchedBy === 'fallback' && isGroqEnabled()) {
+        console.log(`[webhook] Intentando respuesta con IA para: "${text}"`);
+        const ia = await responderConIA(text);
+        if (ia.respuesta && !ia.esFallback) {
+          const footer = cfg.messages.footer?.content || '';
+          result = {
+            text: `${ia.respuesta}${footer}`,
+            matchedBy: 'groq-ai',
+            key: 'ia_generativa'
+          };
+          console.log(`[webhook] IA respondió (${ia.tokens} tokens): "${ia.respuesta.slice(0, 80)}..."`);
+        } else {
+          console.log(`[webhook] IA no pudo responder, usando fallback clásico`);
+        }
+      }
+
       console.log(`[webhook] from=${phone} text="${text}" matchedBy=${result.matchedBy} key=${result.key}`);
       await sendMessage(phone, result.text);
       await saveMessage(phone, 'outbound', result.text, 'text');
