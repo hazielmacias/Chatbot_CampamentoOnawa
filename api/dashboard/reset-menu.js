@@ -13,8 +13,9 @@ const DEFAULT_MENU = [
   { number: 1, emoji: '📆', title: 'Próximos Eventos', messageKey: 'eventos' },
   { number: 2, emoji: '🏃', title: 'Actividades', messageKey: 'actividades' },
   { number: 3, emoji: '🏡', title: 'Instalaciones', messageKey: 'instalaciones' },
-  { number: 4, emoji: '💰', title: 'Preventa y Beneficios', messageKey: 'membresias' },
-  { number: 5, emoji: '🙋', title: 'Hablar con un Asesor', messageKey: 'asesor' }
+  { number: 4, emoji: '🎫', title: 'Membresías', messageKey: 'membresias' },
+  { number: 5, emoji: '💰', title: 'Preventa y Beneficios', messageKey: 'preventa' },
+  { number: 6, emoji: '🙋', title: 'Hablar con un Asesor', messageKey: 'asesor' }
 ];
 
 function loadDefaults() {

@@ -3,7 +3,7 @@
     "key": "footer",
     "title": "Pie de menú",
     "description": "Se agrega al final de casi todas las respuestas.",
-    "content": "\n━━━━━━━\n0️⃣ Volver al menú principal\n🙋 ¿Prefieres hablar con un asesor? Escribe *5* o *asesor*\n💬 O escribe tu pregunta con tus palabras",
+    "content": "\n━━━━━━━\n0️⃣ Volver al menú principal\n🙋 ¿Prefieres hablar con un asesor? Escribe *6* o *asesor*\n💬 O escribe tu pregunta con tus palabras",
     "keywords": [],
     "sortOrder": 0
   },
@@ -11,8 +11,9 @@
     { "number": 1, "emoji": "📆", "title": "Próximos Eventos", "messageKey": "eventos" },
     { "number": 2, "emoji": "🏃", "title": "Actividades", "messageKey": "actividades" },
     { "number": 3, "emoji": "🏡", "title": "Instalaciones", "messageKey": "instalaciones" },
-    { "number": 4, "emoji": "💰", "title": "Preventa y Beneficios", "messageKey": "membresias" },
-    { "number": 5, "emoji": "🙋", "title": "Hablar con un Asesor", "messageKey": "asesor" }
+    { "number": 4, "emoji": "🎫", "title": "Membresías", "messageKey": "membresias" },
+    { "number": 5, "emoji": "💰", "title": "Preventa y Beneficios", "messageKey": "preventa" },
+    { "number": 6, "emoji": "🙋", "title": "Hablar con un Asesor", "messageKey": "asesor" }
   ],
   "bienvenida": {
     "key": "bienvenida",
@@ -48,11 +49,19 @@
   },
   "membresias": {
     "key": "membresias",
-    "title": "Preventa y Beneficios",
+    "title": "Membresías",
     "description": "Opción 4 del menú principal.",
-    "content": "*💰 Preventa y Beneficios*\nNuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.\n\n*📋 Niveles disponibles:*\n🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento\n🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento\n🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento\n💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento\n\n*📌 Incluye:*\n• Cuota de mantenimiento: $600/beneficiario, $300/familiar\n• Membresía transferible, vendible y heredable\n• Certificado de *Miembro Fundador*\n• Primer pago de mantenimiento: *enero 2027*\n*✅ El descuento aplica en:* Consumo, atracciones, servicios y promociones\n\n¿Te gustaría que un asesor te contacte?",
-    "keywords": ["4", "4️⃣", "precio", "costo", "cuanto", "cuánto", "membresia", "membresía", "plan", "planes", "nivel", "niveles"],
+    "content": "*🎫 Membresías*\nNuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.\n\n*📋 Niveles disponibles:*\n🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento\n🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento\n🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento\n💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento\n\n*📌 Incluye:*\n• Cuota de mantenimiento: $600/beneficiario, $300/familiar\n• Membresía transferible, vendible y heredable\n• Primer pago de mantenimiento: *enero 2027*\n\n¿Te gustaría conocer los beneficios de la preventa?",
+    "keywords": ["4", "4️⃣", "precio", "costo", "cuanto", "cuánto", "membresia", "membresías", "plan", "planes", "nivel", "niveles"],
     "sortOrder": 5
+  },
+  "preventa": {
+    "key": "preventa",
+    "title": "Preventa y Beneficios",
+    "description": "Opción 5 del menú principal.",
+    "content": "*💰 Preventa y Beneficios*\nEstamos en etapa de *preventa* y es el mejor momento para asegurar tus beneficios.\n\n*🎖️ Beneficios de Miembro Fundador:*\n• Certificado de *Miembro Fundador*\n• Descuentos permanentes en consumo, atracciones y servicios\n• Membresía transferible, vendible y heredable\n• Acceso preferencial a nuevas instalaciones\n\n*✅ El descuento aplica en:*\n• Consumo en restaurante y eventos\n• Atracciones y actividades\n• Servicios del club\n• Promociones especiales\n\n¿Te gustaría que un asesor te contacte para finalizar tu proceso?",
+    "keywords": ["5", "5️⃣", "preventa", "beneficios", "beneficio", "descuento", "descuentos", "miembro fundador", "fundador"],
+    "sortOrder": 6
   },
   "horario": {
     "key": "horario",
@@ -60,15 +69,15 @@
     "description": "Keywords: horario, hora, abren, abierto, abre.",
     "content": "*🕗 Horario de Atención*\n*📅 Días:* 365 días del año\n*⏰ Horario:* 8:00 am a 6:00 pm\n\n*📍 Ubicación:* Bosque de Villa del Carbón, Estado de México\nA 2 km del centro del pueblo mágico\n\n💡 _Te recomendamos llegar antes de las 5:00 pm para aprovechar al máximo tu visita_\n\n¿Te gustaría agendar tu visita?",
     "keywords": ["horario", "horarios", "hora", "horas", "abren", "abierto", "abre", "atienden", "operan"],
-    "sortOrder": 6
+    "sortOrder": 7
   },
   "asesor": {
     "key": "asesor",
     "title": "Hablar con Asesor",
-    "description": "Opción 5 del menú principal.",
+    "description": "Opción 6 del menú principal.",
     "content": "*🎉 ¡Excelente elección!*\nPara finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te conecto con nuestro Coordinador de Atención Personalizada.\n\n*👤 Contacto directo:* https://wa.me/525530086410\n*📱 O escribe al número:* 55 3008 6410\n\n⏱️ _Te responderemos a la brevedad_\n\nMientras tanto, puedo seguir respondiendo tus preguntas.",
-    "keywords": ["5", "5️⃣", "inscribir", "inscribirme", "reservar", "interesa", "interesado", "quiero", "asesor", "asesora", "hablar con", "contratar", "comprar", "adquirir", "contrato", "informes"],
-    "sortOrder": 7
+    "keywords": ["6", "6️⃣", "inscribir", "inscribirme", "reservar", "interesa", "interesado", "quiero", "asesor", "asesora", "hablar con", "contratar", "comprar", "adquirir", "contrato", "informes"],
+    "sortOrder": 8
   },
   "seguridad": {
     "key": "seguridad",
@@ -76,7 +85,7 @@
     "description": "Keywords: seguridad, seguro, medico, enfermeria.",
     "content": "*🛡️ Seguridad y Compromiso*\nEn Campamento Onawa diseñamos un espacio *sano y seguro* para que toda la familia disfrute de actividades al aire libre.\n\n*🎯 Nuestra Visión:* Ser reconocidos como el mejor espacio de la zona por nuestro compromiso con la seguridad y el medio ambiente.\n\n*🏥 Próximas Mejoras:* Etapa 2 de construcción (2026-2027): Integración de enfermería permanente\n\n¿Tienes alguna preocupación específica?",
     "keywords": ["seguridad", "seguro", "medico", "médico", "enfermeria", "enfermería", "accidente", "emergencia"],
-    "sortOrder": 8
+    "sortOrder": 9
   },
   "requisitos": {
     "key": "requisitos",
@@ -84,7 +93,7 @@
     "description": "Keywords: edad, requisito.",
     "content": "*📄 Requisitos para Acceder*\n*✅ Edad:* Sin límite de edad. Somos un *club deportivo familiar* diseñado para todos.\n\n*📋 Único requisito:* Adquirir una membresía a largo plazo: 🥈 Plata · 🥇 Oro · 🏆 Platino · 💎 Diamante\n\n*👨‍👩‍👧‍👦 Incluye:* Registro de familiares en tu membresía\n*💰 Adicional:* Cuota de mantenimiento anual por beneficiario y familiar registrado\n\n¿Te gustaría conocer los detalles de cada membresía?",
     "keywords": ["edad", "edades", "requisito", "requisitos", "menor", "menores", "adulto", "adultos"],
-    "sortOrder": 9
+    "sortOrder": 10
   },
   "ubicacion": {
     "key": "ubicacion",
@@ -92,7 +101,7 @@
     "description": "Keywords: ubicacion, donde, direccion, como llegar, mapa.",
     "content": "*📍 Ubicación*\n*Campamento Onawa* — Residencial Campestre y Club Deportivo, Estado de México, México\n*🗺️ Coordenadas:* 19.726313, -99.437399\n*🕗 Horario:* Lunes a domingo, 8:00 am a 6:00 pm\n*📱 Contacto:* 55 3008 6410",
     "keywords": ["ubicacion", "ubicación", "donde", "dónde", "direccion", "dirección", "como llegar", "cómo llegar", "mapa", "carretera", "llegar"],
-    "sortOrder": 10
+    "sortOrder": 11
   },
   "despedida": {
     "key": "despedida",
@@ -100,14 +109,14 @@
     "description": "Keywords: gracias, adios, bye, chao, hasta luego.",
     "content": "*🙏 ¡Gracias por tu interés!*\nRecuerda que estamos en etapa de *preventa* y es el mejor momento para asegurar tus beneficios de *Miembro Fundador*.\n\n*📅 Cuándo quieras:* agendar una visita familiar, hablar con un asesor o conocer más detalles. Aquí estaré para ayudarte.\n\n*🌲 Campamento Onawa* — Tu espacio en armonía con la naturaleza\n¡Que tengas un excelente día! ☀️",
     "keywords": ["gracias", "adios", "adiós", "bye", "chao", "hasta luego", "nos vemos", "saludos"],
-    "sortOrder": 11
+    "sortOrder": 12
   },
   "no_entendido": {
     "key": "no_entendido",
     "title": "No entendido (fallback)",
     "description": "Se envía cuando no se reconoce el mensaje. El listado se arma solo con las opciones del Menú Principal.",
-    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}\n\n🙋 ¿Prefieres que un asesor te contacte personalmente? Escribe *5* o *asesor*",
+    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}\n\n🙋 ¿Prefieres que un asesor te contacte personalmente? Escribe *6* o *asesor*",
     "keywords": [],
-    "sortOrder": 12
+    "sortOrder": 13
   }
 }
