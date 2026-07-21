@@ -3,7 +3,7 @@
     "key": "footer",
     "title": "Pie de menú",
     "description": "Se agrega al final de casi todas las respuestas.",
-    "content": "\n━━━━━━━\n0️⃣ Volver al menú principal\n💬 O escribe tu pregunta con tus palabras",
+    "content": "\n━━━━━━━\n0️⃣ Volver al menú principal\n🙋 ¿Prefieres hablar con un asesor? Escribe *5* o *asesor*\n💬 O escribe tu pregunta con tus palabras",
     "keywords": [],
     "sortOrder": 0
   },
@@ -106,7 +106,7 @@
     "key": "no_entendido",
     "title": "No entendido (fallback)",
     "description": "Se envía cuando no se reconoce el mensaje. El listado se arma solo con las opciones del Menú Principal.",
-    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}",
+    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}\n\n🙋 ¿Prefieres que un asesor te contacte personalmente? Escribe *5* o *asesor*",
     "keywords": [],
     "sortOrder": 12
   }
