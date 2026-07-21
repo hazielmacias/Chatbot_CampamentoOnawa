@@ -367,7 +367,7 @@ export function buildMenuText(menuOptions, opts = {}) {
   const lines = list
     .slice()
     .sort((a, b) => a.number - b.number)
-    .map(o => `${numberEmoji(o.number)}. ${o.emoji || ''} *${o.title}*`);
+    .map(o => `${numberEmoji(o.number)} ${o.emoji || ''} *${o.title}*`);
   return `*${header}*\n${lines.join('\n')}`;
 }
 
