@@ -18,7 +18,7 @@ Carretera Villa del Carbón KM 34.5
 **Página web:** https://www.campamentoonawa.com/
 
 **Google Maps:**
-https://www.google.com/maps/place/Campamento+onawa+residencial+campestre+y+Club+Deportivo/@19.7263134,-99.4399739,17z
+https://maps.app.goo.gl/KtgZhAnUQ9g7TaHB8
 
 **Contacto telefónico:** 55 3008 6410
 
@@ -124,7 +124,7 @@ Carretera Villa del Carbón KM 34.5
 https://www.campamentoonawa.com/
 
 **Google Maps:**
-https://www.google.com/maps/place/Campamento+onawa+residencial+campestre+y+Club+Deportivo/@19.7263134,-99.4399739,17z
+https://maps.app.goo.gl/KtgZhAnUQ9g7TaHB8
 
 ### 🔨 Próximas etapas de construcción:
 - Cabañas
