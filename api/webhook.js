@@ -1,5 +1,5 @@
 import { sendMessage } from '../src/lib/whatsapp.js';
-import { getOrCreateContact, saveMessage, markEscalated, renderTemplate, fetchBotMessages, getMenuOptions, upsertMessage } from '../src/lib/db.js';
+import { getOrCreateContact, saveMessage, getRecentMessages, markEscalated, renderTemplate, fetchBotMessages, getMenuOptions, upsertMessage } from '../src/lib/db.js';
 import { getConfig } from '../src/bot/configCache.js';
 import { responderConIA, isGroqEnabled } from '../src/ai/groq.js';
 
@@ -171,6 +171,64 @@ function getInterestKeywords(cfg) {
   return asesor.keywords;
 }
 
+// Inferir contexto a partir de los últimos mensajes de la conversación
+async function inferirContexto(phone, cfg) {
+  try {
+    const messages = await getRecentMessages(phone, 5);
+    // Buscar el último mensaje outbound que tenga contexto
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const msg = messages[i];
+      if (msg.direction === 'outbound') {
+        // Si el mensaje tiene metadata con context_key, usarlo
+        if (msg.metadata?.context_key) {
+          return msg.metadata.context_key;
+        }
+        // Intentar inferir por contenido del mensaje
+        const content = msg.content || '';
+        for (const opt of (cfg.menuOptions || [])) {
+          const mk = opt.messageKey;
+          if (!mk) continue;
+          const msgDef = cfg.messages[mk];
+          if (!msgDef?.content) continue;
+          // Si el mensaje enviado contiene el título de la opción o sus keywords
+          const title = msgDef.title || '';
+          if (content.includes(title) || content.includes(`*${title}*`)) {
+            return mk;
+          }
+        }
+      }
+    }
+    return null;
+  } catch (e) {
+    console.error('[context] Error inferiendo contexto:', e.message);
+    return null;
+  }
+}
+
+// Respuestas contextuales basadas en el último tema conversado
+const RESPUESTAS_CONTEXTUALES = {
+  eventos: {
+    interes: `¡Genial! 🎉 Me encanta que quieras asistir.\n\nPara reservar tu lugar o conocer más detalles de cualquier evento, te conecto con nuestro asesor:\n\n*👤 Contacto:* https://wa.me/525530086410\n*📱 Teléfono:* 55 3008 6410`,
+    rechazo: `¡Entendido! 😊 Cuando quieras asistir a alguno de nuestros eventos, aquí estaré para ayudarte.\n\n{{MENU}}`
+  },
+  actividades: {
+    interes: `¡Excelente elección! 🏃 Hay muchas actividades increíbles.\n\nPara conocer disponibilidad, precios o agendar alguna actividad, te conecto con nuestro asesor:\n\n*👤 Contacto:* https://wa.me/525530086410\n*📱 Teléfono:* 55 3008 6410`,
+    rechazo: `¡Sin problema! 😊 Cuando quieras conocer más de nuestras actividades, aquí estaré.\n\n{{MENU}}`
+  },
+  instalaciones: {
+    interes: `¡Perfecto! 🏡 Te va a encantar conocer el lugar en persona.\n\nPara agendar una visita guiada, te conecto con nuestro asesor:\n\n*👤 Contacto:* https://wa.me/525530086410\n*📱 Teléfono:* 55 3008 6410`,
+    rechazo: `¡Entendido! 😊 Cuando quieras agendar una visita para conocer las instalaciones, aquí estaré.\n\n{{MENU}}`
+  },
+  membresias: {
+    interes: `¡Me encanta tu interés! 🎫 Las membresías son una inversión increíble.\n\nPara conocer todos los detalles y asegurar tu membresía, te conecto con nuestro asesor:\n\n*👤 Contacto:* https://wa.me/525530086410\n*📱 Teléfono:* 55 3008 6410`,
+    rechazo: `¡Sin problema! 😊 Cuando quieras conocer más sobre nuestras membresías, aquí estaré.\n\n{{MENU}}`
+  },
+  preventa: {
+    interes: `¡Excelente decisión! 💰 La preventa es la mejor oportunidad para asegurar tus beneficios de Miembro Fundador.\n\nPara finalizar tu proceso y asegurar tus beneficios, te conecto con nuestro asesor:\n\n*👤 Contacto:* https://wa.me/525530086410\n*📱 Teléfono:* 55 3008 6410`,
+    rechazo: `¡Entendido! 😊 Cuando quieras conocer más sobre la preventa y sus beneficios, aquí estaré.\n\n{{MENU}}`
+  }
+};
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const token = req.query['hub.verify_token'];
@@ -294,7 +352,7 @@ export default async function handler(req, res) {
       if (messageType !== 'text') {
         const fallback = `¡Hola! 👋 Por el momento solo puedo leer mensajes de *texto*.\n\n${bienvenidaMsg}`;
         await sendMessage(phone, fallback);
-        await saveMessage(phone, 'outbound', fallback, 'text');
+        await saveMessage(phone, 'outbound', fallback, 'text', 'bienvenida');
         return res.status(200).send('OK');
       }
 
@@ -305,17 +363,35 @@ export default async function handler(req, res) {
       let escalated = false;
       let escalationReason = '';
 
-      // Si es fallback, detectar intención afirmativa/negativa primero, luego IA
+      // Si es fallback, detectar intención afirmativa/negativa CON CONTEXTO primero, luego IA
       if (result.matchedBy === 'fallback') {
         const intencion = detectarIntencion(text);
         
-        if (intencion === 'interes') {
-          console.log(`[webhook] Intención de interés detectada: "${text}"`);
+        // Buscar contexto de la conversación (último tema que el bot preguntó)
+        const contextoKey = await inferirContexto(phone, cfg);
+        console.log(`[webhook] Contexto inferido: ${contextoKey || 'ninguno'}`);
+        
+        if (intencion === 'interes' && contextoKey && RESPUESTAS_CONTEXTUALES[contextoKey]) {
+          // El usuario dijo "sí" en contexto de un tema específico → respuesta contextual
+          console.log(`[webhook] Interés contextual detectado: ${contextoKey}`);
+          const respuestaContextual = RESPUESTAS_CONTEXTUALES[contextoKey].interes;
+          result = { text: respuestaContextual, matchedBy: 'contexto-interes', key: 'asesor' };
+          escalated = true;
+          escalationReason = `Interés contextual (${contextoKey}): "${text.slice(0, 50)}"`;
+        } else if (intencion === 'interes') {
+          // Interés pero sin contexto claro → respuesta genérica de interés
+          console.log(`[webhook] Intención de interés detectada (sin contexto): "${text}"`);
           result = { text: MENSAJE_INTERES, matchedBy: 'intencion-interes', key: 'asesor' };
           escalated = true;
           escalationReason = `Respuesta afirmativa/intención de interés: "${text.slice(0, 50)}"`;
+        } else if (intencion === 'rechazo' && contextoKey && RESPUESTAS_CONTEXTUALES[contextoKey]) {
+          // El usuario dijo "no" en contexto de un tema específico → respuesta contextual amable
+          console.log(`[webhook] Rechazo contextual detectado: ${contextoKey}`);
+          const respuestaContextual = renderTemplate(RESPUESTAS_CONTEXTUALES[contextoKey].rechazo, cfg.menuOptions);
+          result = { text: respuestaContextual, matchedBy: 'contexto-rechazo', key: 'bienvenida' };
         } else if (intencion === 'rechazo') {
-          console.log(`[webhook] Intención de rechazo detectada: "${text}"`);
+          // Rechazo pero sin contexto claro
+          console.log(`[webhook] Intención de rechazo detectada (sin contexto): "${text}"`);
           const menu = renderTemplate(MENSAJE_RECHAZO, cfg.menuOptions);
           result = { text: menu, matchedBy: 'intencion-rechazo', key: 'bienvenida' };
         } else if (isGroqEnabled()) {
@@ -341,7 +417,8 @@ export default async function handler(req, res) {
 
       console.log(`[webhook] from=${phone} text="${text}" matchedBy=${result.matchedBy} key=${result.key}`);
       await sendMessage(phone, result.text);
-      await saveMessage(phone, 'outbound', result.text, 'text');
+      // Guardar mensaje outbound CON contexto para rastrear la conversación
+      await saveMessage(phone, 'outbound', result.text, 'text', result.key);
 
       // Escalar si no se escaló ya por intención/IA
       if (!escalated) {

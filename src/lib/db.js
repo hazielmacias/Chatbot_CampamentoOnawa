@@ -104,16 +104,21 @@ export async function getOrCreateContact(phone, name = null) {
   return toCamel(data);
 }
 
-export async function saveMessage(phone, direction, content, messageType = 'text') {
+export async function saveMessage(phone, direction, content, messageType = 'text', contextKey = null) {
   const contact = await getOrCreateContact(phone);
+  const insertData = {
+    contact_id: contact.id,
+    direction,
+    content,
+    message_type: messageType
+  };
+  // Si hay contexto (ej: 'eventos', 'actividades'), guardarlo para rastrear la conversación
+  if (contextKey) {
+    insertData.metadata = { context_key: contextKey };
+  }
   const { data, error } = await supabase
     .from('onawa_messages')
-    .insert({
-      contact_id: contact.id,
-      direction,
-      content,
-      message_type: messageType
-    })
+    .insert(insertData)
     .select()
     .single();
 
@@ -125,6 +130,19 @@ export async function saveMessage(phone, direction, content, messageType = 'text
     .eq('id', contact.id);
 
   return toCamel(data);
+}
+
+export async function getRecentMessages(phone, limit = 3) {
+  const contact = await getOrCreateContact(phone);
+  const { data, error } = await supabase
+    .from('onawa_messages')
+    .select('*')
+    .eq('contact_id', contact.id)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return (data || []).map(toCamel).reverse(); // Orden cronológico: más antiguo primero
 }
 
 export async function getAllContacts() {
