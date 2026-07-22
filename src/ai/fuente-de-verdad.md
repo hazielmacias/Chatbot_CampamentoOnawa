@@ -7,9 +7,9 @@ Este documento contiene TODA la información autorizada que el asistente virtual
 ## 1. INFORMACIÓN GENERAL
 
 **Nombre:** Campamento Onawa — Residencial Campestre y Club Deportivo
-**Ubicación:** Bosque de Villa del Carbón, Estado de México, México
-**Coordenadas:** 19.726313, -99.437399
-**Distancia:** A 2 km del centro del pueblo mágico de Villa del Carbón
+**Dirección:** Loma de cuevas, entrada los arcos, frente a la nueva universidad bicentenario, Carretera Villa del Carbón KM 34.5, 54300 México, Méx.
+**Página web:** https://www.campamentoonawa.com/
+**Google Maps:** https://www.google.com/maps/place/Campamento+onawa+residencial+campestre+y+Club+Deportivo/@19.7263134,-99.4399739,17z
 **Contacto telefónico:** 55 3008 6410
 **Horario de atención:** 365 días del año, de 8:00 am a 6:00 pm
 **Recomendación:** Llegar antes de las 5:00 pm para aprovechar al máximo la visita
@@ -99,6 +99,13 @@ Tirolesas, muro de escalar, pádel, tenis, tren, ciclismo y albercas
 - Campo de obstáculos (Exatlón)
 - Estacionamiento
 - Sanitarios
+
+### 📍 Dirección:
+Loma de cuevas, entrada los arcos, frente a la nueva universidad bicentenario, Carretera Villa del Carbón KM 34.5, 54300 México, Méx.
+
+### 🔗 Enlaces:
+- **Página web:** https://www.campamentoonawa.com/
+- **Google Maps:** https://www.google.com/maps/place/Campamento+onawa+residencial+campestre+y+Club+Deportivo/@19.7263134,-99.4399739,17z
 
 ### 🔨 Próximas etapas de construcción:
 - Cabañas

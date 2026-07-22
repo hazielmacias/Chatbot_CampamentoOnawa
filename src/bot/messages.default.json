@@ -43,7 +43,7 @@
     "key": "instalaciones",
     "title": "Instalaciones",
     "description": "Opción 3 del menú principal.",
-    "content": "*🏡 Instalaciones*\n*✅ Lo que ya tenemos listo:*\n• Restaurante y Salón de Eventos\n• Área de campamentos en el bosque\n• Lago natural\n• Granja didáctica\n• Cancha de fútbol\n• Minigolf\n• Campo de obstáculos (Exatlón)\n• Estacionamiento\n• Sanitarios\n\n*🔨 Próximas etapas:* Cabañas · Albercas\n\n*📍 Ubicación:* Bosque de Villa del Carbón, Estado de México\nA 2 km del centro del pueblo mágico\n\n¿Te gustaría agendar una visita?",
+    "content": "*🏡 Instalaciones*\n*✅ Lo que ya tenemos listo:*\n• Restaurante y Salón de Eventos\n• Área de campamentos en el bosque\n• Lago natural\n• Granja didáctica\n• Cancha de fútbol\n• Minigolf\n• Campo de obstáculos (Exatlón)\n• Estacionamiento\n• Sanitarios\n\n*🔨 Próximas etapas:* Cabañas · Albercas\n\n*📍 Ubicación:*\nLoma de cuevas, entrada los arcos, frente a la nueva universidad bicentenario\nCarretera Villa del Carbón KM 34.5, 54300 México, Méx.\n\n¿Te gustaría agendar una visita?",
     "keywords": ["3", "3️⃣", "instalacion", "instalación", "instalaciones", "cabanas", "cabañas", "lago", "alberca"],
     "sortOrder": 4
   },
@@ -67,7 +67,7 @@
     "key": "horario",
     "title": "Horario",
     "description": "Keywords: horario, hora, abren, abierto, abre.",
-    "content": "*🕗 Horario de Atención*\n*📅 Días:* 365 días del año\n*⏰ Horario:* 8:00 am a 6:00 pm\n\n*📍 Ubicación:* Bosque de Villa del Carbón, Estado de México\nA 2 km del centro del pueblo mágico\n\n💡 _Te recomendamos llegar antes de las 5:00 pm para aprovechar al máximo tu visita_\n\n¿Te gustaría agendar tu visita?",
+    "content": "*🕗 Horario de Atención*\n*📅 Días:* 365 días del año\n*⏰ Horario:* 8:00 am a 6:00 pm\n\n*📍 Ubicación:*\nLoma de cuevas, entrada los arcos, frente a la nueva universidad bicentenario\nCarretera Villa del Carbón KM 34.5, 54300 México, Méx.\n\n💡 _Te recomendamos llegar antes de las 5:00 pm para aprovechar al máximo tu visita_\n\n¿Te gustaría agendar tu visita?",
     "keywords": ["horario", "horarios", "hora", "horas", "abren", "abierto", "abre", "atienden", "operan"],
     "sortOrder": 7
   },
@@ -99,7 +99,7 @@
     "key": "ubicacion",
     "title": "Ubicación",
     "description": "Keywords: ubicacion, donde, direccion, como llegar, mapa.",
-    "content": "*📍 Ubicación*\n*Campamento Onawa* — Residencial Campestre y Club Deportivo, Estado de México, México\n*🗺️ Coordenadas:* 19.726313, -99.437399\n*🕗 Horario:* Lunes a domingo, 8:00 am a 6:00 pm\n*📱 Contacto:* 55 3008 6410",
+    "content": "*📍 Ubicación*\n*Campamento Onawa* — Residencial Campestre y Club Deportivo\n*📌 Dirección:* Loma de cuevas, entrada los arcos, frente a la nueva universidad bicentenario\nCarretera Villa del Carbón KM 34.5, 54300 México, Méx.\n\n*🌐 Página web:* https://www.campamentoonawa.com/\n*🗺️ Google Maps:* https://www.google.com/maps/place/Campamento+onawa+residencial+campestre+y+Club+Deportivo/@19.7263134,-99.4399739,17z\n*🕗 Horario:* Lunes a domingo, 8:00 am a 6:00 pm\n*📱 Contacto:* 55 3008 6410",
     "keywords": ["ubicacion", "ubicación", "donde", "dónde", "direccion", "dirección", "como llegar", "cómo llegar", "mapa", "carretera", "llegar"],
     "sortOrder": 11
   },
