@@ -106,19 +106,17 @@ export async function getOrCreateContact(phone, name = null) {
 
 export async function saveMessage(phone, direction, content, messageType = 'text', contextKey = null) {
   const contact = await getOrCreateContact(phone);
-  const insertData = {
-    contact_id: contact.id,
-    direction,
-    content,
-    message_type: messageType
-  };
-  // Si hay contexto (ej: 'eventos', 'actividades'), guardarlo para rastrear la conversación
-  if (contextKey) {
-    insertData.metadata = { context_key: contextKey };
-  }
+  // Usar message_type para guardar el contexto (ej: 'eventos', 'actividades')
+  // Si hay contexto, lo guardamos como 'text|contexto' para rastrear la conversación
+  const finalMessageType = contextKey ? `${messageType}|${contextKey}` : messageType;
   const { data, error } = await supabase
     .from('onawa_messages')
-    .insert(insertData)
+    .insert({
+      contact_id: contact.id,
+      direction,
+      content,
+      message_type: finalMessageType
+    })
     .select()
     .single();
 

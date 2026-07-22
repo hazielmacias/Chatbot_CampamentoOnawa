@@ -195,19 +195,23 @@ async function inferirContexto(phone, cfg) {
     for (let i = messages.length - 1; i >= 0; i--) {
       const msg = messages[i];
       if (msg.direction === 'outbound') {
-        // Si el mensaje tiene metadata con context_key, usarlo
-        if (msg.metadata?.context_key) {
-          return msg.metadata.context_key;
+        // 1) Leer contexto desde message_type (formato: "text|eventos")
+        const mt = msg.messageType || msg.message_type || '';
+        if (mt.includes('|')) {
+          const parts = mt.split('|');
+          if (parts.length >= 2) {
+            return parts[parts.length - 1]; // Última parte es el contexto
+          }
         }
-        // Intentar inferir por contenido del mensaje
+        // 2) Fallback: inferir por contenido del mensaje (título de opción del menú)
         const content = msg.content || '';
         for (const opt of (cfg.menuOptions || [])) {
           const mk = opt.messageKey;
           if (!mk) continue;
           const msgDef = cfg.messages[mk];
-          if (!msgDef?.content) continue;
-          // Si el mensaje enviado contiene el título de la opción o sus keywords
-          const title = msgDef.title || '';
+          if (!msgDef?.title) continue;
+          const title = msgDef.title;
+          // Match exacto o con asteriscos de WhatsApp markdown
           if (content.includes(title) || content.includes(`*${title}*`)) {
             return mk;
           }
