@@ -302,7 +302,7 @@ async function migrateMenuConfig(messages) {
     messages.menuOptions = JSON.parse(JSON.stringify(defaults));
   }
 
-  // 1.5) Sincronizar contenido de mensajes desde defaults (ubicacion, instalaciones, etc.)
+  // 1.5) Sincronizar contenido y keywords de mensajes desde defaults
   const defaultMessages = loadDefaultMessages();
   let contentUpdated = false;
   for (const [key, defMsg] of Object.entries(defaultMessages)) {
@@ -322,6 +322,22 @@ async function migrateMenuConfig(messages) {
     if (defMsg.description && defMsg.description !== current.description) {
       current.description = defMsg.description;
       contentUpdated = true;
+    }
+    // Sincronizar keywords desde defaults (eliminar los que ya no están, agregar los nuevos)
+    if (Array.isArray(defMsg.keywords)) {
+      const currentKws = Array.isArray(current.keywords) ? [...current.keywords] : [];
+      // Filtrar solo keywords que empiezan con número (como "1", "1️⃣") o están en los defaults
+      const numeroKws = currentKws.filter(k => String(k).match(/^\d+[️⃣]?$/));
+      const defKws = defMsg.keywords.filter(k => !numeroKws.includes(k));
+      const nuevosKws = [...new Set([...defKws, ...numeroKws])];
+      // Comparar
+      const sortedCurrent = [...currentKws].sort();
+      const sortedNuevos = [...nuevosKws].sort();
+      if (JSON.stringify(sortedCurrent) !== JSON.stringify(sortedNuevos)) {
+        current.keywords = nuevosKws;
+        contentUpdated = true;
+        console.log(`[migrate] Keywords de "${key}" sincronizados: ${nuevosKws.join(', ')}`);
+      }
     }
   }
   if (contentUpdated) {
