@@ -302,6 +302,32 @@ async function migrateMenuConfig(messages) {
     messages.menuOptions = JSON.parse(JSON.stringify(defaults));
   }
 
+  // 1.5) Sincronizar contenido de mensajes desde defaults (ubicacion, instalaciones, etc.)
+  const defaultMessages = loadDefaultMessages();
+  let contentUpdated = false;
+  for (const [key, defMsg] of Object.entries(defaultMessages)) {
+    if (key === 'menuOptions' || key === 'footer') continue;
+    const current = messages[key];
+    if (!current) continue;
+    // Solo actualizar si el default tiene contenido y es diferente al actual
+    if (defMsg.content && defMsg.content !== current.content) {
+      current.content = defMsg.content;
+      contentUpdated = true;
+    }
+    // También sincronizar title y description si cambiaron
+    if (defMsg.title && defMsg.title !== current.title) {
+      current.title = defMsg.title;
+      contentUpdated = true;
+    }
+    if (defMsg.description && defMsg.description !== current.description) {
+      current.description = defMsg.description;
+      contentUpdated = true;
+    }
+  }
+  if (contentUpdated) {
+    console.log('[migrate] Contenido de mensajes sincronizado desde defaults');
+  }
+
   // 2) bienvenida / no_entendido al formato {{MENU}}
   for (const key of ['bienvenida', 'no_entendido']) {
     const m = messages[key];
