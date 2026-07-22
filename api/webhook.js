@@ -25,10 +25,26 @@ const NEGATIVE_KEYWORDS = [
   'no gracias', 'paso por ahora', 'después', 'despues', 'otra vez'
 ];
 
-function detectarIntencion(text) {
+// Nombres de eventos específicos — si el usuario los menciona tras ver la lista de eventos,
+// se interpreta como interés directo en ese evento
+const EVENT_NAMES = [
+  'karaoke', 'michelada', 'mezclada', 'pozole', 'pozolero', 'pozoleros',
+  'campamento', 'verano', 'noche mexicana', 'fiesta patria', 'patria',
+  'festival', 'tiro', 'deportivo', 'tiro deportivo', 'agosto', 'septiembre',
+  'octubre', 'sabado', 'domingo', 'cena', 'baile', 'musica', 'música', 'show'
+];
+
+function detectarIntencion(text, contextoKey = null) {
   const lower = text.toLowerCase().trim();
   // Eliminar signos de puntuación para matching más limpio
   const clean = lower.replace(/[¡!¿?. ,]+/g, '');
+  
+  // Si el contexto es eventos y el usuario menciona un evento específico → interés
+  if (contextoKey === 'eventos') {
+    for (const kw of EVENT_NAMES) {
+      if (clean === kw || lower.includes(kw)) return 'interes';
+    }
+  }
   
   for (const kw of AFFIRMATIVE_KEYWORDS) {
     if (clean === kw || lower.includes(kw)) return 'interes';
@@ -365,14 +381,15 @@ export default async function handler(req, res) {
 
       // Si es fallback, detectar intención afirmativa/negativa CON CONTEXTO primero, luego IA
       if (result.matchedBy === 'fallback') {
-        const intencion = detectarIntencion(text);
-        
-        // Buscar contexto de la conversación (último tema que el bot preguntó)
+        // Buscar contexto de la conversación (último tema que el bot preguntó) PRIMERO
         const contextoKey = await inferirContexto(phone, cfg);
         console.log(`[webhook] Contexto inferido: ${contextoKey || 'ninguno'}`);
         
+        // Detectar intención pasando el contexto (permite detectar nombres de eventos, etc.)
+        const intencion = detectarIntencion(text, contextoKey);
+        
         if (intencion === 'interes' && contextoKey && RESPUESTAS_CONTEXTUALES[contextoKey]) {
-          // El usuario dijo "sí" en contexto de un tema específico → respuesta contextual
+          // El usuario dijo "sí" o mencionó un evento específico en contexto de un tema → respuesta contextual
           console.log(`[webhook] Interés contextual detectado: ${contextoKey}`);
           const respuestaContextual = RESPUESTAS_CONTEXTUALES[contextoKey].interes;
           result = { text: respuestaContextual, matchedBy: 'contexto-interes', key: 'asesor' };
