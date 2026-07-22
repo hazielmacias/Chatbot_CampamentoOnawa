@@ -6,6 +6,51 @@ import { responderConIA, isGroqEnabled } from '../src/ai/groq.js';
 const FOOTER_SKIP = new Set(['asesor', 'despedida', 'no_entendido']);
 const INTEREST_KEY = 'asesor';
 
+// Palabras clave que indican interés afirmativo (respuesta a preguntas del bot)
+const AFFIRMATIVE_KEYWORDS = [
+  'si', 'sí', 'yes', 'ok', 'dale', 'va', 'perfecto', 'me interesa', 'quiero',
+  'interesado', 'interesada', 'genial', 'excelente', 'me gustaría', 'claro',
+  'por supuesto', 'obvio', 'listo', 'vamos', 'cuando', 'dónde', 'donde', 'como',
+  'cómo', 'comprar', 'adquirir', 'contratar', 'reservar', 'agendar', 'visitar',
+  'cuanto', 'cuánto', 'precio', 'costo', 'info', 'información', 'mas info',
+  'más info', 'detalles', 'me encanta', 'suena bien', 'me late', 'padrísimo',
+  'padrisimo', 'chido', 'buena onda', 'me llama', 'llama la atención',
+  'pasa info', 'pasa información', 'pasame info', 'pasame información'
+];
+
+// Palabras clave que indican rechazo
+const NEGATIVE_KEYWORDS = [
+  'no', 'nop', 'nope', 'no gracias', 'paso', 'ahora no', 'tal vez después',
+  'quizás luego', 'no por ahora', 'tal vez mas tarde', 'no me interesa',
+  'no gracias', 'paso por ahora', 'después', 'despues', 'otra vez'
+];
+
+function detectarIntencion(text) {
+  const lower = text.toLowerCase().trim();
+  // Eliminar signos de puntuación para matching más limpio
+  const clean = lower.replace(/[¡!¿?. ,]+/g, '');
+  
+  for (const kw of AFFIRMATIVE_KEYWORDS) {
+    if (clean === kw || lower.includes(kw)) return 'interes';
+  }
+  for (const kw of NEGATIVE_KEYWORDS) {
+    if (clean === kw || lower.includes(kw)) return 'rechazo';
+  }
+  return null;
+}
+
+const MENSAJE_INTERES = `¡Me encanta tu interés! 🎉
+Te conecto con nuestro Coordinador de Atención Personalizada para darte toda la información:
+
+*👤 Contacto directo:* https://wa.me/525530086410
+*📱 O escribe al número:* 55 3008 6410
+
+⏱️ _Te responderemos a la brevedad_`;
+
+const MENSAJE_RECHAZO = `¡Entendido! 😊 Cuando quieras saber más, aquí estaré.
+
+{{MENU}}`;
+
 function numberEmoji(n) {
   return n + '️⃣';
 }
@@ -143,16 +188,27 @@ export default async function handler(req, res) {
         const cfg = await getConfig();
         let result = getResponse(text, cfg);
 
-        // Si es fallback y Groq está activo, intentar IA
-        if (result.matchedBy === 'fallback' && isGroqEnabled()) {
-          const ia = await responderConIA(text);
-          if (ia.respuesta && !ia.esFallback) {
-            const footer = cfg.messages.footer?.content || '';
-            result = {
-              text: `${ia.respuesta}${footer}`,
-              matchedBy: 'groq-ai',
-              key: 'ia_generativa'
-            };
+        // Si es fallback, detectar intención afirmativa/negativa primero
+        if (result.matchedBy === 'fallback') {
+          const intencion = detectarIntencion(text);
+          if (intencion === 'interes') {
+            result = { text: MENSAJE_INTERES, matchedBy: 'intencion-interes', key: 'asesor' };
+          } else if (intencion === 'rechazo') {
+            const menu = renderTemplate(MENSAJE_RECHAZO, cfg.menuOptions);
+            result = { text: menu, matchedBy: 'intencion-rechazo', key: 'bienvenida' };
+          } else if (isGroqEnabled()) {
+            const ia = await responderConIA(text);
+            if (ia.respuesta && !ia.esFallback) {
+              const footer = cfg.messages.footer?.content || '';
+              result = {
+                text: `${ia.respuesta}${footer}`,
+                matchedBy: 'groq-ai',
+                key: 'ia_generativa'
+              };
+            } else {
+              // IA no pudo responder → escalar al asesor
+              result = { text: MENSAJE_INTERES, matchedBy: 'ia-escalado', key: 'asesor' };
+            }
           }
         }
 
@@ -246,21 +302,40 @@ export default async function handler(req, res) {
       await saveMessage(phone, 'inbound', text, 'text');
 
       let result = getResponse(text, cfg);
+      let escalated = false;
+      let escalationReason = '';
 
-      // Si es fallback y Groq está activo, intentar IA antes de enviar no_entendido
-      if (result.matchedBy === 'fallback' && isGroqEnabled()) {
-        console.log(`[webhook] Intentando respuesta con IA para: "${text}"`);
-        const ia = await responderConIA(text);
-        if (ia.respuesta && !ia.esFallback) {
-          const footer = cfg.messages.footer?.content || '';
-          result = {
-            text: `${ia.respuesta}${footer}`,
-            matchedBy: 'groq-ai',
-            key: 'ia_generativa'
-          };
-          console.log(`[webhook] IA respondió (${ia.tokens} tokens): "${ia.respuesta.slice(0, 80)}..."`);
-        } else {
-          console.log(`[webhook] IA no pudo responder, usando fallback clásico`);
+      // Si es fallback, detectar intención afirmativa/negativa primero, luego IA
+      if (result.matchedBy === 'fallback') {
+        const intencion = detectarIntencion(text);
+        
+        if (intencion === 'interes') {
+          console.log(`[webhook] Intención de interés detectada: "${text}"`);
+          result = { text: MENSAJE_INTERES, matchedBy: 'intencion-interes', key: 'asesor' };
+          escalated = true;
+          escalationReason = `Respuesta afirmativa/intención de interés: "${text.slice(0, 50)}"`;
+        } else if (intencion === 'rechazo') {
+          console.log(`[webhook] Intención de rechazo detectada: "${text}"`);
+          const menu = renderTemplate(MENSAJE_RECHAZO, cfg.menuOptions);
+          result = { text: menu, matchedBy: 'intencion-rechazo', key: 'bienvenida' };
+        } else if (isGroqEnabled()) {
+          console.log(`[webhook] Intentando respuesta con IA para: "${text}"`);
+          const ia = await responderConIA(text);
+          if (ia.respuesta && !ia.esFallback) {
+            const footer = cfg.messages.footer?.content || '';
+            result = {
+              text: `${ia.respuesta}${footer}`,
+              matchedBy: 'groq-ai',
+              key: 'ia_generativa'
+            };
+            console.log(`[webhook] IA respondió (${ia.tokens} tokens): "${ia.respuesta.slice(0, 80)}..."`);
+          } else {
+            // IA no pudo responder con certeza → escalar al asesor
+            console.log(`[webhook] IA no pudo responder, escalando a asesor`);
+            result = { text: MENSAJE_INTERES, matchedBy: 'ia-escalado', key: 'asesor' };
+            escalated = true;
+            escalationReason = `IA no pudo responder con certeza: "${text.slice(0, 50)}"`;
+          }
         }
       }
 
@@ -268,17 +343,24 @@ export default async function handler(req, res) {
       await sendMessage(phone, result.text);
       await saveMessage(phone, 'outbound', result.text, 'text');
 
-      const lower = text.toLowerCase();
-      const interestKeywords = getInterestKeywords(cfg);
-      const triggered = interestKeywords.length > 0 && interestKeywords.some(kw => lower.includes(kw));
+      // Escalar si no se escaló ya por intención/IA
+      if (!escalated) {
+        const lower = text.toLowerCase();
+        const interestKeywords = getInterestKeywords(cfg);
+        const triggered = interestKeywords.length > 0 && interestKeywords.some(kw => lower.includes(kw));
+        if (triggered) {
+          escalated = true;
+          escalationReason = `Palabra clave detectada: "${text.slice(0, 50)}"`;
+        }
+      }
 
-      if (triggered) {
+      if (escalated) {
         const advisorPhone = process.env.ADVISOR_PHONE;
-        await markEscalated(phone, `Palabra clave detectada: "${text.slice(0, 50)}"`, advisorPhone);
+        await markEscalated(phone, escalationReason, advisorPhone);
         if (advisorPhone) {
           await sendMessage(
             advisorPhone,
-            `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n👤 ${profileName || 'Sin nombre'}\n💬 ${text}\n\nContactar urgente.`
+            `🚨 Nuevo lead - Campamento Onawa\n📱 ${phone}\n👤 ${profileName || 'Sin nombre'}\n💬 ${text}\n📌 Motivo: ${escalationReason}\n\nContactar urgente.`
           );
         }
       }
