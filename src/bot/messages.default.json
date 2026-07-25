@@ -3,7 +3,7 @@
     "key": "footer",
     "title": "Pie de menú",
     "description": "Se agrega al final de casi todas las respuestas.",
-    "content": "\n━━━━━━━\n0️⃣ Volver al menú principal\n🙋 ¿Prefieres hablar con un asesor? Escribe *6* o *asesor*\n💬 O escribe tu pregunta con tus palabras",
+    "content": "\n━━━━━━━\n0️⃣ Volver al menú principal\n🙋 ¿Prefieres hablar con un asesor? Escribe *5* o *asesor*\n💬 O escribe tu pregunta con tus palabras",
     "keywords": [],
     "sortOrder": 0
   },
@@ -11,9 +11,8 @@
     { "number": 1, "emoji": "📆", "title": "Próximos Eventos", "messageKey": "eventos" },
     { "number": 2, "emoji": "🏃", "title": "Actividades", "messageKey": "actividades" },
     { "number": 3, "emoji": "🏡", "title": "Instalaciones", "messageKey": "instalaciones" },
-    { "number": 4, "emoji": "🎫", "title": "Membresías", "messageKey": "membresias" },
-    { "number": 5, "emoji": "💰", "title": "Preventa y Beneficios", "messageKey": "preventa" },
-    { "number": 6, "emoji": "🙋", "title": "Hablar con un Asesor", "messageKey": "asesor" }
+    { "number": 4, "emoji": "💰", "title": "Preventa y Beneficios", "messageKey": "membresias" },
+    { "number": 5, "emoji": "🙋", "title": "Hablar con un Asesor", "messageKey": "asesor" }
   ],
   "bienvenida": {
     "key": "bienvenida",
@@ -49,19 +48,11 @@
   },
   "membresias": {
     "key": "membresias",
-    "title": "Membresías",
-    "description": "Opción 4 del menú principal.",
-    "content": "*🎫 Membresías*\nNuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.\n\n*📋 Niveles disponibles:*\n🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento\n🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento\n🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento\n💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento\n\n*📌 Incluye:*\n• Cuota de mantenimiento: $600/beneficiario, $300/familiar\n• Membresía transferible, vendible y heredable\n• Primer pago de mantenimiento: *enero 2027*\n\n¿Te gustaría conocer los beneficios de la preventa?",
-    "keywords": ["4", "4️⃣", "precio", "costo", "cuanto", "cuánto", "membresia", "membresías", "plan", "planes", "nivel", "niveles"],
-    "sortOrder": 5
-  },
-  "preventa": {
-    "key": "preventa",
     "title": "Preventa y Beneficios",
-    "description": "Opción 5 del menú principal.",
-    "content": "*💰 Preventa y Beneficios*\nEstamos en etapa de *preventa* y es el mejor momento para asegurar tus beneficios.\n\n*🎖️ Beneficios de Miembro Fundador:*\n• Certificado de *Miembro Fundador*\n• Descuentos permanentes en consumo, atracciones y servicios\n• Membresía transferible, vendible y heredable\n• Acceso preferencial a nuevas instalaciones\n\n*✅ El descuento aplica en:*\n• Consumo en restaurante y eventos\n• Atracciones y actividades\n• Servicios del club\n• Promociones especiales\n\n¿Te gustaría que un asesor te contacte para finalizar tu proceso?",
-    "keywords": ["5", "5️⃣", "preventa", "beneficios", "beneficio", "descuento", "descuentos", "miembro fundador", "fundador"],
-    "sortOrder": 6
+    "description": "Opción 4 del menú principal.",
+    "content": "*💰 Preventa y Beneficios*\nNuestras membresías te dan acceso *365 días del año* de 8:00 am a 6:00 pm.\n\n*📋 Niveles disponibles:*\n🥈 *Nivel Plata* · $14,950 · 10 años · 10% descuento\n🥇 *Nivel Oro* · $29,560 · 25 años · 15% descuento\n🏆 *Nivel Platino* · $58,200 · 50 años · 20% descuento\n💎 *Nivel Diamante* · $117,640 · 100 años · 25% descuento\n\n*📌 Incluye:*\n• Cuota de mantenimiento: $600/beneficiario, $300/familiar\n• Membresía transferible, vendible y heredable\n• Certificado de *Miembro Fundador*\n• Primer pago de mantenimiento: *enero 2027*\n\n*✅ El descuento aplica en:*\n• Consumo, atracciones, servicios y promociones\n\n¿Te gustaría que un asesor te contacte?",
+    "keywords": ["4", "4️⃣", "precio", "costo", "cuanto", "cuánto", "membresia", "membresía", "plan", "planes", "nivel", "niveles", "preventa", "beneficios", "beneficio", "descuento", "descuentos", "miembro fundador", "fundador"],
+    "sortOrder": 5
   },
   "horario": {
     "key": "horario",
@@ -74,10 +65,10 @@
   "asesor": {
     "key": "asesor",
     "title": "Hablar con Asesor",
-    "description": "Opción 6 del menú principal.",
+    "description": "Opción 5 del menú principal.",
     "content": "*🎉 ¡Excelente elección!*\nPara finalizar tu proceso y asegurar tus beneficios de *Miembro Fundador*, te conecto con nuestro Coordinador de Atención Personalizada.\n\n*👤 Contacto directo:* https://wa.me/525530086410\n*📱 O escribe al número:* 55 3008 6410\n\n⏱️ _Te responderemos a la brevedad_\n\nMientras tanto, puedo seguir respondiendo tus preguntas.",
-    "keywords": ["6", "6️⃣", "inscribir", "inscribirme", "reservar", "interesa", "interesado", "quiero", "asesor", "asesora", "hablar con", "contratar", "comprar", "adquirir", "contrato", "informes"],
-    "sortOrder": 8
+    "keywords": ["5", "5️⃣", "inscribir", "inscribirme", "reservar", "interesa", "interesado", "quiero", "asesor", "asesora", "hablar con", "contratar", "comprar", "adquirir", "contrato", "informes"],
+    "sortOrder": 7
   },
   "seguridad": {
     "key": "seguridad",
@@ -115,7 +106,7 @@
     "key": "no_entendido",
     "title": "No entendido (fallback)",
     "description": "Se envía cuando no se reconoce el mensaje. El listado se arma solo con las opciones del Menú Principal.",
-    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}\n\n🙋 ¿Prefieres que un asesor te contacte personalmente? Escribe *6* o *asesor*",
+    "content": "🤔 No identifiqué tu pregunta, pero puedo ayudarte con esto:\n\n{{MENU}}\n\n🙋 ¿Prefieres que un asesor te contacte personalmente? Escribe *5* o *asesor*",
     "keywords": [],
     "sortOrder": 13
   }

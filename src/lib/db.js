@@ -300,46 +300,29 @@ async function migrateMenuConfig(messages) {
     messages.menuOptions = JSON.parse(JSON.stringify(defaults));
   }
 
-  // 1.5) Sincronizar contenido y keywords de mensajes desde defaults
+  // 1.5) Solo agregar mensajes nuevos que no existen en la DB
+  // IMPORTANTE: NO sobrescribir contenido existente (el dashboard lo edita)
   const defaultMessages = loadDefaultMessages();
   let contentUpdated = false;
   for (const [key, defMsg] of Object.entries(defaultMessages)) {
     if (key === 'menuOptions' || key === 'footer') continue;
-    const current = messages[key];
-    if (!current) continue;
-    // Solo actualizar si el default tiene contenido y es diferente al actual
-    if (defMsg.content && defMsg.content !== current.content) {
-      current.content = defMsg.content;
+    // Si el mensaje NO existe en la DB, copiarlo desde defaults
+    if (!messages[key]) {
+      messages[key] = JSON.parse(JSON.stringify(defMsg));
       contentUpdated = true;
+      console.log(`[migrate] Mensaje "${key}" creado desde defaults (no existía)`);
     }
-    // También sincronizar title y description si cambiaron
-    if (defMsg.title && defMsg.title !== current.title) {
-      current.title = defMsg.title;
+    // Si existe pero está vacío, llenarlo
+    else if (messages[key] && (!messages[key].content || messages[key].content.trim() === '')) {
+      messages[key].content = defMsg.content || '';
+      if (defMsg.title) messages[key].title = defMsg.title;
       contentUpdated = true;
+      console.log(`[migrate] Mensaje "${key}" estaba vacío, llenado desde defaults`);
     }
-    if (defMsg.description && defMsg.description !== current.description) {
-      current.description = defMsg.description;
-      contentUpdated = true;
-    }
-    // Sincronizar keywords desde defaults (eliminar los que ya no están, agregar los nuevos)
-    if (Array.isArray(defMsg.keywords)) {
-      const currentKws = Array.isArray(current.keywords) ? [...current.keywords] : [];
-      // Filtrar solo keywords que empiezan con número (como "1", "1️⃣") o están en los defaults
-      const numeroKws = currentKws.filter(k => String(k).match(/^\d+[️⃣]?$/));
-      const defKws = defMsg.keywords.filter(k => !numeroKws.includes(k));
-      const nuevosKws = [...new Set([...defKws, ...numeroKws])];
-      // Comparar
-      const sortedCurrent = [...currentKws].sort();
-      const sortedNuevos = [...nuevosKws].sort();
-      if (JSON.stringify(sortedCurrent) !== JSON.stringify(sortedNuevos)) {
-        current.keywords = nuevosKws;
-        contentUpdated = true;
-        console.log(`[migrate] Keywords de "${key}" sincronizados: ${nuevosKws.join(', ')}`);
-      }
-    }
+    // Si existe y tiene contenido, NO TOCARLO (el usuario puede haberlo editado)
   }
   if (contentUpdated) {
-    console.log('[migrate] Contenido de mensajes sincronizado desde defaults');
+    console.log('[migrate] Mensajes nuevos/vacíos sincronizados desde defaults');
   }
 
   // 2) bienvenida / no_entendido al formato {{MENU}}
