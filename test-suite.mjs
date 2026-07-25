@@ -132,6 +132,23 @@ await runTest('2.6 - "asesor"', async () => {
 });
 
 // ════════════════════════════════════════════
+// TEST 9: Keywords del asesor
+// ════════════════════════════════════════════
+console.log('\n📋 TEST 9: Keywords del asesor');
+
+const asesorKeywords = ['asesor', 'asesora', 'hablar con', 'inscribir', 'inscribirme', 'reservar', 'comprar', 'contratar', 'adquirir', 'informes'];
+for (const kw of asesorKeywords) {
+  await runTest(`9.${asesorKeywords.indexOf(kw) + 1} - "${kw}"`, async () => {
+    const r = await preview(kw);
+    if (r.matchedKey === 'asesor' || r.matchedBy === 'msg-keywords' && r.response.includes('Coordinador')) {
+      log(`9.${asesorKeywords.indexOf(kw) + 1}`, 'PASS', `"${kw}" → asesor`);
+    } else {
+      log(`9.${asesorKeywords.indexOf(kw) + 1}`, 'FAIL', `"${kw}" → ${r.matchedKey} (${r.matchedBy})`);
+    }
+  });
+}
+
+// ════════════════════════════════════════════
 // TEST 7: Keywords sueltos (horario, ubicacion, seguridad)
 // ════════════════════════════════════════════
 console.log('\n📋 TEST 7: Keywords sueltos');
@@ -245,8 +262,8 @@ await runTest('11.6 - GET /api/dashboard/conversations', async () => {
 await runTest('11.7 - GET /api/dashboard/history', async () => {
   const r = await fetch(`${BASE}/api/dashboard/history`, { headers: { 'Authorization': AUTH } });
   const j = await r.json();
-  if (j.daily || j.history || j.ok !== undefined) log('11.7', 'PASS', `History responde`);
-  else log('11.7', 'FAIL', `Sin respuesta`);
+  if (j.dailyStats) log('11.7', 'PASS', `History: ${j.dailyStats.length} días`);
+  else log('11.7', 'FAIL', `Sin dailyStats`);
 });
 
 await runTest('11.8 - GET /api/dashboard/alerts', async () => {
@@ -271,6 +288,72 @@ await runTest('6.2 - Pregunta aleatoria (debería escalar)', async () => {
   const r = await preview('xyzabc123 no entiendo nada');
   if (r.response && r.response.length > 50) log('6.2', 'PASS', `Respuesta generada (${r.response.length} chars)`);
   else log('6.2', 'FAIL', `Respuesta vacía`);
+});
+
+await runTest('6.3 - "menu"', async () => {
+  const r = await preview('menu');
+  if (r.matchedKey === 'bienvenida' || r.matchedBy === 'msg-keywords') log('6.3', 'PASS', `"menu" → bienvenida`);
+  else log('6.3', 'FAIL', `Esperado bienvenida, obtuvo: ${r.matchedKey}`);
+});
+
+await runTest('6.4 - "hola"', async () => {
+  const r = await preview('hola');
+  if (r.matchedKey === 'bienvenida' || r.matchedBy === 'msg-keywords') log('6.4', 'PASS', `"hola" → bienvenida`);
+  else log('6.4', 'FAIL', `Esperado bienvenida, obtuvo: ${r.matchedKey}`);
+});
+
+await runTest('6.5 - "buenos dias"', async () => {
+  const r = await preview('buenos dias');
+  if (r.matchedKey === 'bienvenida' || r.matchedBy === 'msg-keywords') log('6.5', 'PASS', `"buenos dias" → bienvenida`);
+  else log('6.5', 'FAIL', `Esperado bienvenida, obtuvo: ${r.matchedKey}`);
+});
+
+await runTest('6.6 - "volver"', async () => {
+  const r = await preview('volver');
+  if (r.matchedKey === 'bienvenida' || r.matchedBy === 'msg-keywords') log('6.6', 'PASS', `"volver" → bienvenida`);
+  else log('6.6', 'FAIL', `Esperado bienvenida, obtuvo: ${r.matchedKey}`);
+});
+
+// ════════════════════════════════════════════
+// TEST 12: Edge cases
+// ════════════════════════════════════════════
+console.log('\n📋 TEST 12: Edge cases');
+
+await runTest('12.1 - Texto vacío', async () => {
+  const r = await preview('');
+  if (r.response) log('12.1', 'PASS', `Texto vacío no crashea`);
+  else log('12.1', 'FAIL', `Sin respuesta`);
+});
+
+await runTest('12.2 - Solo espacios', async () => {
+  const r = await preview('     ');
+  if (r.response) log('12.2', 'PASS', `Espacios no crashean`);
+  else log('12.2', 'FAIL', `Sin respuesta`);
+});
+
+await runTest('12.3 - Mayúsculas', async () => {
+  const r = await preview('EVENTOS');
+  if (r.matchedKey === 'eventos') log('12.3', 'PASS', `Mayúsculas funcionan`);
+  else log('12.3', 'FAIL', `Mayúsculas no funcionan: ${r.matchedKey}`);
+});
+
+await runTest('12.4 - Acentos en menu', async () => {
+  const r = await preview('próximos eventos');
+  if (r.matchedKey === 'eventos') log('12.4', 'PASS', `Acentos funcionan`);
+  else log('12.4', 'FAIL', `Acentos no funcionan: ${r.matchedKey}`);
+});
+
+await runTest('12.5 - SQL injection attempt', async () => {
+  const r = await preview("'; DROP TABLE messages; --");
+  if (r.response) log('12.5', 'PASS', `No crashea con SQL injection`);
+  else log('12.5', 'FAIL', `Sin respuesta`);
+});
+
+await runTest('12.6 - Texto muy largo', async () => {
+  const longText = 'a'.repeat(1000);
+  const r = await preview(longText);
+  if (r.response) log('12.6', 'PASS', `Texto largo manejado`);
+  else log('12.6', 'FAIL', `Sin respuesta`);
 });
 
 // ════════════════════════════════════════════
