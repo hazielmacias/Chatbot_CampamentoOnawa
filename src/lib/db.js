@@ -300,29 +300,35 @@ async function migrateMenuConfig(messages) {
     messages.menuOptions = JSON.parse(JSON.stringify(defaults));
   }
 
-  // 1.5) Solo agregar mensajes nuevos que no existen en la DB
-  // IMPORTANTE: NO sobrescribir contenido existente (el dashboard lo edita)
+  // 1.5) Sincronizar contenido y keywords de mensajes desde defaults
+  // IMPORTANTE: El dashboard PUEDE editar mensajes. Para no perder esos cambios,
+  // solo sincronizamos si el mensaje actual está VACÍO o si el contenido actual
+  // coincide con algún contenido default anterior (lo que significa que nunca fue editado).
+  // En la práctica, sincronizamos si el mensaje no existe o está vacío.
   const defaultMessages = loadDefaultMessages();
   let contentUpdated = false;
   for (const [key, defMsg] of Object.entries(defaultMessages)) {
     if (key === 'menuOptions' || key === 'footer') continue;
-    // Si el mensaje NO existe en la DB, copiarlo desde defaults
-    if (!messages[key]) {
+    const current = messages[key];
+    // Si el mensaje NO existe en la DB, crearlo desde defaults
+    if (!current) {
       messages[key] = JSON.parse(JSON.stringify(defMsg));
       contentUpdated = true;
       console.log(`[migrate] Mensaje "${key}" creado desde defaults (no existía)`);
+      continue;
     }
-    // Si existe pero está vacío, llenarlo
-    else if (messages[key] && (!messages[key].content || messages[key].content.trim() === '')) {
-      messages[key].content = defMsg.content || '';
-      if (defMsg.title) messages[key].title = defMsg.title;
+    // Si existe pero está completamente vacío, llenarlo
+    if (!current.content || current.content.trim() === '') {
+      current.content = defMsg.content || '';
+      if (defMsg.title) current.title = defMsg.title;
+      if (defMsg.description) current.description = defMsg.description;
       contentUpdated = true;
       console.log(`[migrate] Mensaje "${key}" estaba vacío, llenado desde defaults`);
     }
-    // Si existe y tiene contenido, NO TOCARLO (el usuario puede haberlo editado)
+    // Si existe y tiene contenido, NO TOCARLO (puede haber sido editado desde el dashboard)
   }
   if (contentUpdated) {
-    console.log('[migrate] Mensajes nuevos/vacíos sincronizados desde defaults');
+    console.log('[migrate] Mensajes sincronizados desde defaults');
   }
 
   // 2) bienvenida / no_entendido al formato {{MENU}}
