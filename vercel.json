@@ -16,6 +16,7 @@
     { "src": "/api/dashboard/menu", "dest": "/api/dashboard/menu.js" },
     { "src": "/api/dashboard/reset-menu", "dest": "/api/dashboard/reset-menu.js" },
     { "src": "/api/dashboard/reset-content", "dest": "/api/dashboard/reset-content.js" },
+    { "src": "/api/dashboard/clean-orphans", "dest": "/api/dashboard/clean-orphans.js" },
     { "src": "/api/webhook", "dest": "/api/webhook.js" },
     { "src": "/dashboard", "dest": "/dashboard/index.html" },
     { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
