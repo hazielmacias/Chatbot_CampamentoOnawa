@@ -294,10 +294,24 @@ function parseMenuFromBienvenida(text) {
 async function migrateMenuConfig(messages) {
   if (!messages || typeof messages !== 'object') return messages;
 
-  // 1) menuOptions — siempre sincronizar con los defaults para reflejar cambios de orden/título/emoji
+  // 1) menuOptions — sincronizar con defaults SOLO si el menú guardado
+  //    no fue editado desde el dashboard
   const defaults = getDefaultMenuOptions();
   if (defaults.length > 0) {
-    messages.menuOptions = JSON.parse(JSON.stringify(defaults));
+    let currentMenu = messages.menuOptions;
+    // Extraer opciones del formato { _dashboard_edited, options } si existe
+    let dashboardEdited = false;
+    if (currentMenu && currentMenu._dashboard_edited === true && Array.isArray(currentMenu.options)) {
+      dashboardEdited = true;
+      currentMenu = currentMenu.options;
+    }
+    if (!dashboardEdited) {
+      // No fue editado desde dashboard → sincronizar con defaults
+      messages.menuOptions = JSON.parse(JSON.stringify(defaults));
+    } else {
+      // Fue editado desde dashboard → NO tocar
+      console.log('[migrate] Menu fue editado desde dashboard, respetando cambios');
+    }
   }
 
   // 1.5) Sincronizar contenido y keywords de mensajes desde defaults
@@ -343,7 +357,11 @@ async function migrateMenuConfig(messages) {
   }
 
   // 3) Sincronizar keywords de las opciones del menú
-  const menuOptions = messages.menuOptions || [];
+  let menuOptions = messages.menuOptions;
+  if (menuOptions && typeof menuOptions === 'object' && !Array.isArray(menuOptions) && Array.isArray(menuOptions.options)) {
+    menuOptions = menuOptions.options;
+  }
+  if (!Array.isArray(menuOptions)) menuOptions = [];
   for (const opt of menuOptions) {
     if (!opt || !opt.messageKey) continue;
     const msg = messages[opt.messageKey];
@@ -381,7 +399,12 @@ function normalizeMenuOption(opt) {
 
 export async function getMenuOptions() {
   const messages = await fetchBotMessages();
-  const list = Array.isArray(messages.menuOptions) ? messages.menuOptions : [];
+  let list = messages.menuOptions;
+  // Si está en formato { _dashboard_edited, options }, extraer options
+  if (list && typeof list === 'object' && !Array.isArray(list) && Array.isArray(list.options)) {
+    list = list.options;
+  }
+  if (!Array.isArray(list)) return [];
   return list.map(normalizeMenuOption);
 }
 
@@ -392,7 +415,8 @@ export async function saveMenuOptions(options) {
     .filter(o => o.number > 0 && o.title)
     .sort((a, b) => a.number - b.number);
   const messages = await fetchBotMessages();
-  messages.menuOptions = cleaned;
+  // Marcar como editado desde dashboard para que la migración no lo sobrescriba
+  messages.menuOptions = { _dashboard_edited: true, options: cleaned };
   await saveBotMessages(messages);
   return cleaned;
 }
